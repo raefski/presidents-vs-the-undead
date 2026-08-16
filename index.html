@@ -61,6 +61,7 @@
     <div id="touch-btns">
       <button class="tbtn" data-act="touch-pause" aria-label="Pause">II</button>
       <button class="tbtn" data-act="touch-mute" aria-label="Mute">&#128266;</button>
+      <button class="tbtn hidden" id="btn-full" aria-label="Fullscreen">&#9974;</button>
     </div>
 
     <!-- Touch-only: the floating thumbstick. Driven by touch.js. -->
@@ -95,8 +96,9 @@
       <button class="btn big" data-act="goto-campaign">TAKE THE OATH</button>
       <button class="btn ghost" data-act="goto-help">HOW TO PLAY</button>
       <button class="btn ghost small" data-act="dev-open">DEV · BALANCE <kbd>F1</kbd></button>
-      <p class="fineprint hidden" id="ios-hint">iPhone: tap <b>Share</b> &rarr; <b>Add to Home Screen</b>,
-        then play from the icon — it runs full screen with no address bar.</p>
+      <p class="hidden" id="ios-hint">Best on iPhone: tap <b>Share</b> &rarr; <b>Add to Home Screen</b>,
+        then play from the icon &mdash; Safari's bars eat a third of the screen, and from
+        the icon the game gets all of it.</p>
       <p class="fineprint">A parody. No actual presidents were consulted.</p>
     </section>
 
@@ -110,7 +112,7 @@
         </div>
         <div class="card touch-only">
           <h3>Move</h3>
-          <p>Hold your thumb <b>anywhere</b> on the screen and drag. A stick appears where you touch, so you never have to look for it. Let go to stop.</p>
+          <p>Hold the phone <b>upright</b> and drag your thumb in the panel below the game — the stick appears wherever you touch it. Turned sideways, drag anywhere on the screen instead.</p>
         </div>
         <div class="card">
           <h3>Attack</h3>
@@ -146,7 +148,11 @@
         </div>
         <div class="card touch-only">
           <h3>On a phone</h3>
-          <p>Hold it <b>sideways</b>. The <b>II</b> and speaker buttons in the top right pause and mute. Turning the phone upright pauses the game for you.</p>
+          <p><b>Upright</b> is the better way to play: the game gets the top of the screen to itself and your thumb stays off it. The <b>II</b> and speaker buttons pause and mute.</p>
+        </div>
+        <div class="card touch-only">
+          <h3>Full screen</h3>
+          <p>On iPhone, tap <b>Share</b> &rarr; <b>Add to Home Screen</b> and play from the icon. Safari's own bars eat a third of the screen; from the icon the game gets all of it.</p>
         </div>
       </div>
       <button class="btn" data-act="goto-title">BACK</button>
@@ -266,16 +272,6 @@
       </div>
     </section>
 
-  </div>
-</div>
-
-<!-- Touch-only, and pure CSS: shown by an orientation media query.
-     The game is 16:9 and unplayable in a portrait letterbox. -->
-<div id="rotate">
-  <div>
-    <div class="rot-icon">&#128241;</div>
-    <b>TURN YOUR PHONE SIDEWAYS</b>
-    <span>PRESIDENTS vs. THE UNDEAD is played in landscape.</span>
   </div>
 </div>
 

@@ -31,29 +31,76 @@ const UI = {
   },
 
   /* ------------------------------------------------------------
-     Scale the canvas to fill the window at 16:9 and align the DOM
-     layers to exactly the same rectangle.
+     Scale the canvas to fit the window and align the DOM layers to it.
+
+     Three cases:
+       desktop            letterboxed 16:9, HUD overlaid on the picture
+       phone, landscape   same, but the HUD spans the whole screen
+       phone, portrait    view transposes to 540x960 and the HUD moves
+                          OFF the picture into a band above and below
+
+     The portrait bands are the fix for a phone: a browser's own chrome
+     already eats a third of the height, and stacking the HUD on top of
+     what's left is what made it unreadable.
      ------------------------------------------------------------ */
   layout() {
     const w = this.stage.clientWidth, h = this.stage.clientHeight;
-    const s = Math.max(0.5, Math.min(w / VW, h / VH));
+    const touch = typeof TouchUI !== 'undefined' && TouchUI.active;
+    // Portrait is a phone affordance. A tall, narrow desktop window
+    // should letterbox exactly as it always has, not reshape the game.
+    const portrait = touch && h > w;
+
+    const v = portrait ? VIEW_PORTRAIT : VIEW_LANDSCAPE;
+    if (setView(v.w, v.h)) Game.viewChanged();
+    document.body.classList.toggle('portrait', portrait);
+
+    // Bands are a share of the screen, floored so they stay usable on a
+    // small phone and capped so they don't eat a tablet.
+    // The top band has to hold three rows — resources, objective, health —
+    // so its floor is what those actually measure, not a round number.
+    const topBand = portrait ? Math.round(clamp(h * 0.105, 66, 96)) : 0;
+    const botBand = portrait ? Math.round(clamp(h * 0.185, 116, 180)) : 0;
+    const availH = Math.max(120, h - topBand - botBand);
+
+    const s = Math.max(0.3, Math.min(w / VW, availH / VH));
     const cw = Math.floor(VW * s), ch = Math.floor(VH * s);
     this.scale = s;
     this.offX = Math.floor((w - cw) / 2);
-    this.offY = Math.floor((h - ch) / 2);
+    this.offY = topBand + Math.floor((availH - ch) / 2);
 
     this.canvas.style.width = cw + 'px';
     this.canvas.style.height = ch + 'px';
-
-    for (const layer of [this.hud, this.overlay]) {
-      layer.style.left = this.offX + 'px';
-      layer.style.top = this.offY + 'px';
-      layer.style.width = cw + 'px';
-      layer.style.height = ch + 'px';
+    // #stage centres the canvas with flex, which can't honour the bands.
+    if (portrait) {
+      this.canvas.style.position = 'absolute';
+      this.canvas.style.left = this.offX + 'px';
+      this.canvas.style.top = this.offY + 'px';
+    } else {
+      this.canvas.style.position = '';
+      this.canvas.style.left = '';
+      this.canvas.style.top = '';
     }
-    // s is smaller now that the canvas is larger, so the HUD text is
-    // scaled against the window rather than the upscale factor.
-    this.hud.style.fontSize = clamp(cw / 96, 11, 20) + 'px';
+
+    // On a touchscreen the HUD is screen furniture rather than canvas
+    // furniture: it spans the whole display, so it can use the letterbox
+    // instead of stacking on top of the picture.
+    for (const layer of [this.hud, this.overlay]) {
+      layer.style.left = (touch ? 0 : this.offX) + 'px';
+      layer.style.top = (touch ? 0 : this.offY) + 'px';
+      layer.style.width = (touch ? w : cw) + 'px';
+      layer.style.height = (touch ? h : ch) + 'px';
+    }
+
+    // The HUD text is scaled against whatever box it actually occupies.
+    this.hud.style.fontSize = clamp((touch ? w : cw) / 96, touch ? 10 : 11, 20) + 'px';
+
+    // What the portrait HUD positions itself against.
+    this.hud.style.setProperty('--top-band', topBand + 'px');
+    this.hud.style.setProperty('--bot-band', botBand + 'px');
+    this.hud.style.setProperty('--play-bottom', (this.offY + ch) + 'px');
+    this.hud.style.setProperty('--play-top', this.offY + 'px');
+
+    if (touch) TouchUI.onLayout();
   },
 
   /* ------------------------------------------------------------

@@ -43,8 +43,29 @@ const Game = {
   _draw: [], _frameTimes: [], _ftIdx: 0,
 
   /* ------------------------------------------------------------ */
+
+  /**
+   * The view was reshaped (the phone was rotated). Resize the backing
+   * store, restore the context state that resizing throws away, and drop
+   * anything that was baked at the old dimensions.
+   */
+  viewChanged() {
+    const c = $('#game');
+    c.width = VW; c.height = VH;
+    // Setting width/height resets the whole 2D context, including this.
+    if (this.ctx) this.ctx.imageSmoothingEnabled = false;
+    this._vig = null;                       // baked at the old size
+    // Snap rather than damp: a rotation shouldn't look like the camera
+    // sliding across town.
+    if (this.player) {
+      this.camX = this.player.x - VW / 2;
+      this.camY = this.player.y - VH / 2;
+    }
+  },
+
   init() {
     const c = $('#game');
+    c.width = VW; c.height = VH;
     this.ctx = c.getContext('2d', { alpha: false });
     this.ctx.imageSmoothingEnabled = false;
 

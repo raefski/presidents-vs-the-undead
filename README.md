@@ -43,25 +43,40 @@ gated on that class, so a desktop browser renders exactly as it did before.
 
 | | |
 |---|---|
-| Move | hold **anywhere** and drag — the stick appears under your thumb |
-| Upgrade | the UPGRADE button, bottom right |
-| Pause / Mute | the two buttons top right |
+| Move | drag in the control band below the game (upright) or anywhere (sideways) |
+| Upgrade | the UPGRADE button |
+| Pause / Mute | the buttons in the status band |
 
-Held sideways only: the game is 16:9 and a portrait letterbox is unplayable, so
-turning the phone upright raises a rotate prompt and pauses the run.
+**Portrait is the better orientation, and it reshapes the view.** Held upright
+the game switches to a 540x960 view and the HUD moves *off* the picture into a
+status band above it and a control band below. Nothing overlaps the playfield
+and your thumb never covers it — which is the whole reason to prefer it. Held
+sideways it behaves as before, HUD overlaid, stick anywhere.
+
+The portrait view is **the exact transpose** of the landscape one, and that is
+load-bearing. 540x960 has the same area as 960x540 and the same half-diagonal,
+so `VIEW_R` — and `SPAWN_MIN`, `SPAWN_MAX` and the enemy cull radius, all
+derived from it — are identical in both orientations. Rotating the phone
+changes the *shape* of what you can see and moves no balance number at all. If
+you ever retune the portrait pair, keep the diagonal equal or spawn distance
+starts differing between orientations.
+
+The cost is pillarboxing: a phone screen is proportionally wider than 540x960,
+so in Safari there are black bars either side. Standalone mode (below) recovers
+most of it. Filling the width instead would mean a shorter view — less world on
+screen, which is a difficulty change, not a layout one.
 
 The stick is **direction only, never magnitude** — a half tilt moves you at the
 same speed as a full one, exactly like a held arrow key. Analogue speed would
 be a real balance change, since the whole game is tuned against one movement
 rate.
 
-The playfield is letterboxed rather than widened to fill a tall phone. `VW`/`VH`
-in `util.js` are the zoom control and everything derives from them — spawn
-distance, culling, the minimap viewport — so a wider view on mobile would be a
-different game, not a different layout.
-
-iPhone Safari has no Fullscreen API, so the only way to lose the address bar is
-**Share → Add to Home Screen**. The title screen says so when it applies.
+iPhone Safari has no Fullscreen API — `requestFullscreen` is simply absent — so
+the only way to lose the browser chrome is **Share → Add to Home Screen**. It
+matters more than it sounds: Safari's own bars take roughly a third of the
+height, which is what squeezes the playfield. The title screen says so when it
+applies, and the fullscreen button removes itself where the API doesn't exist
+rather than shipping a control that does nothing.
 
 ## The campaign
 

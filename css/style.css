@@ -936,24 +936,108 @@ body.touch #stick.on{opacity:.9;transition:none}
   box-shadow:0 2px 6px rgba(0,0,0,.7);
 }
 
-/* ---------- portrait is not a playable shape ---------- */
-#rotate{
-  display:none;
-  position:fixed;inset:0;z-index:200;
-  align-items:center;justify-content:center;text-align:center;
-  padding:32px;background:#05070f;
+/* ============================================================
+   PORTRAIT
+
+   The view transposes to 540x960 (see util.js) and the HUD moves OFF
+   the picture into a band above and below it. UI.layout() publishes the
+   band geometry as custom properties on #hud:
+
+     --top-band     height of the status band
+     --bot-band     height of the control band
+     --play-top     top edge of the playfield, in stage px
+     --play-bottom  bottom edge of the playfield, in stage px
+
+   Nothing here guesses at those numbers — the same code that sized the
+   canvas is the one that publishes them, so the two cannot drift apart.
+   ============================================================ */
+
+/* The status band: everything you read, none of it on the picture. */
+body.portrait #hud-top{
+  top:0;left:0;right:0;
+  height:var(--top-band);
+  padding:3px 6px 0;
+  justify-content:flex-start;gap:1px;
+  background:linear-gradient(180deg,#0b1026 60%,rgba(11,16,38,.85));
+  border-bottom:2px solid #000;
 }
-@media (orientation:portrait){ body.touch #rotate{display:flex} }
-#rotate .rot-icon{
-  font-size:54px;display:block;margin-bottom:14px;
-  animation:rotNudge 2.2s ease-in-out infinite;
+body.portrait #topbar{gap:4px}
+body.portrait .res{padding:1px 6px;font-size:11px;border-width:1px}
+body.portrait .res .k{font-size:8px}
+body.portrait #timer{font-size:17px;letter-spacing:1px}
+body.portrait #objective{
+  font-size:8px;letter-spacing:1px;padding:1px 6px;margin-top:1px;
+  max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-#rotate b{
-  display:block;font-size:15px;letter-spacing:3px;color:var(--gold);
-  margin-bottom:8px;line-height:1.5;
+body.portrait #objective b{font-size:9px}
+
+body.portrait #hud-top{overflow:hidden}
+
+/* Health is the one number you look at while being chased, so it gets a
+   full-width row — anchored to the top edge of the playfield rather than
+   to the band, so it can never end up sitting ON the picture no matter
+   how the bands round off. */
+body.portrait #hud-left{
+  top:calc(var(--play-top) - 21px);bottom:auto;left:6px;right:6px;
+  flex-direction:row;align-items:center;gap:5px;
 }
-#rotate span{display:block;font-size:12px;opacity:.6;line-height:1.6}
-@keyframes rotNudge{
-  0%,45%,100%{transform:rotate(0)}
-  60%,85%{transform:rotate(-90deg)}
+body.portrait #hpbar{flex:1;width:auto;height:16px}
+body.portrait #hptext{font-size:10px}
+body.portrait #weaponslots{
+  max-width:46%;justify-content:flex-end;gap:2px;
+  flex-wrap:nowrap;overflow:hidden;
 }
+body.portrait .slot{width:18px;height:18px;font-size:10px;flex:none}
+body.portrait .slot .lv{font-size:7px}
+
+/* The control band: thumb on the left, map and UPGRADE on the right. */
+body.portrait #hud-right{
+  top:auto;bottom:0;right:0;left:0;
+  height:var(--bot-band);
+  flex-direction:row;align-items:center;justify-content:flex-end;
+  gap:8px;padding:6px 8px;
+  background:linear-gradient(0deg,#0b1026 55%,rgba(11,16,38,.86));
+  border-top:2px solid #000;
+}
+/* Sized off the band rather than through a chain of percentage heights —
+   the base rule (width:100%, height:auto) is the one that demonstrably
+   works, so portrait only sets how wide the wrapper is and lets the
+   canvas keep its own 200x140 ratio. */
+body.portrait #minimap-wrap{
+  width:calc(var(--bot-band) * 0.98);height:auto;
+  min-width:0;max-width:36%;padding:2px;
+}
+/* the legend costs a row the band hasn't got; the colours are learned in
+   one glance anyway */
+body.portrait #minimap-legend{display:none}
+body.portrait #btn-upgrade{
+  padding:14px 10px;font-size:12px;letter-spacing:.5px;line-height:1.15;
+  max-width:27%;
+}
+
+/* Pause / mute / fullscreen tuck into the status band's right edge. */
+body.portrait #touch-btns{
+  top:2px;right:4px;bottom:auto;
+  flex-direction:row;gap:4px;
+}
+body.portrait .tbtn{width:26px;height:26px;font-size:11px}
+
+/* The threat readout stays on the picture — it is a warning about the
+   world, and it belongs where you are looking. */
+body.portrait #threat{
+  bottom:auto;top:calc(var(--play-bottom) - 26px);
+  max-width:94%;font-size:9px;gap:5px;padding:3px 7px;
+}
+body.portrait #threat-lvl{font-size:11px}
+body.portrait #bossbar{top:calc(var(--play-top) + 6px);left:4%;right:4%}
+body.portrait #banner{top:calc(var(--play-top) + 28%);font-size:19px;letter-spacing:2px}
+
+/* The Add to Home Screen note earns real estate on the title screen,
+   because on iOS it is the only thing that gets the chrome out of the
+   way and it visibly changes how much game you can see. */
+#ios-hint{
+  max-width:420px;font-size:11px;line-height:1.7;
+  color:var(--cream);background:rgba(20,28,61,.75);
+  border:1px solid var(--line);padding:8px 14px;
+}
+#ios-hint b{color:var(--gold)}

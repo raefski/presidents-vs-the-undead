@@ -10,8 +10,8 @@
     Prestige.load();  // meta-progression gates the shop, so it loads first
     Dev.load();       // hand-tuned balance before anything reads a stat block
     Game.init();      // pools + sprite warm-up must exist before UI draws portraits
+    TouchUI.init();   // before UI.init: the first layout has to know it's a phone
     UI.init();
-    TouchUI.init();   // after UI.init: it measures the laid-out stage
     UI.show('title');
     UI.showHud(false);
 

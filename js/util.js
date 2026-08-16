@@ -17,14 +17,43 @@ const TAU = Math.PI * 2;
      960 x 540   the default: exactly 2x on 1080p, comfortably wider
     1120 x 630   further out again, sprites start getting small
 
-   Keep the 16:9 ratio. Everything that cares — spawn distance, culling,
-   the vignette, the minimap viewport box — derives from these, so
-   changing them here is the whole change.
-   ============================================================ */
-const VW = 960, VH = 540;
+   Everything that cares — spawn distance, culling, the vignette, the
+   minimap viewport box — derives from these, so changing them here is
+   the whole change.
 
-/** Half-diagonal of the view: the radius at which something is off screen. */
+   PORTRAIT IS THE EXACT TRANSPOSE, and that is the entire reason it is
+   safe to switch to on a phone. 540x960 has the same area as 960x540
+   and — the part that matters — the same half-diagonal, so VIEW_R and
+   everything computed from it (SPAWN_MIN, SPAWN_MAX, the enemy cull
+   radius) are identical in both orientations, to the bit. Rotating the
+   phone changes the SHAPE of what you can see and nothing else: no
+   balance number moves, and a stage plays the same in either hand.
+
+   Do not "tidy" the portrait pair into rounder numbers. The moment the
+   diagonal stops matching, enemies start spawning at a different
+   distance relative to the view edge in one orientation than the other.
+   ============================================================ */
+const VIEW_LANDSCAPE = Object.freeze({ w: 960, h: 540 });
+const VIEW_PORTRAIT = Object.freeze({ w: 540, h: 960 });
+
+let VW = VIEW_LANDSCAPE.w, VH = VIEW_LANDSCAPE.h;
+
+/**
+ * Half-diagonal of the view: the radius at which something is off screen.
+ * Deliberately computed once — see above, the transpose preserves it.
+ */
 const VIEW_R = Math.hypot(VW / 2, VH / 2);
+
+/**
+ * Reshape the view. Returns true only if something actually changed, so
+ * the caller knows to resize the canvas and drop whatever it cached at
+ * the old size. Only ever called with the two presets above.
+ */
+function setView(w, h) {
+  if (VW === w && VH === h) return false;
+  VW = w; VH = h;
+  return true;
+}
 
 /** Clamp v into [lo, hi]. */
 function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }

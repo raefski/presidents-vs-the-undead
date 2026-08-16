@@ -49,22 +49,11 @@ const TouchUI = {
     stage.addEventListener('touchend', (e) => this.onEnd(e), { passive: false });
     stage.addEventListener('touchcancel', (e) => this.onEnd(e), { passive: false });
 
-    // Scale the stick to the screen: a 52px throw is a comfortable
-    // thumb arc on a phone and cramped on a tablet.
-    const sizeStick = () => {
-      const m = Math.min(window.innerWidth, window.innerHeight);
-      this.R = clamp(m * 0.15, 42, 88);
-      this.wrap.style.setProperty('--stick-r', this.R + 'px');
-      if (this.id === null) this.rest();
-    };
-    sizeStick();
-    window.addEventListener('resize', sizeStick);
-    window.addEventListener('orientationchange', () => setTimeout(sizeStick, 250));
-
-    // Turning the phone upright hides the game behind the rotate
-    // prompt — so it must not also be quietly killing you.
-    window.addEventListener('resize', () => {
-      if (window.innerHeight > window.innerWidth && Game.state === 'playing') Game.togglePause();
+    // iOS reports the new size a beat after the rotation animation, so a
+    // second pass catches what the first one measured too early.
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => UI.layout(), 120);
+      setTimeout(() => UI.layout(), 450);
     });
 
     // iOS suspends the audio context when the app goes to the
@@ -72,6 +61,29 @@ const TouchUI = {
     document.addEventListener('visibilitychange', () => { if (!document.hidden) Sound.resume(); });
 
     this.showHomeScreenHint();
+    this.setupFullscreen();
+  },
+
+  /**
+   * Sized and parked against the current screen, so it has to follow
+   * every relayout. UI.layout() calls this; there is no second resize
+   * listener, so the two can never disagree about the geometry.
+   */
+  onLayout() {
+    if (!this.active) return;
+    const m = Math.min(window.innerWidth, window.innerHeight);
+    this.R = clamp(m * 0.15, 42, 88);
+    this.wrap.style.setProperty('--stick-r', this.R + 'px');
+    if (this.id === null) this.rest();
+  },
+
+  portrait() { return document.body.classList.contains('portrait'); },
+
+  /** Bottom edge of the playfield in viewport px. */
+  playBottom() {
+    const v = getComputedStyle(UI.hud).getPropertyValue('--play-bottom');
+    const n = parseFloat(v);
+    return isNaN(n) ? 0 : n + UI.stage.getBoundingClientRect().top;
   },
 
   /* ------------------------------------------------------------
@@ -79,13 +91,23 @@ const TouchUI = {
      ------------------------------------------------------------ */
 
   /**
-   * Park the ghost stick in the lower left of the playfield. Measured
-   * off the canvas rather than the stage, so it sits inside the picture
-   * instead of straddling the letterbox pillar on a tall phone.
+   * Park the ghost stick. In portrait that means the control band under
+   * the playfield — the whole point of portrait is that your thumb is
+   * not on the picture. In landscape there is no band to put it in, so
+   * it sits in the lower left of the canvas as before.
    */
   rest() {
-    const r = UI.canvas.getBoundingClientRect();
-    this.place(r.left + this.R * 1.6, r.bottom - this.R * 1.5, false);
+    const st = UI.stage.getBoundingClientRect();
+    if (this.portrait()) {
+      const band = st.bottom - this.playBottom();
+      // Far enough left to clear the minimap and UPGRADE on a narrow
+      // phone, where all three are competing for one strip.
+      this.place(st.left + Math.max(this.R * 1.2, st.width * 0.22),
+                 this.playBottom() + band / 2, false);
+    } else {
+      const r = UI.canvas.getBoundingClientRect();
+      this.place(r.left + this.R * 1.6, r.bottom - this.R * 1.5, false);
+    }
     this.tilt(0, 0);
   },
 
@@ -113,6 +135,11 @@ const TouchUI = {
     if (e.target.closest && e.target.closest('button,[data-act]')) return;
 
     const t = e.changedTouches[0];
+    // In portrait the stick lives in the control band and nowhere else.
+    // Ignoring the playfield is the point: it keeps the picture clear,
+    // and it means a stray tap on the game can't yank you sideways.
+    if (this.portrait() && t.clientY < this.playBottom()) return;
+
     this.id = t.identifier;
     this.place(t.clientX, t.clientY, true);
     this.tilt(0, 0);
@@ -155,15 +182,41 @@ const TouchUI = {
      ------------------------------------------------------------ */
 
   /**
-   * iPhone Safari has no Fullscreen API, so the only way to lose the
-   * address bar is Add to Home Screen. Say so, once, on the title
-   * screen — and only when it would actually change anything.
+   * iPhone Safari has no Fullscreen API — requestFullscreen simply is
+   * not there on iOS, only the video-element one. So the only way to
+   * lose the browser chrome is Add to Home Screen, and that is worth
+   * saying plainly rather than shipping a button that does nothing.
+   *
+   * It matters more than it sounds: Safari's chrome is what squeezes
+   * the playfield, and standalone mode is the difference between the
+   * game fitting the screen exactly and being pillarboxed.
    */
   showHomeScreenHint() {
+    const installed = this.standalone();
     const iOS = /iP(hone|od|ad)/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1);
-    const installed = window.navigator.standalone === true ||
-      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
     if (iOS && !installed) $('#ios-hint').classList.remove('hidden');
+  },
+
+  standalone() {
+    return window.navigator.standalone === true ||
+      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+  },
+
+  /**
+   * Real fullscreen where the platform has it (Android, desktop). The
+   * button removes itself where it doesn't, rather than lying.
+   */
+  setupFullscreen() {
+    const btn = $('#btn-full');
+    const root = document.documentElement;
+    const can = !!(root.requestFullscreen || root.webkitRequestFullscreen);
+    if (!can || this.standalone()) { btn.remove(); return; }
+    btn.classList.remove('hidden');
+    btn.addEventListener('click', () => {
+      const fs = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!fs) (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+      else (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    });
   }
 };
