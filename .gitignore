@@ -1,0 +1,8 @@
+# Nothing is built and nothing is installed — this list exists to keep
+# editor and OS droppings out of a repo that is served verbatim.
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/

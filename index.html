@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- viewport-fit=cover lets the page paint under the notch; the safe-area
+     insets in style.css pull the playfield back out from under it. -->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Presidents">
+<meta name="theme-color" content="#0b1026">
+<meta name="color-scheme" content="dark">
+<title>PRESIDENTS vs. THE UNDEAD</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="game" width="960" height="540"></canvas>
+
+  <!-- ============ IN-GAME HUD ============ -->
+  <div id="hud" class="hidden">
+    <div id="hud-top">
+      <div id="topbar">
+        <div class="res"><span class="k">LVL</span><span id="plvl">1</span></div>
+        <div class="res"><span class="k">XP</span><span id="xpbank">0</span></div>
+        <div id="timer">00:00</div>
+        <div class="res gold"><span class="k">GOLD</span><span id="goldbank">0</span></div>
+      </div>
+      <div id="objective"><span id="stagename">1. COLONIAL WILLIAMSBURG · 1781</span>
+        &nbsp;·&nbsp; STRONGPOINTS <b id="cleared">0</b> / 9</div>
+    </div>
+
+    <div id="bossbar" class="hidden">
+      <div id="bossname">BOSS</div>
+      <div id="bosssub"></div>
+      <div id="bosstrack"><div id="bossfill"></div></div>
+    </div>
+
+    <div id="hud-left">
+      <div id="hpbar"><div id="hpfill"></div><span id="hptext">100 / 100</span></div>
+      <div id="weaponslots"></div>
+    </div>
+
+    <div id="hud-right">
+      <div id="minimap-wrap">
+        <canvas id="minimap" width="200" height="140"></canvas>
+        <div id="minimap-legend">
+          <span><i style="background:#5ec26a"></i>READY</span>
+          <span><i style="background:#f2c14e"></i>RISKY</span>
+          <span><i style="background:#d8324a"></i>DEADLY</span>
+        </div>
+      </div>
+      <button id="btn-upgrade" data-act="shop">UPGRADE <kbd>Esc</kbd></button>
+      <div class="stat"><span class="k">KILLS</span><span id="kills">0</span></div>
+    </div>
+
+    <!-- Touch-only: the two keys a phone doesn't have. CSS hides these
+         unless touch.js has put the `touch` class on <body>. -->
+    <div id="touch-btns">
+      <button class="tbtn" data-act="touch-pause" aria-label="Pause">II</button>
+      <button class="tbtn" data-act="touch-mute" aria-label="Mute">&#128266;</button>
+    </div>
+
+    <!-- Touch-only: the floating thumbstick. Driven by touch.js. -->
+    <div id="stick" aria-hidden="true">
+      <div id="stick-base"></div>
+      <div id="stick-knob"></div>
+    </div>
+
+    <!-- Boss threat readout, pinned to the bottom -->
+    <div id="threat" class="hidden">
+      <span id="threat-lvl">LVL 99</span>
+      <span id="threat-name">BOSS</span>
+      <span id="threat-verdict">DEADLY</span>
+      <span id="threat-you">you are LVL 1</span>
+    </div>
+
+    <div id="banner"></div>
+  </div>
+
+  <!-- ============ OVERLAYS ============ -->
+  <div id="overlay">
+
+    <!-- TITLE -->
+    <section id="scr-title" class="screen">
+      <div class="stars"></div>
+      <h1 class="title">
+        <span class="t1">PRESIDENTS</span>
+        <span class="t2">vs. THE UNDEAD</span>
+      </h1>
+      <p class="tagline">Nine armies of history have dug into Colonial Williamsburg.
+        Take back all nine buildings.</p>
+      <button class="btn big" data-act="goto-campaign">TAKE THE OATH</button>
+      <button class="btn ghost" data-act="goto-help">HOW TO PLAY</button>
+      <button class="btn ghost small" data-act="dev-open">DEV · BALANCE <kbd>F1</kbd></button>
+      <p class="fineprint hidden" id="ios-hint">iPhone: tap <b>Share</b> &rarr; <b>Add to Home Screen</b>,
+        then play from the icon — it runs full screen with no address bar.</p>
+      <p class="fineprint">A parody. No actual presidents were consulted.</p>
+    </section>
+
+    <!-- HELP -->
+    <section id="scr-help" class="screen hidden">
+      <h2>HOW TO PLAY</h2>
+      <div class="helpgrid">
+        <div class="card desk-only">
+          <h3>Move</h3>
+          <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or the arrow keys, or a gamepad stick. That is the entire control scheme.</p>
+        </div>
+        <div class="card touch-only">
+          <h3>Move</h3>
+          <p>Hold your thumb <b>anywhere</b> on the screen and drag. A stick appears where you touch, so you never have to look for it. Let go to stop.</p>
+        </div>
+        <div class="card">
+          <h3>Attack</h3>
+          <p>You <b>never</b> attack manually. Every weapon fires on its own timer. Your job is where you stand.</p>
+        </div>
+        <div class="card desk-only">
+          <h3>Spend XP</h3>
+          <p>XP is money. Press <kbd>Esc</kbd> to open the War Room and buy exactly the upgrade you want — no random cards.</p>
+        </div>
+        <div class="card touch-only">
+          <h3>Spend XP</h3>
+          <p>XP is money. Tap <b>UPGRADE</b> (bottom right) to open the War Room and buy exactly the upgrade you want — no random cards. It glows when you can afford something.</p>
+        </div>
+        <div class="card">
+          <h3>Your Arsenal</h3>
+          <p>Max your <b>primary</b> to unlock your <b>secondary</b>. Max both to unlock your <b>fusion</b> — which the last strongpoints genuinely require.</p>
+        </div>
+        <div class="card">
+          <h3>Strongpoints</h3>
+          <p>Nine buildings, nine bosses, nine garrisons. They hold position. Walk into one under-levelled and you will die. Grind first.</p>
+        </div>
+        <div class="card">
+          <h3>Staff</h3>
+          <p>Gold hires an assistant who fights beside you. Save up. They are not good, but they are keen.</p>
+        </div>
+        <div class="card">
+          <h3>Mini-bosses</h3>
+          <p>Something large comes hunting roughly every eighty seconds. It pays well and it does not hold still.</p>
+        </div>
+        <div class="card desk-only">
+          <h3>Keys</h3>
+          <p><kbd>Esc</kbd> upgrade &middot; <kbd>P</kbd> pause &middot; <kbd>M</kbd> mute &middot; <kbd>F</kbd> fullscreen<br><span style="opacity:.6">(<kbd>Tab</kbd> also opens the War Room — useful in fullscreen, where the browser keeps <kbd>Esc</kbd> for itself.)</span></p>
+        </div>
+        <div class="card touch-only">
+          <h3>On a phone</h3>
+          <p>Hold it <b>sideways</b>. The <b>II</b> and speaker buttons in the top right pause and mute. Turning the phone upright pauses the game for you.</p>
+        </div>
+      </div>
+      <button class="btn" data-act="goto-title">BACK</button>
+    </section>
+
+    <!-- CAMPAIGN MAP -->
+    <section id="scr-campaign" class="screen hidden">
+      <div id="camp-top">
+        <div>
+          <h2>THE CAMPAIGN</h2>
+          <div id="camp-progress"></div>
+        </div>
+        <div id="camp-prestige">
+          <span class="bank prestige"><b id="camp-pts">0</b> PRESTIGE</span>
+          <button class="btn small" data-act="camp-spend">SPEND</button>
+        </div>
+      </div>
+      <div id="camp-list"></div>
+      <div id="camp-perks" class="hidden"></div>
+      <button class="btn ghost" data-act="goto-title">BACK</button>
+    </section>
+
+    <!-- ERA INTERSTITIAL -->
+    <section id="scr-era" class="screen hidden">
+      <div id="era-card">
+        <div id="era-no">STAGE 1</div>
+        <div id="era-year">1781</div>
+        <div id="era-name">COLONIAL WILLIAMSBURG</div>
+        <div id="era-rule"></div>
+        <div id="era-blurb"></div>
+        <div id="era-pres"><canvas id="era-portrait" width="80" height="120"></canvas>
+          <div id="era-presname"></div></div>
+        <div id="era-hint">press any key</div>
+      </div>
+    </section>
+
+    <!-- CHARACTER SELECT -->
+    <section id="scr-select" class="screen hidden">
+      <h2>CHOOSE YOUR COMMANDER IN CHIEF</h2>
+      <div id="roster"></div>
+      <div id="detail">
+        <canvas id="portrait" width="96" height="120"></canvas>
+        <div id="detail-text">
+          <h3 id="d-name">&mdash;</h3>
+          <p id="d-term">&mdash;</p>
+          <div id="d-weapons"></div>
+          <div id="d-stats"></div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn ghost" data-act="goto-campaign">BACK</button>
+        <button class="btn big" data-act="start" id="btn-start" disabled>INAUGURATE</button>
+      </div>
+    </section>
+
+    <!-- THE WAR ROOM (upgrade shop) -->
+    <section id="scr-shop" class="screen hidden">
+      <div id="shop-head">
+        <h2>THE WAR ROOM</h2>
+        <div id="shop-banks">
+          <span class="bank"><b id="shop-xp">0</b> XP</span>
+          <span class="bank gold"><b id="shop-gold">0</b> GOLD</span>
+          <span class="bank prestige"><b id="shop-prestige">0</b> PRESTIGE</span>
+        </div>
+      </div>
+      <div id="shop-tabs"></div>
+      <p id="shop-blurb"></p>
+      <div id="shop-list"></div>
+      <button class="btn big" data-act="closeshop">BACK TO THE FIGHT</button>
+    </section>
+
+    <!-- DEV BALANCE WORKBENCH -->
+    <section id="scr-dev" class="screen hidden">
+      <div id="dev-top">
+        <div>
+          <h2>DEV &middot; BALANCE</h2>
+          <div id="dev-summary"></div>
+        </div>
+        <div id="dev-actions">
+          <button class="btn small" data-act="dev-export">EXPORT TO CODE</button>
+          <button class="btn small ghost" data-act="dev-reset">RESET THIS</button>
+          <button class="btn small ghost" data-act="dev-resetall">RESET ALL</button>
+          <button class="btn small" data-act="dev-close">CLOSE <kbd>F1</kbd></button>
+        </div>
+      </div>
+      <div id="dev-body">
+        <div id="dev-roster"></div>
+        <div id="dev-panel"></div>
+      </div>
+      <div id="dev-export" class="hidden">
+        <p class="fineprint">Paste this over the <code>BALANCE_OVERRIDES</code> block in
+          <code>js/data/balance-overrides.js</code> to make it permanent and version-controlled.
+          Live tweaks already persist in this browser on their own.</p>
+        <textarea id="dev-export-text" readonly spellcheck="false"></textarea>
+        <button class="btn small" data-act="dev-copy">COPY TO CLIPBOARD</button>
+      </div>
+    </section>
+
+    <!-- PAUSE -->
+    <section id="scr-pause" class="screen hidden">
+      <h2>PAUSED</h2>
+      <div id="pause-stats"></div>
+      <button class="btn" data-act="resume">RESUME</button>
+      <button class="btn ghost" data-act="quit">ABDICATE (quit to title)</button>
+    </section>
+
+    <!-- GAME OVER / WIN -->
+    <section id="scr-over" class="screen hidden">
+      <h2 id="over-head">TERM ENDED</h2>
+      <p id="over-sub"></p>
+      <div id="over-award" class="hidden"></div>
+      <div id="over-stats"></div>
+      <div class="row">
+        <button class="btn big hidden" data-act="next-stage" id="btn-next">NEXT STAGE</button>
+        <button class="btn" data-act="retry">RUN AGAIN</button>
+        <button class="btn ghost" data-act="goto-campaign">CAMPAIGN MAP</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Touch-only, and pure CSS: shown by an orientation media query.
+     The game is 16:9 and unplayable in a portrait letterbox. -->
+<div id="rotate">
+  <div>
+    <div class="rot-icon">&#128241;</div>
+    <b>TURN YOUR PHONE SIDEWAYS</b>
+    <span>PRESIDENTS vs. THE UNDEAD is played in landscape.</span>
+  </div>
+</div>
+
+<script src="js/util.js"></script>
+<script src="js/input.js"></script>
+<script src="js/touch.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/art.js"></script>
+<script src="js/data/balance-overrides.js"></script>
+<script src="js/data/stages.js"></script>
+<script src="js/data/presidents.js"></script>
+<script src="js/data/enemies.js"></script>
+<script src="js/data/upgrades.js"></script>
+<script src="js/data/prestige.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/world.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/companions.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/spawner.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/devmenu.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
