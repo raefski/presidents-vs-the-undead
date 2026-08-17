@@ -472,7 +472,41 @@ const STAGES = [
 
   /* ---------------------------------------------------------- 10 */
   {
-    id: 'iran', no: 10, name: 'THE STRAIT', year: '2020',
+    id: 'pandemic', no: 10, name: 'WUHAN', year: '2020',
+    president: 'biden', palette: 'pandemic',
+    blurb: 'Where it started. Eleven million people, a sealed city, and an institute on the far side of the river.',
+    // Hostile projectiles are virions on this stage rather than energy
+    // bolts. Flavour only — same speed, damage and radius as everywhere.
+    shot: 'virion',
+    w: 3400, h: 2400, start: { x: 520, y: 1300 },
+    zones: [
+      road(100, 1200, 3200, 200), road(1100, 300, 180, 900),
+      road(2200, 300, 180, 900), road(1100, 1400, 180, 900),
+      road(2200, 1400, 180, 900), road(600, 700, 2200, 140),
+      road(600, 1800, 2200, 140)
+    ],
+    factions: ['variants', 'combined'],
+    minis: ['superspreader', 'lobbyist', 'mothersgt'],
+    buildings: [
+      plot('market', 'THE WET MARKET', 'Six hundred stalls, hosed down every night, and closed on the first of January.', 'tin', 200, 1450, 220, 120, 0, { wall: '#dfe6e8' }),
+      plot('hankou', 'HANKOU STATION', 'Three hundred thousand people left through here before the trains stopped.', 'depot', 750, 950, 220, 120, 1),
+      plot('block', 'THE SEALED BLOCK', 'Welded shut from the outside. Groceries come up on a rope.', 'officeblk', 1400, 900, 240, 130, 2),
+      plot('tendays', 'THE TEN-DAY HOSPITAL', 'A thousand beds on a field that was mud a week and a half ago.', 'hospital', 2400, 950, 260, 140, 3),
+      plot('jinyintan', 'THE INFECTIOUS DISEASES HOSPITAL', 'Took the first forty-one cases. Nobody there had a name for it yet.', 'hospital', 1500, 1500, 250, 140, 4),
+      plot('bridge', 'THE YANGTZE BRIDGE', 'A mile of empty deck, and a checkpoint at each end.', 'plaza', 2500, 1550, 270, 150, 5),
+      plot('coldchain', 'THE COLD CHAIN DEPOT', 'Minus seventy degrees. Something in here should not be viable, and is.', 'warehouse', 700, 1900, 250, 140, 6),
+      plot('sequencing', 'THE SEQUENCING LAB', 'Read the whole genome in a weekend, then spent a month being told not to publish it.', 'hospital', 2900, 1900, 260, 150, 7),
+      plot('institute', 'THE INSTITUTE', 'Biosafety level four. The freezer logs stop on the last day of the year.', 'bunker', 1400, 2100, 300, 160, 8)
+    ],
+    /* Tiers 0-6 come from the faction pool; these two are named. PATIENT
+       ZERO keeps its place on the ladder one rung below the Institute. */
+    bosses: { 7: 'omicron' },
+    boss: 'wiv'
+  },
+
+  /* ---------------------------------------------------------- 11 */
+  {
+    id: 'iran', no: 11, name: 'THE STRAIT', year: '2026',
     president: 'trump', palette: 'arid',
     blurb: 'A port on the Strait of Hormuz, held by the Revolutionary Guard and everything they have ever bought.',
     w: 3600, h: 2400, start: { x: 500, y: 1200 },
@@ -495,34 +529,6 @@ const STAGES = [
       plot('hq', 'GUARD HEADQUARTERS', 'Answers to nobody in the government, and knows it.', 'plaza', 600, 2050, 300, 160, 8)
     ],
     boss: 'thecommander'
-  },
-
-  /* ---------------------------------------------------------- 11 */
-  {
-    id: 'pandemic', no: 11, name: 'THE PANDEMIC', year: '2021',
-    president: 'biden', palette: 'pandemic',
-    blurb: 'An American city under lockdown. The enemy is not an army this time, and it is winning.',
-    w: 3400, h: 2400, start: { x: 520, y: 1300 },
-    zones: [
-      road(100, 1200, 3200, 200), road(1100, 300, 180, 900),
-      road(2200, 300, 180, 900), road(1100, 1400, 180, 900),
-      road(2200, 1400, 180, 900), road(600, 700, 2200, 140),
-      road(600, 1800, 2200, 140)
-    ],
-    factions: ['variants', 'combined'],
-    minis: ['superspreader', 'lobbyist', 'mothersgt'],
-    buildings: [
-      plot('testsite', 'THE TESTING SITE', 'A tent, a queue, and a four-day wait for results.', 'tin', 200, 1450, 220, 120, 0, { wall: '#dfe6e8' }),
-      plot('pharmacy', 'THE PHARMACY', 'Shelves stripped in the first week. Twice.', 'hospital', 750, 950, 220, 120, 1),
-      plot('school', 'THE ELEMENTARY SCHOOL', 'Closed March 2020. The clocks are all still right twice a day.', 'schoolbook', 1400, 900, 240, 130, 2),
-      plot('warehouse', 'THE FULFILMENT CENTRE', 'Never closed for a single day. Not once.', 'warehouse', 2400, 950, 260, 140, 3),
-      plot('capitol', 'THE STATE CAPITOL', 'Where the mandates were argued about, loudly.', 'plaza', 1500, 1500, 250, 140, 4),
-      plot('stadium', 'THE VACCINATION SITE', 'A stadium, four thousand doses an hour, and a very long line of cars.', 'plaza', 2500, 1550, 270, 150, 5),
-      plot('icu', 'THE ICU', 'Capacity forty. Currently at two hundred and ten percent.', 'hospital', 700, 1900, 250, 140, 6),
-      plot('cdc', 'THE FIELD LAB', 'Sequencing every sample. The variants are outrunning the alphabet.', 'hospital', 2900, 1900, 260, 150, 7),
-      plot('patientzero', 'THE COLD STORAGE', 'Minus seventy degrees. Something in here should not be viable, and is.', 'warehouse', 1400, 2100, 300, 160, 8)
-    ],
-    boss: 'omicron'
   }
 ];
 

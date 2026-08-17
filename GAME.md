@@ -8,7 +8,7 @@
 
 **PRESIDENTS vs. THE UNDEAD** is a horde-survival action game. You pick one of
 twelve US Presidents and fight through an eleven-stage chronological campaign,
-from Colonial Williamsburg in 1781 to a locked-down American city in 2021.
+from Colonial Williamsburg in 1781 to a port on the Strait of Hormuz in 2026.
 Every stage is occupied by reanimated armies that are still holding ground. You never
 press an attack button — your weapons fire automatically on their own timers,
 so the entire skill expression is *positioning* and *what you spend your
@@ -67,8 +67,8 @@ Prestige is the only thing that carries.
 | 7 | Berlin | 1987 | Cold War | Reagan |
 | 8 | The Road to Baghdad | 2003 | Iraq | G. W. Bush |
 | 9 | The Korengal | 2010 | Afghanistan | Obama |
-| 10 | The Strait | 2020 | Iran | Trump |
-| 11 | The Pandemic | 2021 | — | Biden |
+| 10 | Wuhan | 2020 | Pandemic | Biden |
+| 11 | The Strait | 2026 | Iran | Trump |
 
 The "associated" president is the default pick and is highlighted on the
 campaign map — but **any president can play any stage**. Forcing the pairing
@@ -418,6 +418,27 @@ declined and Al Gore used instead. She is a private person whose entire public
 identity was forced on her by a scandal in which she was the far less powerful
 party, which is a different thing from parodying elected officials in office.
 That distinction is intentional and should hold.
+
+## Stage 10, Wuhan — where those two lines were applied
+
+Stage 10 is set in Wuhan in 2020 and its ninth strongpoint is **THE
+INSTITUTE**, which makes the lab-leak reading the game's canon. That is a
+contested real-world claim about a real organisation, so the same two lines
+above were applied deliberately when it was built:
+
+- The garrisons are **the virus**, not a nationality. The factions are THE
+  VARIANTS and THE COMBINED HORDE — Spike Carriers, Aerosol Clouds, Long
+  Haulers. No enemy on this stage is named after, or drawn as, Chinese people.
+- The boss is **an institution, not a person**: an anonymous figure in a
+  positive-pressure suit. No real researcher is named, depicted or caricatured.
+  The joke is the biosafety hood, in exactly the way it is the uniform
+  everywhere else.
+
+The buildings are real places and real events (the market, Hankou station, the
+ten-day hospital, the sealed residential blocks) and are written straight
+rather than mocked — the people in that city had the worst of it.
+
+If the framing here isn't the one you want, this is the section to change.
 
 ---
 

@@ -504,13 +504,26 @@ function separateEnemies(g, dt) {
   }
 }
 
+/**
+ * What a hostile projectile looks like on this stage.
+ *
+ * Most stages throw a plain energy bolt. A stage may name an fx sprite
+ * instead (Wuhan throws virions). Flavour only — the caller still sets
+ * speed, damage, radius and lifetime, so nothing about the fight moves.
+ */
+function hostileShotArt() {
+  const st = World.stage;
+  return st && st.shot ? Art.fx(st.shot) : null;
+}
+
 /** Ranged enemies lob a slow projectile at the player. */
 function enemyShoot(g, e, nx, ny) {
   const sp = e.def.shotSpeed || 130;
   g.spawnShot({
     beh: 'eproj', x: e.x, y: e.y, vx: nx * sp, vy: ny * sp,
     r: 6, dmg: e.def.shotDmg || 15, life: 3.2, hostile: 1,
-    color: '#ff8a4a', glow: '#ff4a2a', trail: 1
+    color: '#ff8a4a', glow: '#ff4a2a', trail: 1,
+    art: hostileShotArt(), artScale: 0.85, spin: 2.4
   });
   Sound.throttled('eshoot', 120, () => Sound.tone(240, 0.1, 'sawtooth', 0.07, 120));
 }
@@ -571,7 +584,8 @@ function bossAbilities(g, e, dt, nx, ny, d) {
           const ang = base + (k / n) * TAU;
           g.spawnShot({
             beh: 'eproj', x: e.x, y: e.y, vx: Math.cos(ang) * 150, vy: Math.sin(ang) * 150,
-            r: 7, dmg: e.dmg * 0.4, life: 3.4, hostile: 1, color: '#ffb84a', glow: '#ff5a2a', trail: 1
+            r: 7, dmg: e.dmg * 0.4, life: 3.4, hostile: 1, color: '#ffb84a', glow: '#ff5a2a', trail: 1,
+            art: hostileShotArt(), artScale: 0.95, spin: 2.8
           });
         }
         Sound.throttled('bvolley', 200, () => Sound.noise(0.2, 0.16, 900, 300));
@@ -584,7 +598,8 @@ function bossAbilities(g, e, dt, nx, ny, d) {
         const ang = Math.atan2(ty - e.y, tx - e.x);
         g.spawnShot({
           beh: 'eproj', x: e.x, y: e.y, vx: Math.cos(ang) * 210, vy: Math.sin(ang) * 210,
-          r: 9, dmg: e.dmg * 0.6, life: 3, hostile: 1, splash: 42, color: '#ffd66a', glow: '#ff6a2a', trail: 1
+          r: 9, dmg: e.dmg * 0.6, life: 3, hostile: 1, splash: 42, color: '#ffd66a', glow: '#ff6a2a', trail: 1,
+          art: hostileShotArt(), artScale: 1.15, spin: 3.4
         });
         Sound.throttled('shell', 200, () => { Sound.tone(140, 0.18, 'square', 0.14, 70); Sound.noise(0.16, 0.12, 600, 200); });
         break;
@@ -610,7 +625,8 @@ function bossAbilities(g, e, dt, nx, ny, d) {
           const ang = Math.atan2(e.cvy || ny, e.cvx || nx) + k * 0.16;
           g.spawnShot({
             beh: 'eproj', x: e.x, y: e.y, vx: Math.cos(ang) * 300, vy: Math.sin(ang) * 300,
-            r: 5, dmg: e.dmg * 0.3, life: 1.8, hostile: 1, color: '#ffe9a8', glow: '#ff8a2a', trail: 1
+            r: 5, dmg: e.dmg * 0.3, life: 1.8, hostile: 1, color: '#ffe9a8', glow: '#ff8a2a', trail: 1,
+            art: hostileShotArt(), artScale: 0.7, spin: 4.2
           });
         }
         Sound.throttled('strafe', 150, () => Sound.noise(0.1, 0.1, 2400, 900, 1.4));

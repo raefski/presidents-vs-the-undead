@@ -694,6 +694,35 @@ const Art = {
         c.fillStyle = '#ffffff88'; c.fillRect(2, 1, 2, 1);
       });
 
+      /* A SARS-CoV-2 particle, drawn the way every diagram of it draws
+         it: a round envelope with club-headed spikes all the way around.
+         The clubs are what make it read as *that* virus rather than as a
+         generic spiky ball, so they stay fat and stubby even at this
+         size — a plain spike reads as a sea urchin. */
+      case 'virion': return this.make(K, 18, 18, 2, (c) => {
+        const cx = 9, cy = 9, body = 5;
+        c.strokeStyle = '#a8324e'; c.lineWidth = 1;
+        c.fillStyle = '#d0455f';
+        for (let i = 0; i < 12; i++) {
+          const a = (i / 12) * TAU;
+          const dx = Math.cos(a), dy = Math.sin(a);
+          c.beginPath();
+          c.moveTo(cx + dx * (body - 0.5), cy + dy * (body - 0.5));
+          c.lineTo(cx + dx * (body + 2.1), cy + dy * (body + 2.1));
+          c.stroke();
+          c.beginPath();
+          c.arc(cx + dx * (body + 2.6), cy + dy * (body + 2.6), 1.35, 0, TAU);
+          c.fill();
+        }
+        c.fillStyle = '#8f2740';
+        c.beginPath(); c.arc(cx, cy, body, 0, TAU); c.fill();
+        c.fillStyle = '#c23f5a';
+        c.beginPath(); c.arc(cx, cy, body - 1.2, 0, TAU); c.fill();
+        // the pale off-centre highlight the textbook renders always have
+        c.fillStyle = '#e8798c';
+        c.beginPath(); c.arc(cx - 1.4, cy - 1.4, 1.5, 0, TAU); c.fill();
+      });
+
       case 'golf': return this.make(K, 8, 8, 2, (c) => {
         c.fillStyle = '#f4f4ee'; c.beginPath(); c.arc(4, 4, 3.4, 0, TAU); c.fill();
         c.fillStyle = '#d0d0c6';

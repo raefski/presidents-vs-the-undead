@@ -86,7 +86,7 @@ rather than shipping a control that does nothing.
 
 ## The campaign
 
-Eleven stages, 1781 to 2021, defined entirely as data in
+Eleven stages, 1781 to 2026, defined entirely as data in
 `js/data/stages.js`. Three layers keep them cheap:
 
 - **PALETTES** — an era's ground and material colours. Every procedural draw

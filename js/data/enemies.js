@@ -598,15 +598,28 @@ const STAGE_BOSSES = {
   thecommander: {
     id: 'thecommander', name: 'THE QUDS COMMANDER', hp: 1200000, speed: 54, dmg: 126, r: 30, xp: 82000,
     sub: 'Ran every proxy from Beirut to Basra out of one small office.',
-    ai: 'boss_final', scale: 2.6, knockRes: 0.98, abilities: ['summon', 'volley', 'slam', 'charge2', 'rings'],
+    ai: 'boss_final', scale: 2.6, knockRes: 0.98, isFinal: true,
+    abilities: ['summon', 'volley', 'slam', 'charge2', 'rings'],
     sprite: { key: 'b_quds', undead: 1, boss: 1, bossRim: 'rgba(94,194,106,.95)', coat: '#22322a', coatAlt: '#5ec26a', pants: '#1e2c24', shirt: '#3a4a3a', hair: '#c8c4b8', hairStyle: 'crop', face: 'fullbeard', facialCol: '#c8c4b8', hat: 'peaked', hatCol: '#14181a', hatAccent: '#5ec26a', eye: '#8cff9a', scale: 2.6 }
   },
   omicron: {
     id: 'omicron', name: 'PATIENT ZERO', hp: 1900000, speed: 58, dmg: 140, r: 32, xp: 120000,
     sub: 'The original sample. Everything since has been a copy of a copy of this.',
-    ai: 'boss_final', scale: 2.8, knockRes: 1, isFinal: true,
+    ai: 'boss_final', scale: 2.8, knockRes: 1,
     abilities: ['summon', 'volley', 'slam', 'charge2', 'rings', 'bomb'],
     sprite: { key: 'b_zero', undead: 1, boss: 1, bossRim: 'rgba(255,74,160,.95)', skin: '#d87ab0', coat: '#8a2a60', coatAlt: '#ff4aa0', pants: '#701f4e', shirt: '#c05a86', hair: '#5a1030', hairStyle: 'none', face: 'gasmask', eye: '#ff4aa0', scale: 2.8 }
+  },
+
+  /* Wuhan's ninth strongpoint. The boss is the INSTITUTION, drawn as an
+     anonymous figure in a positive-pressure suit — no real researcher is
+     named or caricatured, which keeps this inside the same line the nine
+     armies sit behind: the joke is the uniform, not the people in it. */
+  wiv: {
+    id: 'wiv', name: 'THE INSTITUTE', hp: 1900000, speed: 50, dmg: 140, r: 32, xp: 120000,
+    sub: 'Biosafety level four. The freezer logs stop on the last day of the year.',
+    ai: 'boss_final', scale: 2.8, knockRes: 1,
+    abilities: ['summon', 'volley', 'slam', 'rings', 'bomb'],
+    sprite: { key: 'b_wiv', undead: 1, boss: 1, bossRim: 'rgba(74,255,224,.95)', skin: '#cfe4e2', coat: '#e6eef0', coatAlt: '#4ad0c0', pants: '#c4d2d4', shirt: '#f2f8fa', hair: '#38484a', hairStyle: 'none', face: 'gasmask', eye: '#4affe0', scale: 2.8 }
   }
 };
 
