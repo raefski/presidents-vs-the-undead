@@ -48,23 +48,29 @@ gated on that class, so a desktop browser renders exactly as it did before.
 | Pause / Mute | the buttons in the status band |
 
 **Portrait is the better orientation, and it reshapes the view.** Held upright
-the game switches to a 540x960 view and the HUD moves *off* the picture into a
-status band above it and a control band below. Nothing overlaps the playfield
-and your thumb never covers it — which is the whole reason to prefer it. Held
-sideways it behaves as before, HUD overlaid, stick anywhere.
+the HUD moves *off* the picture into a status band above it and a control band
+below. Nothing overlaps the playfield and your thumb never covers it — which is
+the whole reason to prefer it. Held sideways it behaves as before, HUD
+overlaid, stick anywhere.
 
-The portrait view is **the exact transpose** of the landscape one, and that is
-load-bearing. 540x960 has the same area as 960x540 and the same half-diagonal,
-so `VIEW_R` — and `SPAWN_MIN`, `SPAWN_MAX` and the enemy cull radius, all
-derived from it — are identical in both orientations. Rotating the phone
-changes the *shape* of what you can see and moves no balance number at all. If
-you ever retune the portrait pair, keep the diagonal equal or spawn distance
-starts differing between orientations.
+### Shape adapts, area does not
 
-The cost is pillarboxing: a phone screen is proportionally wider than 540x960,
-so in Safari there are black bars either side. Standalone mode (below) recovers
-most of it. Filling the width instead would mean a shorter view — less world on
-screen, which is a difficulty change, not a layout one.
+Desktop renders exactly 960x540, always. On a touch device the view is instead
+shaped to the **device's own screen** so the picture reaches all four edges —
+letterboxing a phone throws away a third of a small display.
+
+What is held constant is `VIEW_AREA` (util.js): every device gets a view of the
+same 518,400 world units², just in a different rectangle. Area is what governs
+how many enemies are on screen at once, so holding it fixed is what keeps a
+stage as hard on a tall phone as on a wide monitor. **Shape is presentation;
+area is difficulty.** If you change `VIEW_AREA` you have changed the difficulty
+of every stage on every device.
+
+Because the view is no longer a fixed size, `VIEW_R` is recomputed with it and
+`SPAWN_MIN`/`SPAWN_MAX` became `spawnMin()`/`spawnMax()` in `spawner.js` — spawn
+distance is defined relative to the view edge ("just out of sight"), which is
+what the original constants meant, so enemies arrive from off screen on every
+device and orientation rather than at a distance captured at startup.
 
 The stick is **direction only, never magnitude** — a half tilt moves you at the
 same speed as a full one, exactly like a held arrow key. Analogue speed would

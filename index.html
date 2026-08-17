@@ -59,7 +59,9 @@
     <!-- Touch-only: the two keys a phone doesn't have. CSS hides these
          unless touch.js has put the `touch` class on <body>. -->
     <div id="touch-btns">
-      <button class="tbtn" data-act="touch-pause" aria-label="Pause">II</button>
+      <!-- A hamburger rather than a pause glyph: on a phone this is the
+           only way into the menu, and "quit" is what people look for. -->
+      <button class="tbtn" data-act="touch-pause" aria-label="Menu">&#9776;</button>
       <button class="tbtn" data-act="touch-mute" aria-label="Mute">&#128266;</button>
       <button class="tbtn hidden" id="btn-full" aria-label="Fullscreen">&#9974;</button>
     </div>
@@ -148,7 +150,7 @@
         </div>
         <div class="card touch-only">
           <h3>On a phone</h3>
-          <p><b>Upright</b> is the better way to play: the game gets the top of the screen to itself and your thumb stays off it. The <b>II</b> and speaker buttons pause and mute.</p>
+          <p><b>Upright</b> is the better way to play: the game gets the top of the screen to itself and your thumb stays off it. Tap <b>&#9776;</b> (top right) to pause, or to quit back to the menu and start over.</p>
         </div>
         <div class="card touch-only">
           <h3>Full screen</h3>
@@ -255,8 +257,10 @@
     <section id="scr-pause" class="screen hidden">
       <h2>PAUSED</h2>
       <div id="pause-stats"></div>
-      <button class="btn" data-act="resume">RESUME</button>
-      <button class="btn ghost" data-act="quit">ABDICATE (quit to title)</button>
+      <button class="btn big" data-act="resume">RESUME</button>
+      <!-- says "menu" because that is what it does: back to the campaign
+           map, where you pick a stage and start over -->
+      <button class="btn ghost" data-act="quit">ABDICATE (quit to menu)</button>
     </section>
 
     <!-- GAME OVER / WIN -->
@@ -297,5 +301,6 @@
 <script src="js/devmenu.js"></script>
 <script src="js/game.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>

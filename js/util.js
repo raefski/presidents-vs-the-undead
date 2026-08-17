@@ -21,38 +21,59 @@ const TAU = Math.PI * 2;
    minimap viewport box — derives from these, so changing them here is
    the whole change.
 
-   PORTRAIT IS THE EXACT TRANSPOSE, and that is the entire reason it is
-   safe to switch to on a phone. 540x960 has the same area as 960x540
-   and — the part that matters — the same half-diagonal, so VIEW_R and
-   everything computed from it (SPAWN_MIN, SPAWN_MAX, the enemy cull
-   radius) are identical in both orientations, to the bit. Rotating the
-   phone changes the SHAPE of what you can see and nothing else: no
-   balance number moves, and a stage plays the same in either hand.
-
-   Do not "tidy" the portrait pair into rounder numbers. The moment the
-   diagonal stops matching, enemies start spawning at a different
-   distance relative to the view edge in one orientation than the other.
+   ON DESKTOP THIS IS EXACTLY 960x540 AND ALWAYS WILL BE. On a touch
+   device the SHAPE is instead taken from the device's own screen, so
+   the picture reaches all four edges rather than spending a third of a
+   small display on black bars. What does not change is the AREA — see
+   VIEW_AREA below. Shape is presentation; area is difficulty.
    ============================================================ */
 const VIEW_LANDSCAPE = Object.freeze({ w: 960, h: 540 });
-const VIEW_PORTRAIT = Object.freeze({ w: 540, h: 960 });
+
+/**
+ * THE INVARIANT: how much world is on screen, in square units.
+ *
+ * A phone is not 16:9, and letterboxing it wastes a third of a small
+ * screen. So on a touch device the view is reshaped to the device's
+ * actual proportions — but always to THIS MUCH AREA. Area is what
+ * governs how many enemies are on screen at once, so holding it fixed
+ * is what keeps a stage as hard on a tall phone as on a wide monitor.
+ *
+ * Shape adapts. Area does not. If you change this number you are
+ * changing the difficulty of every stage on every device.
+ */
+const VIEW_AREA = VIEW_LANDSCAPE.w * VIEW_LANDSCAPE.h;   // 518,400
 
 let VW = VIEW_LANDSCAPE.w, VH = VIEW_LANDSCAPE.h;
 
 /**
  * Half-diagonal of the view: the radius at which something is off screen.
- * Deliberately computed once — see above, the transpose preserves it.
+ * Recomputed with the view, because spawn distance is defined relative to
+ * the view edge ("just out of sight") rather than as an absolute number —
+ * so enemies arrive from off screen on every device and orientation.
  */
-const VIEW_R = Math.hypot(VW / 2, VH / 2);
+let VIEW_R = Math.hypot(VW / 2, VH / 2);
 
 /**
  * Reshape the view. Returns true only if something actually changed, so
  * the caller knows to resize the canvas and drop whatever it cached at
- * the old size. Only ever called with the two presets above.
+ * the old size.
  */
 function setView(w, h) {
   if (VW === w && VH === h) return false;
   VW = w; VH = h;
+  VIEW_R = Math.hypot(w / 2, h / 2);
   return true;
+}
+
+/**
+ * A view of exactly VIEW_AREA, shaped to the given width/height ratio.
+ * The clamp is a guard against a freak window shape producing a view so
+ * long and thin that the player can't see what is about to hit them.
+ */
+function viewForAspect(aspect) {
+  const a = clamp(aspect || 1, 0.45, 2.6);
+  const w = Math.round(Math.sqrt(VIEW_AREA * a));
+  return { w: w, h: Math.round(VIEW_AREA / w) };
 }
 
 /** Clamp v into [lo, hi]. */

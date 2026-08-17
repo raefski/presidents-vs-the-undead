@@ -75,10 +75,35 @@ function bestCluster(g, x, y, r, maxR) {
 }
 
 /** A random living enemy, or null. */
-function anyEnemy(g) {
+/**
+ * A random enemy NEAR a point — not a random enemy anywhere.
+ *
+ * The unbounded version of this was a real bug. At stage load the active
+ * list is dominated by the nine sleeping garrisons, and those sit at their
+ * buildings all over town, so a uniform pick put Nixon's tape traps a
+ * thousand units from Nixon. Measured over a two-minute run: 0% of traps
+ * landed on screen, and they only started appearing at all once the
+ * roaming horde had grown enough to outnumber the garrisons in the list.
+ * His primary weapon effectively did nothing for the first minute.
+ *
+ * Sampled with a stride and a random start so the cost stays flat no
+ * matter how many enemies are alive.
+ */
+function nearbyEnemy(g, x, y, maxR) {
   const list = g.enemies.active;
   if (!list.length) return null;
-  return list[(RNG() * list.length) | 0];
+  const maxR2 = maxR * maxR;
+  const cand = [];
+  const step = Math.max(1, (list.length / 60) | 0);
+  for (let i = (RNG() * step) | 0; i < list.length; i += step) {
+    const e = list[i];
+    if (e.dead) continue;
+    if (dist2(x, y, e.x, e.y) > maxR2) continue;
+    cand.push(e);
+    if (cand.length >= 20) break;
+  }
+  if (!cand.length) return null;
+  return cand[(RNG() * cand.length) | 0];
 }
 
 /** Direction the player is "pointing": movement first, then nearest enemy. */
@@ -445,7 +470,9 @@ const WEAPONS = {
     fire(g, p, w, s) {
       Sound.throttled('tape', 200, () => { Sound.tone(220, 0.16, 'square', 0.09, 420); Sound.noise(0.14, 0.08, 1600, 600); });
       for (let i = 0; i < s.count; i++) {
-        const e = anyEnemy(g);
+        // 280 keeps the trap inside the view in either orientation — a
+        // trap you can't see is a trap you can't fight next to.
+        const e = nearbyEnemy(g, p.x, p.y, 280);
         const ax = e ? e.x + rand(-30, 30) : p.x + rand(-110, 110);
         const ay = e ? e.y + rand(-30, 30) : p.y + rand(-110, 110);
         g.spawnShot({

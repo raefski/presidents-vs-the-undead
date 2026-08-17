@@ -17,9 +17,14 @@
    ============================================================ */
 
 /* Derived from the view rather than hardcoded, so changing the zoom in
-   util.js can never reintroduce enemies appearing on screen. */
-const SPAWN_MIN = Math.round(VIEW_R + 35);
-const SPAWN_MAX = Math.round(VIEW_R + 155);
+   util.js can never reintroduce enemies appearing on screen.
+
+   Computed per call rather than once at load: the view now reshapes to
+   the device it's running on (see VIEW_AREA in util.js), so VIEW_R is no
+   longer a constant and a value captured at startup would be wrong the
+   moment the phone was rotated. */
+function spawnMin() { return Math.round(VIEW_R + 35); }
+function spawnMax() { return Math.round(VIEW_R + 155); }
 
 /* ------------------------------------------------------------
    STRONGPOINT DIFFICULTY IS PER-TIER, NOT PER-DEFINITION.
@@ -348,7 +353,7 @@ const Spawner = {
 
     // No valid off-screen point (player jammed in a corner): skip this one
     // rather than dropping an enemy in their lap. The accumulator retries.
-    const spot = World.spawnPoint(g.player.x, g.player.y, SPAWN_MIN, SPAWN_MAX, this.spawnAngle(g));
+    const spot = World.spawnPoint(g.player.x, g.player.y, spawnMin(), spawnMax(), this.spawnAngle(g));
     if (!spot) return;
     const elite = RNG() < this.eliteChance(g);
     spawnEnemy(g, normalizedUnit(pick2.u, tier), pick2.f, spot.x, spot.y, g.hpMul, elite);
@@ -435,7 +440,7 @@ const Spawner = {
     const def = pick(pool);
 
     const p = g.player;
-    const spot = World.spawnPoint(p.x, p.y, SPAWN_MIN + 40, SPAWN_MAX + 60, RNG() * TAU);
+    const spot = World.spawnPoint(p.x, p.y, spawnMin() + 40, spawnMax() + 60, RNG() * TAU);
     if (!spot) { this.miniT = 6; return; }   // try again shortly
     const f = stageFactionFor(st, def.tier);
 

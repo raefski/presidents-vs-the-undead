@@ -50,8 +50,6 @@ const UI = {
     // should letterbox exactly as it always has, not reshape the game.
     const portrait = touch && h > w;
 
-    const v = portrait ? VIEW_PORTRAIT : VIEW_LANDSCAPE;
-    if (setView(v.w, v.h)) Game.viewChanged();
     document.body.classList.toggle('portrait', portrait);
 
     // Bands are a share of the screen, floored so they stay usable on a
@@ -61,6 +59,13 @@ const UI = {
     const topBand = portrait ? Math.round(clamp(h * 0.105, 66, 96)) : 0;
     const botBand = portrait ? Math.round(clamp(h * 0.185, 116, 180)) : 0;
     const availH = Math.max(120, h - topBand - botBand);
+
+    // Desktop keeps the authored 16:9 exactly. A phone gets a view shaped
+    // to its own screen, so the picture reaches both edges instead of
+    // spending a third of a small display on black bars — at constant
+    // AREA, so the amount of world on screen is unchanged. See VIEW_AREA.
+    const v = touch ? viewForAspect(w / availH) : VIEW_LANDSCAPE;
+    if (setView(v.w, v.h)) Game.viewChanged();
 
     const s = Math.max(0.3, Math.min(w / VW, availH / VH));
     const cw = Math.floor(VW * s), ch = Math.floor(VH * s);
