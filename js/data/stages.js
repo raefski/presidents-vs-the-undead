@@ -256,7 +256,18 @@ const STAGES = [
     minis: ['picketman', 'bootsergeant'],
     bosses: ['heth', 'early', 'ewell', 'hood', 'mclaws',
              'stuart', 'pickett', 'longstreet', 'lee'],
+    /* Hidden roster unlock — see the note on stage 1. Grant was NOT at
+       Gettysburg; he was a thousand miles away taking Vicksburg, which
+       surrendered the day after Pickett's Charge failed. The case is his
+       all the same, and the flavour text says so rather than pretending
+       he was on this field. */
+    secret: {
+      unlocks: 'grant', x: 3320, y: 2380, r: 46,
+      title: 'A FIELD CASE',
+      sub: 'He was at Vicksburg that week. It fell the day after the charge failed.'
+    },
     props: [
+      { x: 3320, y: 2380, kind: 'fieldcase' },
       { x: 370, y: 1940, kind: 'flag_csa' },  { x: 1010, y: 1780, kind: 'flag_csa' },
       { x: 1350, y: 2280, kind: 'flag_csa' }, { x: 2160, y: 2340, kind: 'flag_csa' },
       { x: 2730, y: 2080, kind: 'flag_csa' }, { x: 1850, y: 1580, kind: 'flag_csa' },
@@ -338,7 +349,14 @@ const STAGES = [
     minis: ['ironsgt', 'drager'],
     bosses: ['meyer', 'peiper', 'dietrich', 'rundstedt', 'rommel',
              'goring', 'himmler', 'bormann', 'hitler'],
+    /* Hidden roster unlock. He planned this beach. */
+    secret: {
+      unlocks: 'eisenhower', x: 3330, y: 2180, r: 46,
+      title: 'A FIELD CASE',
+      sub: 'Inside, a note taking the whole blame for a landing that had not happened yet.'
+    },
     props: [
+      { x: 3330, y: 2180, kind: 'fieldcase' },
       { x: 340, y: 1660, kind: 'flag_reich' }, { x: 910, y: 1420, kind: 'flag_reich' },
       { x: 1590, y: 1120, kind: 'flag_reich' }, { x: 2365, y: 1420, kind: 'flag_reich' },
       { x: 3030, y: 1680, kind: 'flag_reich' }, { x: 820, y: 770, kind: 'flag_reich' },
@@ -429,6 +447,16 @@ const STAGES = [
     ],
     factions: ['stasi', 'redarmy'],
     minis: ['commissar', 'ironsgt', 'mothersgt'],
+    /* Hidden roster unlock, on the apron at Tempelhof — already a
+       strongpoint on this stage, and it already says what happened there. */
+    secret: {
+      unlocks: 'truman', x: 1430, y: 1990, r: 46,
+      title: 'A FIELD CASE',
+      sub: 'Left on the apron at Tempelhof. Two million tons came through here.'
+    },
+    props: [
+      { x: 1430, y: 1990, kind: 'fieldcase' }
+    ],
     buildings: [
       plot('checkpointc', 'CHECKPOINT CHARLIE', 'You are leaving the American sector.', 'checkpoint', 250, 1400, 220, 120, 0),
       plot('kudamm', 'THE KURFÜRSTENDAMM', 'Neon, department stores, and a bombed church left standing as a reminder.', 'officeblk', 800, 1750, 230, 130, 1),

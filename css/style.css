@@ -905,9 +905,11 @@ body.touch .item .pip2{width:13px;height:6px}
    one readable one */
 body.touch.portrait #shop-list{grid-template-columns:1fr}
 
-/* INAUGURATE is below the fold on the roster screen and there is no
-   way to guess that, so it rides along at the bottom instead. */
-body.touch #scr-select .row{
+/* INAUGURATE is below the fold on the roster screen and there is no way
+   to guess that, so it rides along at the bottom instead. Not gated on
+   touch any more: with sixteen slots the roster is tall enough to push
+   the button off a desktop screen too. */
+#scr-select .row{
   position:sticky;bottom:-20px;z-index:1;
   width:calc(100% + 40px);margin:0 -20px -20px;
   padding:26px 20px 20px;

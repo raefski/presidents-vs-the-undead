@@ -748,6 +748,43 @@ const Art = {
         c.fillStyle = '#4a4a54'; c.fillRect(8, 1, 4, 1);
       });
 
+      /* A contractor's cog, for the complex nobody voted for. */
+      case 'cog': return this.make(K, 14, 14, 2, (c) => {
+        c.fillStyle = '#8a7a4a';
+        for (let i = 0; i < 8; i++) {
+          const a = (i / 8) * TAU;
+          c.save(); c.translate(7, 7); c.rotate(a);
+          c.fillRect(-1.6, -7, 3.2, 4); c.restore();
+        }
+        c.fillStyle = '#c9a24a'; c.beginPath(); c.arc(7, 7, 4.6, 0, TAU); c.fill();
+        c.fillStyle = '#8a7a4a'; c.beginPath(); c.arc(7, 7, 1.8, 0, TAU); c.fill();
+        c.fillStyle = '#e8d9a8'; c.fillRect(4, 3, 2, 1);
+      });
+
+      /* The early edition, with the wrong headline on it. */
+      case 'news': return this.make(K, 14, 10, 2, (c) => {
+        c.fillStyle = '#e8e4d8'; c.fillRect(1, 1, 12, 8);
+        c.fillStyle = '#f6f4ec'; c.fillRect(1, 1, 12, 2);
+        c.fillStyle = '#2a2a30'; c.fillRect(2, 2, 10, 1);      // the headline
+        c.fillStyle = '#8a8a90';
+        c.fillRect(2, 4, 5, 1); c.fillRect(8, 4, 4, 1);
+        c.fillRect(2, 6, 4, 1); c.fillRect(7, 6, 5, 1);
+        c.fillStyle = '#b8b4a8'; c.fillRect(1, 1, 1, 8);       // the fold
+      });
+
+      /* An airlift pallet under a handkerchief parachute. */
+      case 'pallet': return this.make(K, 16, 16, 2, (c) => {
+        c.fillStyle = '#efe8d4';
+        c.beginPath(); c.moveTo(2, 5); c.quadraticCurveTo(8, -2, 14, 5); c.closePath(); c.fill();
+        c.fillStyle = '#cfc7b0';
+        c.beginPath(); c.moveTo(8, 1); c.quadraticCurveTo(11, 1, 14, 5); c.closePath(); c.fill();
+        c.strokeStyle = '#8a7a58'; c.lineWidth = 1;
+        c.beginPath(); c.moveTo(3, 5); c.lineTo(6, 9); c.moveTo(13, 5); c.lineTo(10, 9); c.stroke();
+        c.fillStyle = '#7a5a34'; c.fillRect(5, 9, 6, 6);
+        c.fillStyle = '#956f42'; c.fillRect(5, 9, 6, 2);
+        c.fillStyle = '#5a4128'; c.fillRect(7, 9, 2, 6);
+      });
+
       case 'golf': return this.make(K, 8, 8, 2, (c) => {
         c.fillStyle = '#f4f4ee'; c.beginPath(); c.arc(4, 4, 3.4, 0, TAU); c.fill();
         c.fillStyle = '#d0d0c6';
@@ -1102,6 +1139,20 @@ const Art = {
         c.fillStyle = '#8a6a2a'; c.fillRect(13, 6, 1, 2);
         c.fillStyle = 'rgba(0,0,0,.32)'; c.fillRect(5, 28, 16, 2);
       });
+      /* A campaign footlocker, left where somebody set it down. The
+         military counterpart of the lectern: same job, same silence. */
+      case 'fieldcase': return this.make(K, 28, 22, 2, (c) => {
+        c.fillStyle = '#4a4028'; c.fillRect(2, 6, 24, 14);
+        c.fillStyle = '#5e5334'; c.fillRect(2, 6, 24, 4);
+        c.fillStyle = '#3a3220'; c.fillRect(2, 18, 24, 2);
+        c.fillStyle = '#6a6252';                                  // strapping
+        c.fillRect(7, 6, 3, 14); c.fillRect(18, 6, 3, 14);
+        c.fillStyle = '#c9a24a'; c.fillRect(12, 11, 4, 4);        // brass catch
+        c.fillStyle = '#8a6a2a'; c.fillRect(13, 12, 2, 2);
+        c.fillStyle = '#8a8478'; c.fillRect(4, 4, 20, 2);         // lid edge
+        c.fillStyle = 'rgba(0,0,0,.32)'; c.fillRect(1, 20, 26, 2);
+      });
+
       case 'barricade': return this.make(K, 34, 18, 2, (c) => {
         c.fillStyle = '#6a5a42';
         for (let i = 0; i < 5; i++) c.fillRect(2 + i * 6, 6 + (i % 2) * 2, 5, 10);

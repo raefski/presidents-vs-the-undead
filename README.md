@@ -185,6 +185,9 @@ you have it.
 | Trump | Executive Tee Time | You're Fired | THE GOLDEN ESCALATOR |
 | Biden | Corvette Crush | Aviator Glare | THE AMTRAK EXPRESS |
 | **Jefferson** *(hidden)* | The Declaration | The Louisiana Purchase | THE JEFFERSON BIBLE |
+| **Grant** *(hidden)* | The Cigar | Unconditional Surrender | THE OVERLAND CAMPAIGN |
+| **Eisenhower** *(hidden)* | The Beachhead | The Interstate | THE MILITARY-INDUSTRIAL COMPLEX |
+| **Truman** *(hidden)* | Give 'Em Hell | Dewey Defeats Truman | THE BERLIN AIRLIFT |
 
 ## The War Room
 

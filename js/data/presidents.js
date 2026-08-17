@@ -196,6 +196,54 @@ const PRESIDENTS = [
       shirt: '#efe8d4', tie: '#efe8d4', pants: '#d8cfb8',
       hair: '#b4623a', hairStyle: 'wig', hold: 'quill', holdCol: '#3a2a18'
     }
+  },
+  {
+    id: 'grant', no: 14, name: 'ULYSSES S. GRANT',
+    term: '18th President · 1869–1877',
+    blurb: 'Lincoln went through five generals before this one. This one did not stop.',
+    weapon: 'cigar', weapon2: 'surrender',
+    fusion: 'fusion_grant',
+    quip: 'I propose to fight it out on this line. Not, it turns out, today.',
+    hidden: 1,
+    base: { hp: 122, speed: 55, might: 1.05, armor: 2, growth: 1.05 },
+    sprite: {
+      key: 'grant', scale: 1.0, coat: '#2a3a4a', coatAlt: '#c9a24a',
+      shirt: '#c9bfa2', pants: '#4a5a68', hair: '#3a2a1c', hairStyle: 'crop',
+      face: 'fullbeard', facialCol: '#3a2a1c', hat: 'kepi', hatCol: '#1f2a36',
+      hold: 'saber', holdCol: '#c9a24a'
+    }
+  },
+  {
+    id: 'eisenhower', no: 15, name: 'DWIGHT D. EISENHOWER',
+    term: '34th President · 1953–1961',
+    blurb: 'Ran the largest invasion in history, then warned everybody about the people who sold him the boats.',
+    weapon: 'beachhead', weapon2: 'interstate',
+    fusion: 'fusion_eisenhower',
+    quip: 'Plans are worthless. Planning is everything. Neither helped there.',
+    hidden: 1,
+    base: { hp: 104, speed: 58, area: 1.15, cooldown: 0.95, amount: 1 },
+    sprite: {
+      key: 'eisenhower', scale: 0.98, coat: '#6e6a54', coatAlt: '#8a8468',
+      shirt: '#c9bfa2', tie: '#3a3a30', pants: '#7a7460',
+      hair: '#c8c4b8', hairStyle: 'bald', hat: 'peaked', hatCol: '#5e5a46',
+      hatAccent: '#c9a24a'
+    }
+  },
+  {
+    id: 'truman', no: 16, name: 'HARRY S. TRUMAN',
+    term: '33rd President · 1945–1953',
+    blurb: 'Nobody expected him to win. The newspaper had already gone to press.',
+    weapon: 'givehell', weapon2: 'dewey',
+    fusion: 'fusion_truman',
+    quip: 'The buck stopped somewhere back there, I think.',
+    hidden: 1,
+    base: { hp: 96, speed: 63, growth: 1.15, luck: 1.15, magnet: 50 },
+    sprite: {
+      key: 'truman', scale: 0.96, coat: '#3a3a48', coatAlt: '#5a5a6a',
+      shirt: '#efe8d4', tie: '#8a2a3a', pants: '#4a4a58',
+      hair: '#c8c4b8', hairStyle: 'thin', face: 'glasses',
+      hat: 'fedora', hatCol: '#5a5648'
+    }
   }
 ];
 
@@ -218,6 +266,24 @@ const ASSISTANTS = {
     blurb: 'An excellent shot. Famously, catastrophically, an excellent shot.',
     cost: 950, atk: 'shot', interval: 1.25, damage: 9, range: 340, color: '#e8d9a8',
     sprite: { key: 'a_burr', coat: '#2a2a34', coatAlt: '#6a6a78', shirt: '#efe8d4', pants: '#c9bfa2', hair: '#2a2018', hairStyle: 'wig', hold: 'musket', holdCol: '#5a4128', scale: 0.75 }
+  },
+  grant: {
+    name: 'W. T. SHERMAN', title: 'Major General, Army of the Tennessee',
+    blurb: 'Made Georgia howl. Considered it the shortest available route.',
+    cost: 1000, atk: 'burst', interval: 1.5, damage: 8, range: 300, color: '#ff9a5a',
+    sprite: { key: 'a_sherman', coat: '#2a3a4a', coatAlt: '#8a8468', shirt: '#c9bfa2', pants: '#4a5a68', hair: '#7a4a2a', hairStyle: 'crop', face: 'fullbeard', facialCol: '#7a4a2a', hat: 'kepi', hatCol: '#1f2a36', scale: 0.75 }
+  },
+  eisenhower: {
+    name: 'RICHARD NIXON', title: 'Vice President, 1953–1961',
+    blurb: 'Keen, available, and taking rather a lot of notes.',
+    cost: 980, atk: 'shot', interval: 1.3, damage: 9, range: 330, color: '#b8c4d8',
+    sprite: { key: 'a_nixon2', coat: '#2f3240', coatAlt: '#4a4e60', shirt: '#efe8d4', tie: '#6a2a3a', pants: '#3a3e4c', hair: '#2a2018', hairStyle: 'crop', scale: 0.75 }
+  },
+  truman: {
+    name: 'ALBEN BARKLEY', title: 'Vice President, 1949–1953',
+    blurb: 'Coined the word "Veep" because his grandson could not manage the rest of it.',
+    cost: 900, atk: 'shot', interval: 1.35, damage: 8, range: 350, color: '#f2e0a8',
+    sprite: { key: 'a_barkley', coat: '#3a3a48', coatAlt: '#5a5a6a', shirt: '#efe8d4', tie: '#2a4a6a', pants: '#4a4a58', hair: '#d8d4c8', hairStyle: 'thin', face: 'glasses', scale: 0.75 }
   },
   washington: {
     name: 'MARQUIS DE LAFAYETTE', title: 'Major General, Continental Army',

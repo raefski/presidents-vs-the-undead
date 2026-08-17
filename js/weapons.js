@@ -538,6 +538,264 @@ const WEAPONS = {
       }
     }
   },
+  /* ========== ULYSSES S. GRANT ========== */
+  cigar: {
+    id: 'cigar', name: 'The Cigar', icon: '🚬', owner: 'grant',
+    desc: 'Twenty a day, each lit off the last. The smoke does not so much disperse as occupy the ground.',
+    style: 'aura', maxLevel: 8,
+    interval: 0.7, damage: 16, area: 1, radius: 88,
+    knockback: 20, duration: 0.75, hitCd: 0.46, slow: 0.2,
+    levels: [null, null,
+      { damage: 9, t: '+9 damage per tick.' },
+      { radius: 16, t: 'The cloud spreads.' },
+      { hitCd: -0.08, slow: 0.08, t: 'Ticks faster, and it clings.' },
+      { damage: 12, radius: 14, t: '+12 damage, wider.' },
+      { hitCd: -0.06, t: 'Ticks faster again.' },
+      { damage: 15, radius: 18, t: '+15 damage, wider still.' },
+      { damage: 20, radius: 24, slow: 0.12, t: 'MAX: the whole headquarters tent, permanently.' }
+    ],
+    fire(g, p, w, s) {
+      Sound.throttled('cigar', 320, () => Sound.noise(0.3, 0.05, 420, 200, 0.6));
+      g.spawnShot({
+        beh: 'aura', follow: 1, r: s.radius * s.area, dmg: s.damage, pierce: 999,
+        life: s.duration, knock: s.knockback, hitCd: Math.max(0.15, s.hitCd),
+        slow: s.slow, slowTime: 0.6, color: '#9a9a8a', ring: 1, pulse: 1
+      });
+    }
+  },
+
+  surrender: {
+    id: 'surrender', name: 'Unconditional Surrender', icon: '🏳️', owner: 'grant',
+    desc: 'No terms except immediate and unconditional surrender. He proposed to move immediately upon their works.',
+    style: 'wave', maxLevel: 8,
+    interval: 3.4, damage: 62, area: 1, count: 1, radius: 190,
+    knockback: 260, duration: 0.6,
+    levels: [null, null,
+      { damage: 30, t: '+30 damage.' },
+      { radius: 40, t: 'The demand carries further.' },
+      { count: 1, t: '+1 wave. He repeats himself.' },
+      { damage: 38, knockback: 60, t: '+38 damage, harder shove.' },
+      { radius: 46, interval: -0.5, t: 'Further, and more often.' },
+      { count: 1, damage: 44, t: '+1 wave, +44 damage.' },
+      { count: 1, damage: 56, radius: 54, t: 'MAX: no terms, in every direction.' }
+    ],
+    fire(g, p, w, s) {
+      Sound.throttled('surr', 200, () => { Sound.tone(150, 0.3, 'square', 0.14, 70); Sound.noise(0.24, 0.14, 700, 200); });
+      for (let i = 0; i < s.count; i++) {
+        g.spawnShot({
+          beh: 'wave', x: p.x, y: p.y, follow: i === 0 ? 1 : 0,
+          r: 12, rMax: s.radius * s.area, dmg: s.damage, pierce: 999,
+          life: s.duration, knock: s.knockback, delay: i * 0.2,
+          color: '#e8e0c8', ring: 1
+        });
+      }
+      g.shake(3);
+    }
+  },
+
+  fusion_grant: {
+    id: 'fusion_grant', name: 'THE OVERLAND CAMPAIGN', icon: '🗡️', owner: 'grant',
+    desc: 'He proposed to fight it out on this line if it took all summer. It took all summer. The line did not move back.',
+    style: 'arc', maxLevel: 5, fusion: 1,
+    interval: 1.05, damage: 150, area: 1, count: 2, radius: 130,
+    knockback: 180, duration: 0.34,
+    levels: [null,
+      { damage: 66, radius: 16, t: '+66 damage, longer reach.' },
+      { count: 1, interval: -0.15, t: '+1 sweep, faster.' },
+      { damage: 84, radius: 18, t: '+84 damage, longer.' },
+      { count: 2, damage: 104, radius: 22, t: 'MAX: it takes all summer.' }
+    ],
+    fire(g, p, w, s) {
+      const a0 = autoAngle(g, p, 320);
+      Sound.throttled('overland', 90, () => { Sound.noise(0.13, 0.14, 1800, 500, 1.1); Sound.tone(190, 0.14, 'square', 0.10, 90); });
+      for (let i = 0; i < s.count; i++) {
+        g.spawnShot({
+          beh: 'arc', follow: 1, x: p.x, y: p.y,
+          ang: a0 + i * (TAU / Math.max(1, s.count)) - 1.0,
+          angVel: 2.0 / s.duration, orbR: 0,
+          r: s.radius * s.area, dmg: s.damage, pierce: 999, life: s.duration,
+          knock: s.knockback, color: '#c8ccd6'
+        });
+      }
+      g.shake(4);
+    }
+  },
+
+  /* ========== DWIGHT D. EISENHOWER ========== */
+  beachhead: {
+    id: 'beachhead', name: 'The Beachhead', icon: '⚓', owner: 'eisenhower',
+    desc: 'Five beaches, one morning, and a weather forecast he had to take on faith. The line moves outward and does not come back.',
+    style: 'wave', maxLevel: 8,
+    interval: 2.2, damage: 40, area: 1, count: 1, radius: 150,
+    knockback: 150, duration: 0.55,
+    levels: [null, null,
+      { damage: 20, t: '+20 damage.' },
+      { radius: 34, t: 'A wider landing.' },
+      { count: 1, t: '+1 beach.' },
+      { damage: 26, interval: -0.35, t: '+26 damage, sooner.' },
+      { radius: 38, knockback: 50, t: 'Wider, and it shoves harder.' },
+      { count: 1, damage: 32, t: '+1 beach, +32 damage.' },
+      { count: 2, damage: 40, radius: 44, t: 'MAX: all five, at once.' }
+    ],
+    fire(g, p, w, s) {
+      Sound.throttled('beach', 160, () => { Sound.noise(0.26, 0.15, 900, 260, 0.7); Sound.tone(120, 0.2, 'square', 0.10, 60); });
+      for (let i = 0; i < s.count; i++) {
+        g.spawnShot({
+          beh: 'wave', x: p.x, y: p.y, follow: i === 0 ? 1 : 0,
+          r: 10, rMax: s.radius * s.area, dmg: s.damage, pierce: 999,
+          life: s.duration, knock: s.knockback, delay: i * 0.16,
+          color: '#8ab4d8', ring: 1
+        });
+      }
+      g.shake(3);
+    }
+  },
+
+  interstate: {
+    id: 'interstate', name: 'The Interstate', icon: '🛣️', owner: 'eisenhower',
+    desc: 'He saw the autobahn and wanted one. Forty-one thousand miles of it, and it opens directly underneath them.',
+    style: 'beam', maxLevel: 8,
+    interval: 3.0, damage: 54, area: 1, count: 1, len: 420, wid: 46,
+    knockback: 130, duration: 0.55, hitCd: 0.24,
+    levels: [null, null,
+      { damage: 28, t: '+28 damage per tick.' },
+      { len: 90, t: 'The route runs further.' },
+      { wid: 16, t: 'More lanes.' },
+      { count: 1, interval: -0.5, t: '+1 carriageway, opened sooner.' },
+      { damage: 34, hitCd: -0.05, t: '+34 damage, heavier traffic.' },
+      { len: 100, wid: 14, t: 'Further and wider.' },
+      { count: 1, damage: 44, wid: 18, t: 'MAX: the whole system, coast to coast.' }
+    ],
+    fire(g, p, w, s) {
+      const a0 = autoAngle(g, p, 460);
+      Sound.throttled('inter', 200, () => { Sound.noise(0.3, 0.12, 500, 180, 0.5); Sound.tone(90, 0.26, 'sawtooth', 0.09, 60); });
+      for (let i = 0; i < s.count; i++) {
+        g.spawnShot({
+          beh: 'beam', follow: 1, x: p.x, y: p.y,
+          ang: a0 + i * (TAU / Math.max(1, s.count)),
+          len: s.len * s.area, wid: s.wid * s.area, dmg: s.damage, pierce: 999,
+          life: s.duration, knock: s.knockback, hitCd: Math.max(0.1, s.hitCd),
+          color: '#6a6a72', glow: '#f2c14e'
+        });
+      }
+    }
+  },
+
+  fusion_eisenhower: {
+    id: 'fusion_eisenhower', name: 'THE MILITARY-INDUSTRIAL COMPLEX', icon: '⚙️', owner: 'eisenhower',
+    desc: 'His last speech warned everyone about exactly this, in exactly these words. It is, unfortunately, extremely effective.',
+    style: 'orbit', maxLevel: 5, fusion: 1,
+    interval: 5.0, damage: 96, area: 1, count: 4, radius: 122,
+    knockback: 90, duration: 4.6, hitCd: 0.34, spinRate: 2.0,
+    levels: [null,
+      { count: 2, damage: 42, t: '+2 contractors, +42 damage.' },
+      { radius: 20, spinRate: 0.5, t: 'Wider, and faster.' },
+      { count: 2, damage: 54, duration: 1.0, t: '+2 contractors, +54 damage.' },
+      { count: 2, damage: 70, radius: 24, t: 'MAX: nobody remembers voting for this.' }
+    ],
+    fire(g, p, w, s) {
+      Sound.throttled('mic', 280, () => { Sound.tone(180, 0.3, 'square', 0.09, 120); Sound.noise(0.24, 0.08, 700, 300, 0.8); });
+      const n = Math.max(1, Math.round(s.count));
+      for (let i = 0; i < n; i++) {
+        g.spawnShot({
+          beh: 'orbit', follow: 1, ang: (i / n) * TAU, angVel: s.spinRate,
+          orbR: s.radius * s.area, r: 14 * s.area, dmg: s.damage, pierce: 999,
+          life: s.duration, knock: s.knockback, hitCd: Math.max(0.15, s.hitCd),
+          art: Art.fx('cog'), artScale: 1.2 * s.area, spin: 5, color: '#c9a24a'
+        });
+      }
+    }
+  },
+
+  /* ========== HARRY S. TRUMAN ========== */
+  givehell: {
+    id: 'givehell', name: "Give 'Em Hell", icon: '📣', owner: 'truman',
+    desc: 'He never gave anybody hell. He told the truth and they thought it was hell. It arrives as a cone regardless.',
+    style: 'cone', maxLevel: 8,
+    interval: 1.5, damage: 29, area: 1, count: 1, len: 168, half: 0.48,
+    knockback: 110, duration: 0.42, hitCd: 0.2, slow: 0.3, slowTime: 0.7,
+    levels: [null, null,
+      { damage: 15, t: '+15 damage per tick.' },
+      { len: 36, t: 'Carries further down the platform.' },
+      { half: 0.16, t: 'A wider crowd.' },
+      { count: 1, interval: -0.28, t: '+1 direction, and he starts sooner.' },
+      { damage: 20, hitCd: -0.05, t: '+20 damage, faster.' },
+      { len: 42, half: 0.12, t: 'Further and wider.' },
+      { count: 1, damage: 26, len: 40, t: 'MAX: the entire whistle-stop tour at once.' }
+    ],
+    fire(g, p, w, s) {
+      const a0 = autoAngle(g, p, 330);
+      Sound.throttled('hell', 190, () => { Sound.tone(320, 0.2, 'square', 0.10, 180); Sound.noise(0.14, 0.07, 1400, 500, 1.1); });
+      for (let i = 0; i < s.count; i++) {
+        g.spawnShot({
+          beh: 'cone', follow: 1, ang: a0 + i * (TAU / Math.max(1, s.count)),
+          len: s.len * s.area, half: s.half, r: s.len * s.area, dmg: s.damage, pierce: 999,
+          life: s.duration, knock: s.knockback, hitCd: Math.max(0.1, s.hitCd),
+          slow: s.slow, slowTime: s.slowTime, color: '#f2c14e'
+        });
+      }
+    }
+  },
+
+  dewey: {
+    id: 'dewey', name: 'Dewey Defeats Truman', icon: '📰', owner: 'truman',
+    desc: 'The Chicago Tribune went to press early. He held the paper up for the photographers and never let anyone forget it.',
+    style: 'proj', maxLevel: 8,
+    interval: 1.25, damage: 34, area: 1, count: 2, speed: 520, pierce: 2,
+    knockback: 70, duration: 1.0,
+    levels: [null, null,
+      { count: 1, t: '+1 edition.' },
+      { damage: 18, t: '+18 damage.' },
+      { pierce: 2, speed: 60, t: 'Passes through more of them, faster.' },
+      { count: 2, interval: -0.25, t: '+2 editions, printed sooner.' },
+      { damage: 24, t: '+24 damage.' },
+      { count: 2, pierce: 2, t: '+2 editions, more pierce.' },
+      { count: 3, damage: 30, speed: 80, t: 'MAX: the whole erroneous print run.' }
+    ],
+    fire(g, p, w, s) {
+      const a0 = autoAngle(g, p, 460);
+      Sound.throttled('dewey', 110, () => Sound.noise(0.09, 0.08, 2600, 900, 1.5));
+      const n = Math.max(1, Math.round(s.count));
+      for (let i = 0; i < n; i++) {
+        const ang = a0 + (i - (n - 1) / 2) * 0.15;
+        g.spawnShot({
+          beh: 'proj', x: p.x, y: p.y,
+          vx: Math.cos(ang) * s.speed, vy: Math.sin(ang) * s.speed,
+          r: 8 * s.area, dmg: s.damage, pierce: Math.round(s.pierce),
+          life: s.duration, knock: s.knockback, ang,
+          art: Art.fx('news'), artScale: 1.2 * s.area, spin: 16
+        });
+      }
+    }
+  },
+
+  fusion_truman: {
+    id: 'fusion_truman', name: 'THE BERLIN AIRLIFT', icon: '🪂', owner: 'truman',
+    desc: 'Two million tons of coal and flour, a landing every ninety seconds for eleven months, and one pilot who added sweets on handkerchief parachutes.',
+    style: 'drop', maxLevel: 5, fusion: 1,
+    interval: 1.35, damage: 138, area: 1, count: 4, radius: 62,
+    knockback: 120, duration: 0.42, delay: 0.34,
+    levels: [null,
+      { count: 2, damage: 56, t: '+2 sorties, +56 damage.' },
+      { radius: 14, interval: -0.2, t: 'Bigger pallets, landing sooner.' },
+      { count: 2, damage: 72, t: '+2 sorties, +72 damage.' },
+      { count: 3, damage: 92, radius: 18, t: 'MAX: every ninety seconds, all at once.' }
+    ],
+    fire(g, p, w, s) {
+      Sound.throttled('airlift', 150, () => { Sound.tone(110, 0.34, 'sawtooth', 0.10, 70); Sound.noise(0.2, 0.07, 600, 220, 0.6); });
+      for (let i = 0; i < s.count; i++) {
+        const t = bestCluster(g, p.x, p.y, s.radius * s.area, 380) ||
+          { x: p.x + rand(-120, 120), y: p.y + rand(-120, 120) };
+        g.spawnShot({
+          beh: 'drop', x: t.x + rand(-40, 40), y: t.y + rand(-40, 40),
+          r: s.radius * s.area, dmg: s.damage, pierce: 999, life: s.duration,
+          knock: s.knockback, delay: s.delay + i * 0.06,
+          art: Art.fx('pallet'), artScale: 1.3 * s.area,
+          fallH: 260, boom: '#f4efe2', color: '#e8e0c8'
+        });
+      }
+    }
+  },
   /* ========== RICHARD NIXON ========== */
   tape: {
     id: 'tape', name: 'Secret Tape Trap', icon: '📼', owner: 'nixon',
