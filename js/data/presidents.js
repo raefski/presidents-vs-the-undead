@@ -179,6 +179,23 @@ const PRESIDENTS = [
       key: 'biden', coat: '#1f2a44', shirt: '#efe8d4', tie: '#3f6fd8',
       hair: '#e8e4dc', hairStyle: 'thin', face: 'shades', pin: true
     }
+  },
+  {
+    /* Hidden until found. See the `secret` block on stage 1 and
+       Prestige.found — he is not on the roster until you find him. */
+    id: 'jefferson', no: 13, name: 'THOMAS JEFFERSON',
+    term: '3rd President · 1801–1809',
+    blurb: 'He wrote the sentence. He has been getting notes on it ever since.',
+    weapon: 'declaration', weapon2: 'purchase',
+    fusion: 'fusion_jefferson',
+    quip: 'The tree of liberty has, on reflection, been rather over-watered.',
+    hidden: 1,
+    base: { hp: 92, speed: 61, area: 1.2, luck: 1.25, growth: 1.1 },
+    sprite: {
+      key: 'jefferson', scale: 0.99, coat: '#5a2230', coatAlt: '#7c3242',
+      shirt: '#efe8d4', tie: '#efe8d4', pants: '#d8cfb8',
+      hair: '#b4623a', hairStyle: 'wig', hold: 'quill', holdCol: '#3a2a18'
+    }
   }
 ];
 
@@ -196,6 +213,12 @@ const PRESIDENTS = [
    'burst' (radial spray), 'beam' (short lance).
    ============================================================ */
 const ASSISTANTS = {
+  jefferson: {
+    name: 'AARON BURR', title: 'Vice President, 1801–1805',
+    blurb: 'An excellent shot. Famously, catastrophically, an excellent shot.',
+    cost: 950, atk: 'shot', interval: 1.25, damage: 9, range: 340, color: '#e8d9a8',
+    sprite: { key: 'a_burr', coat: '#2a2a34', coatAlt: '#6a6a78', shirt: '#efe8d4', pants: '#c9bfa2', hair: '#2a2018', hairStyle: 'wig', hold: 'musket', holdCol: '#5a4128', scale: 0.75 }
+  },
   washington: {
     name: 'MARQUIS DE LAFAYETTE', title: 'Major General, Continental Army',
     blurb: 'Nineteen years old, absurdly rich, and here entirely by choice.',

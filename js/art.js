@@ -464,6 +464,8 @@ const Art = {
       case 'flag':   px(13, B + 2, 1, 12, col); px(14, B + 2, 2, 4, s.flagCol || '#d8324a'); break;
       case 'club':   px(13, B + 6, 1, 8, col); px(12, B + 13, 3, 2, '#c8ccd6'); break;
       case 'lantern':px(12, B + 11, 2, 3, '#f2c14e'); break;
+      case 'quill':  px(13, B + 3, 1, 6, '#f4efe2'); px(13, B + 2, 1, 2, shade(col, 0.3));
+                     px(12, B + 9, 2, 1, '#2a2a34'); break;
       default: break;
     }
   },
@@ -721,6 +723,29 @@ const Art = {
         // the pale off-centre highlight the textbook renders always have
         c.fillStyle = '#e8798c';
         c.beginPath(); c.arc(cx - 1.4, cy - 1.4, 1.5, 0, TAU); c.fill();
+      });
+
+      /* The engrossed copy, half unrolled — the rolled ends are what
+         make it read as a document rather than as a thrown plank. */
+      case 'scroll': return this.make(K, 18, 12, 2, (c) => {
+        c.fillStyle = '#e8e0c8'; c.fillRect(3, 2, 12, 8);
+        c.fillStyle = '#f4efe2'; c.fillRect(3, 2, 12, 2);
+        c.fillStyle = '#8a7a58';
+        c.fillRect(5, 5, 8, 1); c.fillRect(5, 7, 6, 1);
+        c.fillStyle = '#c9bfa2';                       // rolled ends
+        c.fillRect(1, 1, 3, 10); c.fillRect(14, 1, 3, 10);
+        c.fillStyle = '#a89876'; c.fillRect(1, 1, 1, 10); c.fillRect(16, 1, 1, 10);
+        c.fillStyle = '#c9a24a'; c.fillRect(8, 9, 3, 3);   // the seal
+      });
+
+      /* A razor. Small, bright, and unmistakably a blade. */
+      case 'razor': return this.make(K, 12, 8, 2, (c) => {
+        c.fillStyle = '#dfe6ea';
+        c.beginPath(); c.moveTo(0, 3); c.lineTo(8, 1); c.lineTo(8, 5); c.lineTo(0, 4); c.closePath(); c.fill();
+        c.fillStyle = '#ffffff';
+        c.beginPath(); c.moveTo(0, 3); c.lineTo(8, 1); c.lineTo(8, 2); c.closePath(); c.fill();
+        c.fillStyle = '#2a2a30'; c.fillRect(8, 1, 4, 5);   // handle
+        c.fillStyle = '#4a4a54'; c.fillRect(8, 1, 4, 1);
       });
 
       case 'golf': return this.make(K, 8, 8, 2, (c) => {
@@ -1057,6 +1082,26 @@ const Art = {
         c.fillStyle = 'rgba(0,0,0,.3)'; c.fillRect(1, 21, 30, 3);
       });
 
+      /* A reading desk with a locked case on it. Deliberately not a
+         glowing pickup: it should look like scenery until you walk into
+         it, because a marked secret is not a secret. */
+      case 'lectern': return this.make(K, 26, 30, 2, (c) => {
+        c.fillStyle = '#3a2a18'; c.fillRect(11, 16, 4, 12);      // pedestal
+        c.fillStyle = '#4a3520'; c.fillRect(6, 27, 14, 3);       // foot
+        c.fillStyle = '#5a4128';                                  // sloped top
+        c.beginPath(); c.moveTo(2, 14); c.lineTo(24, 10);
+        c.lineTo(24, 14); c.lineTo(2, 18); c.closePath(); c.fill();
+        c.fillStyle = '#6b4f31';
+        c.beginPath(); c.moveTo(2, 14); c.lineTo(24, 10);
+        c.lineTo(24, 11); c.lineTo(2, 15); c.closePath(); c.fill();
+        c.fillStyle = '#e8e0c8'; c.fillRect(7, 8, 12, 5);        // a document on it
+        c.fillStyle = '#c9bfa2'; c.fillRect(7, 8, 12, 1);
+        c.fillStyle = '#8a7a58';
+        c.fillRect(8, 10, 9, 1); c.fillRect(8, 12, 7, 1);        // lines of writing
+        c.fillStyle = '#c9a24a'; c.fillRect(12, 5, 3, 4);        // the brass lock
+        c.fillStyle = '#8a6a2a'; c.fillRect(13, 6, 1, 2);
+        c.fillStyle = 'rgba(0,0,0,.32)'; c.fillRect(5, 28, 16, 2);
+      });
       case 'barricade': return this.make(K, 34, 18, 2, (c) => {
         c.fillStyle = '#6a5a42';
         for (let i = 0; i < 5; i++) c.fillRect(2 + i * 6, 6 + (i % 2) * 2, 5, 10);

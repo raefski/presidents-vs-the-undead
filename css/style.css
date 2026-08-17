@@ -306,12 +306,28 @@ kbd{
   position:absolute;top:1px;left:3px;font-size:9px;color:var(--gold);opacity:.6;
 }
 
+/* a hidden president: on the roster from the start, but sealed */
+.pres.locked{
+  cursor:default;background:#0d1226;
+  box-shadow:inset 0 0 0 1px rgba(242,193,78,.18);
+}
+.pres.locked .qmark{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);
+  font-size:30px;font-weight:bold;color:var(--gold);opacity:.30;
+}
+.pres.locked .nm{color:var(--gold);opacity:.45;letter-spacing:1px}
+.pres.locked:hover{transform:none}
+
 #detail{
   display:flex; gap:16px; align-items:flex-start;
   background:var(--navy2); border:2px solid #000;
   box-shadow:inset 0 0 0 1px rgba(242,193,78,.2);
   padding:14px; max-width:660px; width:100%; text-align:left;
   min-height:150px;
+  /* Without this the panel shrinks under column-flex pressure when a
+     president's write-up is long, and the stat pips slide out from
+     under it and behind the buttons. Let the screen scroll instead. */
+  flex:none;
 }
 #portrait{
   image-rendering:pixelated; background:#0b1026;

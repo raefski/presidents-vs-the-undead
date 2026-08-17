@@ -451,6 +451,93 @@ const WEAPONS = {
     }
   },
 
+  /* ========== THOMAS JEFFERSON ========== */
+  declaration: {
+    id: 'declaration', name: 'The Declaration', icon: '📜', owner: 'jefferson',
+    desc: 'He throws the engrossed copy. It unrolls, takes the front rank in the flank, and comes back to his hand.',
+    style: 'boomerang', maxLevel: 8,
+    interval: 1.55, damage: 31, area: 1, count: 1, speed: 430,
+    knockback: 95, duration: 1.15,
+    levels: [null, null,
+      { damage: 17, t: '+17 damage.' },
+      { count: 1, t: '+1 copy. There were always more copies.' },
+      { speed: 70, duration: 0.25, t: 'Thrown harder, carries further.' },
+      { damage: 21, interval: -0.3, t: '+21 damage, thrown sooner.' },
+      { count: 1, area: 0.2, t: '+1 copy, and a larger sheet.' },
+      { damage: 26, speed: 60, duration: 0.25, t: '+26 damage, faster, further.' },
+      { count: 2, damage: 32, area: 0.25, t: 'MAX: one for every colony that signed.' }
+    ],
+    fire(g, p, w, s) {
+      const a0 = autoAngle(g, p, 440);
+      Sound.throttled('decl', 130, () => { Sound.noise(0.1, 0.08, 2000, 700, 1.2); Sound.tone(520, 0.08, 'triangle', 0.05, 900); });
+      for (let i = 0; i < s.count; i++) {
+        const ang = a0 + (s.count > 1 ? i * TAU / s.count : 0);
+        g.spawnShot({
+          beh: 'boomerang', x: p.x, y: p.y, ang, sp: s.speed,
+          r: 13 * s.area, dmg: s.damage, pierce: 999, life: s.duration,
+          knock: s.knockback, hitCd: 0.4,
+          art: Art.fx('scroll'), artScale: 1.25 * s.area, spin: 9
+        });
+      }
+    }
+  },
+
+  purchase: {
+    id: 'purchase', name: 'The Louisiana Purchase', icon: '🗺️', owner: 'jefferson',
+    desc: 'He buys the ground out from under them. Fifteen million dollars, no survey, and everything standing on it is now a trespasser.',
+    style: 'zone', maxLevel: 8,
+    interval: 5.2, damage: 34, area: 1, count: 1, radius: 76,
+    knockback: 0, duration: 4.2, hitCd: 0.42, slow: 0.35,
+    levels: [null, null,
+      { radius: 18, t: 'A larger parcel.' },
+      { damage: 20, t: '+20 damage per tick.' },
+      { duration: 1.2, t: 'The claim holds longer.' },
+      { count: 1, interval: -0.6, t: '+1 parcel, filed sooner.' },
+      { damage: 26, hitCd: -0.08, t: '+26 damage, collected more often.' },
+      { radius: 24, duration: 1.0, t: 'Much larger, and it lasts.' },
+      { count: 1, damage: 30, radius: 26, t: 'MAX: +1 parcel. It doubled the country.' }
+    ],
+    fire(g, p, w, s) {
+      Sound.throttled('purch', 220, () => { Sound.tone(180, 0.3, 'triangle', 0.10, 90); Sound.tone(360, 0.22, 'sine', 0.06, 180); });
+      for (let i = 0; i < s.count; i++) {
+        const t = bestCluster(g, p.x, p.y, s.radius * s.area, 360) ||
+          { x: p.x + rand(-80, 80), y: p.y + rand(-80, 80) };
+        g.spawnShot({
+          beh: 'zone', x: t.x, y: t.y, r: s.radius * s.area, dmg: s.damage, pierce: 999,
+          life: s.duration, knock: 0, hitCd: Math.max(0.12, s.hitCd),
+          slow: s.slow, slowTime: 0.7, color: '#c9a24a', ring: 1
+        });
+      }
+    }
+  },
+
+  fusion_jefferson: {
+    id: 'fusion_jefferson', name: 'THE JEFFERSON BIBLE', icon: '🔖', owner: 'jefferson',
+    desc: 'He really did take a razor to it and cut out everything he disapproved of. The blade does not care what it is cutting out of.',
+    style: 'ricochet', maxLevel: 5, fusion: 1,
+    interval: 1.5, damage: 128, area: 1, count: 3, speed: 620,
+    knockback: 70, duration: 1.5, bounces: 4,
+    levels: [null,
+      { count: 1, damage: 54, t: '+1 blade, +54 damage.' },
+      { bounces: 2, speed: 60, t: '+2 cuts per blade.' },
+      { count: 2, damage: 66, t: '+2 blades, +66 damage.' },
+      { count: 2, damage: 88, bounces: 3, interval: -0.35, t: 'MAX: the whole octavo, unbound.' }
+    ],
+    fire(g, p, w, s) {
+      const a0 = autoAngle(g, p, 520);
+      Sound.throttled('jbib', 100, () => { Sound.noise(0.07, 0.10, 3600, 1400, 1.6); Sound.tone(1600, 0.05, 'square', 0.06, 700); });
+      for (let i = 0; i < s.count; i++) {
+        const ang = a0 + rand(-0.45, 0.45);
+        g.spawnShot({
+          beh: 'ricochet', x: p.x, y: p.y,
+          vx: Math.cos(ang) * s.speed, vy: Math.sin(ang) * s.speed,
+          r: 9 * s.area, dmg: s.damage, pierce: 0, life: s.duration,
+          knock: s.knockback, bounces: Math.round(s.bounces),
+          art: Art.fx('razor'), artScale: 1.2 * s.area, spin: 26, trail: 1
+        });
+      }
+    }
+  },
   /* ========== RICHARD NIXON ========== */
   tape: {
     id: 'tape', name: 'Secret Tape Trap', icon: '📼', owner: 'nixon',

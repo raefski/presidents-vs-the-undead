@@ -203,7 +203,21 @@ const STAGES = [
     minis: ['crier', 'bootsergeant'],
     bosses: ['ferguson', 'tarleton', 'andre', 'arnold', 'graves',
              'phillips', 'rawdon', 'cornwallis2', 'georgeiii'],
+    /* HIDDEN ROSTER UNLOCK. Walk into it — it is not on the minimap and
+       nothing points at it. The lectern prop at the same spot is the only
+       tell, which is the point: a marked secret is not a secret.
+
+       Behind the Wren Building because that is the College of William &
+       Mary, where Jefferson actually studied. It sits by the first
+       strongpoint in the game, so the reward for wandering off the
+       street is available on the run you are most likely to wander on. */
+    secret: {
+      unlocks: 'jefferson', x: 250, y: 880, r: 46,
+      title: 'A LOCKED CASE',
+      sub: 'Left in the college garden. The hand inside is unmistakable.'
+    },
     props: [
+      { x: 250, y: 880, kind: 'lectern' },
       { x: 300, y: 1330, kind: 'flag_uk' }, { x: 1000, y: 1120, kind: 'flag_uk' },
       { x: 1640, y: 1100, kind: 'flag_uk' }, { x: 1680, y: 1550, kind: 'flag_uk' },
       { x: 1400, y: 800, kind: 'flag_uk' },  { x: 2320, y: 1120, kind: 'flag_uk' },

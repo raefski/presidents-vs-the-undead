@@ -184,6 +184,7 @@ you have it.
 | Obama | The Hope Surge | Mic Drop | YES WE CAN |
 | Trump | Executive Tee Time | You're Fired | THE GOLDEN ESCALATOR |
 | Biden | Corvette Crush | Aviator Glare | THE AMTRAK EXPRESS |
+| **Jefferson** *(hidden)* | The Declaration | The Louisiana Purchase | THE JEFFERSON BIBLE |
 
 ## The War Room
 

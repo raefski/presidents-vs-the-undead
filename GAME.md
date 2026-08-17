@@ -7,8 +7,9 @@
 ## The one-paragraph version
 
 **PRESIDENTS vs. THE UNDEAD** is a horde-survival action game. You pick one of
-twelve US Presidents and fight through a twelve-stage chronological campaign,
-from Colonial Williamsburg in 1781 to the top of Mount Rushmore.
+twelve US Presidents — thirteen, once you find the hidden one — and fight
+through a twelve-stage chronological campaign, from Colonial Williamsburg in
+1781 to the top of Mount Rushmore.
 Every stage is occupied by reanimated armies that are still holding ground. You never
 press an attack button — your weapons fire automatically on their own timers,
 so the entire skill expression is *positioning* and *what you spend your
@@ -75,7 +76,23 @@ The "associated" president is the default pick and is highlighted on the
 campaign map — but **any president can play any stage**. Forcing the pairing
 would throw away the eleven other builds the arsenal system exists to create.
 
-### Stage 12 — the finale
+#### The hidden president
+
+**Thomas Jefferson is not on the roster until you find him.** He shows as a
+sealed slot — `#13`, a question mark — from the first time you open the
+character screen, because an empty grid tells you nothing and a locked door
+tells you there is something to look for.
+
+He is behind the Wren Building on stage 1, which is the College of William &
+Mary, where he actually studied. There is a reading desk in the college garden
+and no marker of any kind: not on the minimap, no arrow, no glow. You have to
+walk into it. It is deliberately a **position check rather than a pickup** —
+a pickup would be dragged to you by your collection radius from halfway down
+the street, which would hand it over without you ever going looking.
+
+Finding him is permanent, stored in `Prestige.found` alongside cleared stages.
+
+## Stage 12 — the finale
 
 The last stage is the mountain itself, and it is the only one built
 differently:
@@ -196,7 +213,7 @@ cleared strongpoints. Its only use is hiring and promoting your assistant.
 ## 4. The arsenal is exclusive and gated
 
 Each president has **three weapons that only they can ever have**. There is no
-mixing — Washington's axe is Washington's axe. This is what makes the twelve
+mixing — Washington's axe is Washington's axe. This is what makes the thirteen
 characters play differently rather than converging on the same build.
 
 They unlock in a strict chain:
@@ -230,6 +247,7 @@ single most common way to stall a run.
 | Obama | The Hope Surge | Mic Drop | YES WE CAN |
 | Trump | Executive Tee Time | You're Fired | THE GOLDEN ESCALATOR |
 | Biden | Corvette Crush | Aviator Glare | THE AMTRAK EXPRESS |
+| **Jefferson** *(hidden)* | The Declaration | The Louisiana Purchase | THE JEFFERSON BIBLE |
 
 ### Attack types
 
@@ -369,7 +387,8 @@ their assistant plenty to do, while one who blankets the field leaves almost
 none.
 
 Lafayette, Hannibal Hamlin, a Rough Rider, Eleanor Roosevelt, LBJ, Spiro Agnew,
-Bush Senior, Al Gore, Dick Cheney, Joe Biden, Mike Pence, Kamala Harris.
+Bush Senior, Al Gore, Dick Cheney, Joe Biden, Mike Pence, Kamala Harris, and —
+for Jefferson — Aaron Burr, his actual Vice President.
 
 ## 9. Revives
 

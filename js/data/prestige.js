@@ -88,6 +88,7 @@ const Prestige = {
   spent: 0,
   ranks: {},          // upgradeId -> rank
   cleared: {},        // stageId -> true
+  found: {},          // presidentId -> true, for hidden roster unlocks
   best: {},           // stageId -> fastest clear seconds
 
   load() {
@@ -101,6 +102,7 @@ const Prestige = {
     this.spent = d.spent || 0;
     this.ranks = d.ranks || {};
     this.cleared = d.cleared || {};
+    this.found = d.found || {};
     this.best = d.best || {};
   },
 
@@ -109,7 +111,8 @@ const Prestige = {
       if (!window.localStorage) return;
       window.localStorage.setItem(PRESTIGE_KEY, JSON.stringify({
         points: this.points, spent: this.spent,
-        ranks: this.ranks, cleared: this.cleared, best: this.best
+        ranks: this.ranks, cleared: this.cleared, best: this.best,
+        found: this.found
       }));
     } catch (e) { /* private browsing — meta progress just won't persist */ }
   },
@@ -142,6 +145,14 @@ const Prestige = {
     if (!this.best[stage.id] || seconds < this.best[stage.id]) this.best[stage.id] = seconds;
     this.save();
     return { pts, first };
+  },
+
+  /** Record a hidden character as found. Survives runs; it is meta. */
+  find(id) {
+    if (this.found[id]) return false;
+    this.found[id] = true;
+    this.save();
+    return true;
   },
 
   /** A stage is playable once the one before it has been cleared. */

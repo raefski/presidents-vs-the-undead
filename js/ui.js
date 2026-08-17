@@ -172,8 +172,19 @@ const UI = {
   stageIndex: 0,
   campPerks: false,
 
+  _rosterSig: '',
+
+  /** Rebuild the roster only if what's unlocked has actually changed. */
+  maybeRebuildRoster() {
+    const sig = PRESIDENTS.map(p => (p.hidden && !Prestige.found[p.id]) ? '0' : '1').join('');
+    if (sig === this._rosterSig) return;
+    this._rosterSig = sig;
+    this.buildRoster();
+  },
+
   showCampaign() {
     Game.state = 'campaign';
+    this.maybeRebuildRoster();
     const done = Prestige.progress();
     $('#camp-progress').innerHTML =
       '<b>' + done + '</b> of <b>' + STAGES.length + '</b> stages cleared' +
@@ -306,8 +317,19 @@ const UI = {
     const wrap = $('#roster');
     wrap.innerHTML = '';
     PRESIDENTS.forEach((p) => {
-      const cell = el('div', 'pres');
+      // A hidden president is on the roster from the start as a locked
+      // slot, not absent from it. An empty grid tells you nothing; a
+      // locked door tells you there is something to find.
+      const locked = p.hidden && !Prestige.found[p.id];
+      const cell = el('div', 'pres' + (locked ? ' locked' : ''));
       cell.dataset.id = p.id;
+      if (locked) {
+        cell.appendChild(el('div', 'no', '#' + p.no));
+        cell.appendChild(el('div', 'qmark', '?'));
+        cell.appendChild(el('div', 'nm', 'SEALED'));
+        wrap.appendChild(cell);
+        return;
+      }
 
       const thumb = document.createElement('canvas');
       thumb.width = 44; thumb.height = 66;
@@ -324,9 +346,12 @@ const UI = {
       wrap.appendChild(cell);
     });
     this.selectPres(PRESIDENTS[0].id);
+    this._rosterSig = PRESIDENTS.map(p => (p.hidden && !Prestige.found[p.id]) ? '0' : '1').join('');
   },
 
   selectPres(id) {
+    const pres = PRES_BY_ID[id];
+    if (pres && pres.hidden && !Prestige.found[id]) return;
     this.selected = id;
     const p = PRES_BY_ID[id];
     $$('.pres').forEach(c => c.classList.toggle('sel', c.dataset.id === id));

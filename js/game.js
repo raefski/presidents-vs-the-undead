@@ -98,6 +98,7 @@ const Game = {
     this.player = makePlayer(PRES_BY_ID[presId]);
     this.player.x = START_X; this.player.y = START_Y;
     spawnAllies(this);   // stage.allies, if this stage declares any
+    this._secretT = 0;
 
     this.enemies.releaseAll();
     this.shots.releaseAll();
@@ -154,6 +155,36 @@ const Game = {
     Sound.gameover();
     this.flash(0.5, '216,50,74');
     setTimeout(() => { if (this.state === 'over') UI.showOver(this, false); }, 900);
+  },
+
+  /**
+   * Hidden roster unlocks: walk into the spot.
+   *
+   * Deliberately a position check and not a pickup entity — a pickup
+   * would be magneted to you from across the street by the collection
+   * radius, which would hand it over without the player ever going
+   * looking. You have to actually stand on it.
+   */
+  checkSecret() {
+    const sec = World.stage && World.stage.secret;
+    if (!sec || this._secretT) return;
+    if (Prestige.found[sec.unlocks]) { this._secretT = 1; return; }
+    const p = this.player;
+    if (dist2(p.x, p.y, sec.x, sec.y) > sec.r * sec.r) return;
+
+    this._secretT = 1;
+    if (!Prestige.find(sec.unlocks)) return;
+    const pres = PRES_BY_ID[sec.unlocks];
+    const name = pres ? pres.name : 'A NEW COMMANDER';
+
+    FX.ring(sec.x, sec.y, 8, 170, 0.8, 'rgba(242,193,78,.95)', 5);
+    FX.ring(sec.x, sec.y, 8, 110, 1.2, 'rgba(255,255,255,.8)', 3);
+    FX.burst(sec.x, sec.y, 26, '#f2c14e', 150, 0.8, 3, 'square', 200);
+    FX.say(p.x, p.y - 40, 'UNSEALED', '#f2c14e', 18);
+    this.announce(name + ' JOINS THE ROSTER',
+      sec.sub + ' He is selectable from the character screen from now on.');
+    this.flash(0.4, '242,193,78');
+    Sound.win();
   },
 
   onWin() {
@@ -249,6 +280,7 @@ const Game = {
     Input.poll();
 
     updatePlayer(this, dt);
+    this.checkSecret();
     updateCompanion(this, dt);
     updateAllies(this, dt);
     Spawner.update(this, dt);
