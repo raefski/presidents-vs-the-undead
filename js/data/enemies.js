@@ -620,6 +620,26 @@ const STAGE_BOSSES = {
     ai: 'boss_final', scale: 2.8, knockRes: 1,
     abilities: ['summon', 'volley', 'slam', 'rings', 'bomb'],
     sprite: { key: 'b_wiv', undead: 1, boss: 1, bossRim: 'rgba(74,255,224,.95)', skin: '#cfe4e2', coat: '#e6eef0', coatAlt: '#4ad0c0', pants: '#c4d2d4', shirt: '#f2f8fa', hair: '#38484a', hairStyle: 'none', face: 'gasmask', eye: '#4affe0', scale: 2.8 }
+  },
+
+  /* The campaign's last enemy, in the Hall of Records.
+     Borglum meant to fill that chamber with busts of great Americans
+     and the texts that explain them. He cut eighteen feet and died, and
+     it stood open and empty for fifty-seven years. This is what a
+     monument becomes when nobody finishes writing down what it was for:
+     granite, still standing, no longer sure whose side it is on.
+     Not undead — stone. The sprite skips the undead treatment. */
+  theunfinished: {
+    id: 'theunfinished', name: 'THE UNFINISHED', hp: 2400000, speed: 46, dmg: 150, r: 36, xp: 160000,
+    sub: 'The bust that was never carved, out of the room that was never filled.',
+    ai: 'boss_final', scale: 3.4, knockRes: 1, isFinal: true,
+    abilities: ['summon', 'volley', 'slam', 'charge2', 'rings', 'bomb'],
+    sprite: {
+      key: 'b_unfinished', boss: 1, bossRim: 'rgba(226,226,214,.95)',
+      skin: '#9a9a92', coat: '#7e7e76', coatAlt: '#b6b6ac', pants: '#6a6a62',
+      shirt: '#8e8e86', hair: '#6e6e66', hairStyle: 'crop',
+      eye: '#e8e8dc', scale: 3.4
+    }
   }
 };
 

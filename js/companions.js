@@ -173,6 +173,119 @@ function updateCompanion(g, dt) {
   }
 }
 
+/* ============================================================
+   ALLIED PRESIDENTS
+
+   Declared per stage (`stage.allies`) and used only by the Rushmore
+   finale, where the carved presidents come down off the mountain and
+   fight beside whoever you brought.
+
+   They are NOT a second assistant. An ally is built with makePlayer(),
+   which means it is a genuine weapon owner — real stats, real primary,
+   real fire() — so Lincoln's beam is Lincoln's beam and not a recoloured
+   generic bolt. Nothing in weapons.js reaches for g.player, so a weapon
+   fires correctly for whoever is handed to it.
+
+   Two deliberate limits:
+     - they never take damage. Babysitting three invulnerable-but-mortal
+       escorts through a level 88 fight is a different, worse game.
+     - their weapon rank trails yours and their damage is scaled down,
+       because the run has to stay about the president the player chose.
+   ============================================================ */
+
+/* Where each ally sits relative to you. Spread rather than stacked, so
+   three of them plus an assistant don't become one indistinguishable
+   clump on a phone screen. */
+const ALLY_OFFSETS = [
+  { x: -52, y: 16 }, { x: 52, y: 16 }, { x: 0, y: -44 }, { x: -34, y: -30 }
+];
+
+/** Damage scale — see the note above about not stealing the run. */
+const ALLY_MIGHT = 0.55;
+
+function spawnAllies(g) {
+  g.allies = [];
+  const st = World.stage;
+  if (!st || !st.allies) return;
+
+  for (const id of st.allies) {
+    // Don't stand the player next to a second copy of themselves.
+    if (id === g.player.pres.id) continue;
+    const pres = PRES_BY_ID[id];
+    if (!pres) continue;
+
+    const a = makePlayer(pres);
+    a.kind = 'ally';
+    a.slot = g.allies.length;
+    a.stats.might *= ALLY_MIGHT;
+    const off = ALLY_OFFSETS[a.slot % ALLY_OFFSETS.length];
+    a.x = g.player.x + off.x;
+    a.y = g.player.y + off.y;
+    a.r = 8;
+    a.flash = 0;
+    a.sprA = Art.person(pres.sprite, 0);
+    a.sprB = Art.person(pres.sprite, 1);
+    g.allies.push(a);
+  }
+}
+
+function updateAllies(g, dt) {
+  const list = g.allies;
+  if (!list || !list.length) return;
+  const p = g.player;
+
+  /* Their rank trails the player's total investment. Veterans of the
+     whole campaign rather than level-1 recruits — but capped below your
+     ceiling so three of them can never out-shoot the one you picked. */
+  let ranks = 0;
+  for (let i = 0; i < p.weapons.length; i++) ranks += p.weapons[i].level;
+  const lvl = clamp(1 + Math.floor(ranks / 4), 1, 6);
+
+  for (let i = 0; i < list.length; i++) {
+    const a = list[i];
+    const off = ALLY_OFFSETS[a.slot % ALLY_OFFSETS.length];
+    const tx = p.x + off.x, ty = p.y + off.y;
+    const dx = tx - a.x, dy = ty - a.y;
+    const d = Math.hypot(dx, dy);
+
+    if (d > 16) {
+      const sp = Math.min(p.stats.speed * 1.6, 80 + d * 2.2);
+      a.x += (dx / d) * sp * dt;
+      a.y += (dy / d) * sp * dt;
+      a.moving = 1;
+      a.frameT += dt * 5.5;
+      if (a.frameT >= 1) { a.frameT = 0; a.frame ^= 1; }
+    } else {
+      a.moving = 0;
+    }
+    if (d > 520) { a.x = p.x; a.y = p.y; }     // walled off — catch up
+    World.collide(a, a.r);
+    World.clampToWorld(a, a.r);
+    if (a.flash > 0) a.flash -= dt;
+
+    /* Face the nearest target, or a cone weapon fires due east all game. */
+    const t = nearestEnemy(g, a.x, a.y, 420);
+    if (t) {
+      const m = Math.hypot(t.x - a.x, t.y - a.y) || 1;
+      a.face.x = (t.x - a.x) / m; a.face.y = (t.y - a.y) / m;
+    } else {
+      a.face.x = p.face.x; a.face.y = p.face.y;
+    }
+
+    const w = a.weapons[0];
+    if (!w) continue;
+    w.level = lvl;
+    const s = wstats(w, a);
+    w.timer -= dt;
+    if (w.timer <= 0) {
+      w.timer = s.interval;
+      // Only when there's something to shoot: idle allies firing into
+      // empty hillside is noise, and it costs shots from the pool.
+      if (t) { a.flash = 0.1; w.def.fire(g, a, w, s); }
+    }
+  }
+}
+
 /** Drawn in the depth-sorted pass, same as any other actor. */
 function drawCompanion(ctx, a, cx, cy) {
   const spr = a.moving && a.frame ? a.sprB : a.sprA;

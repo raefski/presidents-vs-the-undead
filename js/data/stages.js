@@ -96,6 +96,13 @@ const PALETTES = {
     turf: '#3a4048', turfAlt: ['#434a52', '#31373e', '#4d545c', '#282d33', '#575f68'],
     street: '#4a4a52', rut: 'rgba(30,32,38,.5)', green: '#36423c', dirt: '#54545c',
     fence: '#2e3238', sky: 'rgba(60,180,160,0.10)'
+  },
+  /* Black Hills granite and ponderosa pine — the mountain is grey, the
+     trees are almost black, and the light is thin. */
+  blackhills: {
+    turf: '#2e3a2c', turfAlt: ['#354334', '#273325', '#3d4c3a', '#1f2a1e', '#455440'],
+    street: '#7e7e78', rut: 'rgba(52,52,48,.45)', green: '#2a3828', dirt: '#6e6a5e',
+    fence: '#4a4438', sky: 'rgba(150,160,180,0.09)'
   }
 };
 
@@ -131,7 +138,13 @@ const ARCHETYPES = {
   hospital:   { wall: '#dfe6e8', roof: '#8a9498', trim: '#3fa0b8', concrete: 1, chimneys: 0, dormers: 0 },
   warehouse:  { wall: '#7e8488', roof: '#5a6064', trim: '#3a4044', corrugated: 1, chimneys: 0, dormers: 0 },
   schoolbook: { wall: '#c8ab72', roof: '#6a5236', trim: '#8a3a2a', chimneys: 1, dormers: 2 },
-  plaza:      { wall: '#b8b0a0', roof: '#6a6258', trim: '#4a4a44', concrete: 1, chimneys: 0, dormers: 0 }
+  plaza:      { wall: '#b8b0a0', roof: '#6a6258', trim: '#4a4a44', concrete: 1, chimneys: 0, dormers: 0 },
+
+  /* --- the mountain --- */
+  /* `carved` short-circuits Art.building() entirely: no walls, no roof,
+     no windows. `who` picks which face gets cut into the rock. */
+  granitehead: { wall: '#8e8e88', roof: '#6e6e68', trim: '#55554e', carved: 1, chimneys: 0, dormers: 0 },
+  granite:     { wall: '#84847e', roof: '#5e5e58', trim: '#46463f', concrete: 1, chimneys: 0, dormers: 0 }
 };
 
 /** Merge an archetype with a per-building override. */
@@ -529,8 +542,57 @@ const STAGES = [
       plot('hq', 'GUARD HEADQUARTERS', 'Answers to nobody in the government, and knows it.', 'plaza', 600, 2050, 300, 160, 8)
     ],
     boss: 'thecommander'
+  },
+
+  /* ---------------------------------------------------------- 12
+     THE FINALE.
+
+     Four heads as the last four strongpoints, and behind Lincoln the
+     Hall of Records — the chamber Borglum actually cut in 1938 to hold
+     the Declaration, the Constitution and the Bill of Rights so that
+     whoever came next would know who was on the mountain. He got
+     eighteen feet in and died, and it sat open and empty until 1998.
+     Nothing here is invented; it is the most useful true thing on the
+     mountain and it is where the campaign ends.
+
+     The nine are held by the commanders of the first eight stages, in
+     campaign order, so the ladder replays the whole war before the
+     last door. `allies` puts the other carved presidents on the field
+     beside whoever you brought.
+     ---------------------------------------------------------- */
+  {
+    id: 'rushmore', no: 12, name: 'MOUNT RUSHMORE', year: '1941',
+    president: 'washington', palette: 'blackhills',
+    blurb: 'Every army you have beaten is on the mountain. Behind Lincoln there is a room that was never finished, and something has finished it.',
+    note: 'The Black Hills are Lakota land, guaranteed by treaty in 1868 and taken in 1877. The Supreme Court said so in 1980. The award has never been accepted.',
+    allies: ['washington', 'lincoln', 'teddy'],
+    w: 3400, h: 2400, start: { x: 500, y: 2050 },
+    zones: [
+      road(1450, 700, 260, 1500),                 // the Avenue of Flags
+      road(300, 1850, 2800, 200),                 // the approach road
+      road(700, 1250, 2000, 160, 'dirt'),         // the talus trail
+      road(600, 620, 2200, 120, 'dirt')           // the ledge under the faces
+    ],
+    factions: ['combined', 'redarmy'],
+    minis: ['ursa', 'mothersgt', 'lobbyist'],
+    buildings: [
+      plot('studio', "THE SCULPTOR'S STUDIO", 'Plaster models at one-twelfth scale. The mountain was carved from these.', 'depot', 300, 1950, 230, 120, 0),
+      plot('flags', 'THE AVENUE OF FLAGS', 'Fifty-six flags. Nothing is flying straight any more.', 'plaza', 1420, 1600, 260, 130, 1),
+      plot('talus', 'THE TALUS SLOPE', 'Four hundred thousand tons of granite blasted off the front and left where it fell.', 'granite', 2600, 1750, 250, 140, 2),
+      plot('hoist', 'THE HOIST HOUSE', 'The tramway to the top. One cable, one bucket, five hundred feet.', 'tin', 850, 1300, 220, 120, 3),
+      plot('washington', "WASHINGTON'S HEAD", 'Dedicated 1930. Sixty feet from chin to brow.', 'granitehead', 620, 480, 300, 210, 4, { who: 'washington' }),
+      plot('jefferson', "JEFFERSON'S HEAD", 'Started on Washington\'s right, blasted off, and begun again on his left.', 'granitehead', 1180, 430, 300, 210, 5, { who: 'jefferson' }),
+      plot('roosevelt', "ROOSEVELT'S HEAD", 'The last one finished, and the deepest set into the rock.', 'granitehead', 1760, 450, 300, 210, 6, { who: 'roosevelt' }),
+      plot('lincoln', "LINCOLN'S HEAD", 'Dedicated 1937. The beard is eighteen feet of granite.', 'granitehead', 2340, 470, 300, 210, 7, { who: 'lincoln' }),
+      plot('hall', 'THE HALL OF RECORDS', 'Eighteen feet into the canyon wall, then nothing. It was meant to explain us.', 'granite', 2680, 180, 320, 170, 8)
+    ],
+    /* The first eight stages' commanders, in the order you met them. */
+    bosses: ['georgeiii', 'genlee', 'elgobernador', 'feldmarschall',
+             'premier', 'thegeneral', 'generalsekretar', 'thedeck'],
+    boss: 'theunfinished'
   }
 ];
+
 
 /** id -> stage, and a stable index. */
 const STAGE_BY_ID = {};

@@ -1079,6 +1079,222 @@ const Art = {
      `elev` is how far the structure rises above it, which is the part
      you can walk behind. Anchored bottom-left at (x, y + h).
      ======================================================== */
+  /**
+   * One of the four faces on Mount Rushmore, at strongpoint scale.
+   *
+   * Drawn as rock rather than as a person: a granite mass with the
+   * light coming from the upper left, then the features cut into it as
+   * planes of shadow. Real carving reads as SHADOW, not as outline —
+   * the mountain is one colour, and a nose is only a nose because of
+   * the dark under it. Outlining the features made them look like a
+   * face painted on a cliff, which is exactly wrong.
+   *
+   * `b.who` picks the one detail that identifies each president at this
+   * size: a queue, a beard, spectacles, a jaw.
+   */
+  _carvedHead(x, W, H, b) {
+    const rock = b.wall || '#8e8e88';
+    const back = shade(rock, -0.34);      // the cliff behind, clearly darker
+    const backD = shade(rock, -0.46);
+    const lit = shade(rock, 0.20);
+    const hot = shade(rock, 0.34);
+    const dark = shade(rock, -0.22);
+    const deep = shade(rock, -0.42);
+    const cut = shade(rock, -0.60);
+
+    const cx = W * 0.48;
+    const hw = W * 0.35;                  // half-width of the head
+    const hh = H * 0.40;                  // half-height
+    const cy = H * 0.46;
+    const face = (f) => cy - hh + (hh * 2) * f;   // 0 = crown, 1 = chin
+
+    /* ---- the cliff the head is cut out of ---- */
+    x.fillStyle = back;
+    x.beginPath();
+    x.moveTo(0, H);
+    x.lineTo(W * 0.04, H * 0.26);
+    x.lineTo(W * 0.34, H * 0.02);
+    x.lineTo(W * 0.74, 0);
+    x.lineTo(W * 0.98, H * 0.22);
+    x.lineTo(W, H);
+    x.closePath(); x.fill();
+    x.strokeStyle = 'rgba(0,0,0,.22)'; x.lineWidth = 1;
+    for (let i = 0; i < 8; i++) {
+      const sx = (i * 47) % W;
+      x.beginPath();
+      x.moveTo(sx, H * 0.06 + (i % 3) * 18);
+      x.lineTo(sx + 14 - (i % 4) * 10, H * (0.42 + (i % 3) * 0.18));
+      x.stroke();
+    }
+
+    /* ---- head mass. Every bit of shading below is CLIPPED to this,
+       so the light and shadow read as planes on one solid form rather
+       than as separate blobs floating over it. ---- */
+    x.save();
+    x.beginPath();
+    x.ellipse(cx, cy, hw, hh, 0, 0, TAU);
+    x.clip();
+
+    x.fillStyle = rock;
+    x.fillRect(0, 0, W, H);
+
+    // lit plane: a large disc offset up-left, so only its lower-right
+    // edge falls inside the head — a crescent, not an egg.
+    x.fillStyle = lit;
+    x.beginPath(); x.ellipse(cx - hw * 0.30, cy - hh * 0.16, hw * 1.02, hh * 0.98, 0, 0, TAU); x.fill();
+    x.fillStyle = hot;
+    x.beginPath(); x.ellipse(cx - hw * 0.46, cy - hh * 0.30, hw * 0.62, hh * 0.60, 0, 0, TAU); x.fill();
+    // shadowed plane down the right side, same trick mirrored
+    x.fillStyle = dark;
+    x.beginPath(); x.ellipse(cx + hw * 1.06, cy + hh * 0.10, hw * 0.96, hh * 1.06, 0, 0, TAU); x.fill();
+    x.fillStyle = deep;
+    x.beginPath(); x.ellipse(cx + hw * 1.40, cy + hh * 0.18, hw * 0.90, hh * 1.00, 0, 0, TAU); x.fill();
+
+    const browY = face(0.40);
+    const eyeY = face(0.46);
+    const noseY = face(0.62);
+    const mouthY = face(0.76);
+    const chinY = face(0.94);
+    const ex = hw * 0.40;                 // eye offset from centre
+    const er = hw * 0.20;                 // eye radius
+
+    /* ---- brow: the deepest cut on the real mountain. A lit ridge with
+       the socket shadow directly under it is what makes stone read as a
+       face; an outline never does. ---- */
+    x.fillStyle = hot;
+    x.beginPath();
+    x.moveTo(cx - hw * 0.86, browY + 4);
+    x.quadraticCurveTo(cx, browY - hh * 0.20, cx + hw * 0.86, browY + 4);
+    x.quadraticCurveTo(cx, browY - hh * 0.04, cx - hw * 0.86, browY + 4);
+    x.closePath(); x.fill();
+    x.fillStyle = deep;
+    x.beginPath();
+    x.moveTo(cx - hw * 0.86, browY + 4);
+    x.quadraticCurveTo(cx, browY + hh * 0.10, cx + hw * 0.86, browY + 4);
+    x.quadraticCurveTo(cx, browY + hh * 0.20, cx - hw * 0.86, browY + 4);
+    x.closePath(); x.fill();
+
+    /* ---- eyes: hollows with the pupil left standing proud, which is
+       the trick Borglum used so they'd read from a mile away ---- */
+    for (const s of [-1, 1]) {
+      const px = cx + s * ex;
+      x.fillStyle = cut;
+      x.beginPath(); x.ellipse(px, eyeY, er, er * 0.62, 0, 0, TAU); x.fill();
+      x.fillStyle = shade(rock, -0.10);
+      x.beginPath(); x.ellipse(px + er * 0.10, eyeY + er * 0.10, er * 0.34, er * 0.30, 0, 0, TAU); x.fill();
+      x.fillStyle = lit;                                  // lower lid catches light
+      x.fillRect(Math.round(px - er * 0.8), Math.round(eyeY + er * 0.52), Math.round(er * 1.6), 2);
+    }
+
+    /* ---- nose: a lit wedge, and the shadow it throws to the right ---- */
+    const nw = hw * 0.20;
+    x.fillStyle = hot;
+    x.beginPath();
+    x.moveTo(cx - nw * 0.35, browY + 6);
+    x.lineTo(cx + nw * 0.30, browY + 6);
+    x.lineTo(cx + nw * 0.62, noseY);
+    x.lineTo(cx - nw * 0.80, noseY);
+    x.closePath(); x.fill();
+    x.fillStyle = deep;
+    x.beginPath();
+    x.moveTo(cx + nw * 0.30, browY + 6);
+    x.lineTo(cx + nw * 1.05, noseY + 4);
+    x.lineTo(cx + nw * 0.62, noseY);
+    x.closePath(); x.fill();
+    x.fillStyle = cut;                                     // under the tip
+    x.beginPath();
+    x.ellipse(cx - nw * 0.10, noseY + 3, nw * 0.86, nw * 0.30, 0, 0, TAU); x.fill();
+
+    /* ---- mouth and chin ---- */
+    const who = b.who;
+    if (who !== 'lincoln') {
+      x.fillStyle = deep;
+      x.beginPath();
+      x.ellipse(cx, mouthY, hw * 0.30, hh * 0.035, 0, 0, TAU); x.fill();
+      x.fillStyle = lit;
+      x.fillRect(Math.round(cx - hw * 0.26), Math.round(mouthY + hh * 0.045), Math.round(hw * 0.52), 2);
+    }
+    x.fillStyle = dark;                                    // under the jaw
+    x.beginPath();
+    x.ellipse(cx, chinY + hh * 0.10, hw * 0.62, hh * 0.16, 0, 0, TAU); x.fill();
+
+    /* ---- the one detail that identifies each of them at this size ---- */
+    if (who === 'lincoln') {
+      // A mass hanging BELOW the jaw. Drawn as an arc across the face it
+      // reads as a grin, which is worse than having no beard at all.
+      x.fillStyle = deep;
+      x.beginPath();
+      x.moveTo(cx - hw * 0.62, mouthY - hh * 0.06);
+      x.quadraticCurveTo(cx - hw * 0.58, chinY + hh * 0.30, cx, chinY + hh * 0.34);
+      x.quadraticCurveTo(cx + hw * 0.58, chinY + hh * 0.30, cx + hw * 0.62, mouthY - hh * 0.06);
+      x.quadraticCurveTo(cx, mouthY + hh * 0.06, cx - hw * 0.62, mouthY - hh * 0.06);
+      x.closePath(); x.fill();
+      x.fillStyle = cut;                                   // the line of the mouth
+      x.beginPath();
+      x.ellipse(cx, mouthY + hh * 0.015, hw * 0.16, hh * 0.018, 0, 0, TAU); x.fill();
+      x.fillStyle = shade(rock, -0.30);                    // moustache above it
+      x.beginPath();
+      x.ellipse(cx, mouthY - hh * 0.045, hw * 0.24, hh * 0.030, 0, 0, TAU); x.fill();
+    } else if (who === 'roosevelt') {
+      x.fillStyle = deep;                                  // moustache
+      x.beginPath();
+      x.ellipse(cx, mouthY - hh * 0.045, hw * 0.32, hh * 0.045, 0, 0, TAU); x.fill();
+      x.strokeStyle = cut; x.lineWidth = 3;                // pince-nez
+      for (const s of [-1, 1]) {
+        x.beginPath(); x.arc(cx + s * ex, eyeY, er * 1.12, 0, TAU); x.stroke();
+      }
+      x.lineWidth = 2;
+      x.beginPath();
+      x.moveTo(cx - ex + er * 1.1, eyeY); x.lineTo(cx + ex - er * 1.1, eyeY); x.stroke();
+    } else if (who === 'jefferson') {
+      x.fillStyle = lit;                                   // hair swept back off the brow
+      x.beginPath();
+      x.moveTo(cx - hw, browY - hh * 0.10);
+      x.quadraticCurveTo(cx, cy - hh * 1.10, cx + hw, browY - hh * 0.14);
+      x.lineTo(cx + hw, cy - hh);
+      x.lineTo(cx - hw, cy - hh);
+      x.closePath(); x.fill();
+      // Swept BANDS, not strands. Individual hairs at this scale turn
+      // into a row of vertical bars and read as a cage, not as hair.
+      x.fillStyle = shade(rock, 0.06);
+      x.beginPath();
+      x.moveTo(cx - hw * 0.94, browY - hh * 0.16);
+      x.quadraticCurveTo(cx - hw * 0.10, cy - hh * 0.96, cx + hw * 0.86, browY - hh * 0.30);
+      x.quadraticCurveTo(cx - hw * 0.10, cy - hh * 0.72, cx - hw * 0.94, browY - hh * 0.16);
+      x.closePath(); x.fill();
+      x.fillStyle = dark;
+      x.beginPath();
+      x.moveTo(cx + hw * 0.30, browY - hh * 0.24);
+      x.quadraticCurveTo(cx + hw * 0.80, cy - hh * 0.80, cx + hw * 0.96, browY - hh * 0.20);
+      x.quadraticCurveTo(cx + hw * 0.70, cy - hh * 0.62, cx + hw * 0.30, browY - hh * 0.24);
+      x.closePath(); x.fill();
+    } else {
+      x.fillStyle = lit;                                   // Washington's collar
+      x.fillRect(Math.round(cx - hw * 0.72), Math.round(chinY + hh * 0.14), Math.round(hw * 1.44), 8);
+      x.fillStyle = deep;
+      x.fillRect(Math.round(cx - hw * 0.72), Math.round(chinY + hh * 0.14), Math.round(hw * 1.44), 2);
+    }
+
+    x.restore();
+
+    /* ---- rim light along the lit edge, so the head separates from the
+       cliff instead of dissolving into it ---- */
+    x.strokeStyle = 'rgba(255,255,255,.20)'; x.lineWidth = 2;
+    x.beginPath();
+    x.ellipse(cx, cy, hw - 1, hh - 1, 0, Math.PI * 0.72, Math.PI * 1.62);
+    x.stroke();
+    x.strokeStyle = 'rgba(0,0,0,.30)';
+    x.beginPath();
+    x.ellipse(cx, cy, hw - 1, hh - 1, 0, Math.PI * 1.75, Math.PI * 0.62);
+    x.stroke();
+
+    /* ---- talus: the rubble the carving threw down the slope ---- */
+    x.fillStyle = backD;
+    for (let i = 0; i < 30; i++) {
+      const rx = (i * 71) % W, ry = H - 5 - (i % 6) * 3;
+      x.fillRect(rx, ry, 3 + (i % 3), 2 + (i % 2));
+    }
+  },
   building(b) {
     // Stage-scoped: two stages both have a building called 'capitol', and
     // a bare id would hand the second one the first one's sprite.
@@ -1096,6 +1312,15 @@ const Art = {
     const x = c.getContext('2d');
     x.imageSmoothingEnabled = false;
     if (pad) x.translate(0, pad);
+
+    // A carved head is not a building — no walls, no roofline, no
+    // windows. It takes the whole canvas and returns before any of the
+    // structure passes below can touch it.
+    if (b.carved) {
+      this._carvedHead(x, W, H, b);
+      this.cache.set(key, c);
+      return c;
+    }
 
     const wall = b.wall || '#e6e0d2';
     const wallD = shade(wall, -0.18);

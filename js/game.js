@@ -33,6 +33,7 @@ const Game = {
   hpMul: 1, maxEnemies: 300,
   bossAlive: null, bossDefeated: {},
   won: false,
+  allies: [],        // allied presidents, Rushmore only
 
   camX: 0, camY: 0,
   shakeAmt: 0, shakeX: 0, shakeY: 0,
@@ -96,6 +97,7 @@ const Game = {
     this._pattern = this.ctx.createPattern(Art.makeGround(this.stage.palette), 'repeat');
     this.player = makePlayer(PRES_BY_ID[presId]);
     this.player.x = START_X; this.player.y = START_Y;
+    spawnAllies(this);   // stage.allies, if this stage declares any
 
     this.enemies.releaseAll();
     this.shots.releaseAll();
@@ -248,6 +250,7 @@ const Game = {
 
     updatePlayer(this, dt);
     updateCompanion(this, dt);
+    updateAllies(this, dt);
     Spawner.update(this, dt);
     updateEnemies(this, dt);
     updateShots(this, dt);
@@ -471,6 +474,7 @@ const Game = {
     }
 
     if (this.player.assistant) list.push(this.player.assistant);
+    for (let i = 0; i < this.allies.length; i++) list.push(this.allies[i]);
     if (!this.player.dead) list.push(this.player);
 
     list.sort(byDepth);
@@ -482,7 +486,7 @@ const Game = {
       else if (o.kind === 'shot') this.drawShot(ctx, o, cx, cy);
       else if (o.kind === 'building') World.drawBuilding(ctx, o, cx, cy);
       else if (o.kind2 === 'prop') World.drawProp(ctx, o, cx, cy);
-      else if (o.kind === 'companion') drawCompanion(ctx, o, cx, cy);
+      else if (o.kind === 'companion' || o.kind === 'ally') drawCompanion(ctx, o, cx, cy);
       else this.drawPlayer(ctx, o, cx, cy);
     }
 

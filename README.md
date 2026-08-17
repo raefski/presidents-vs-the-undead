@@ -1,6 +1,6 @@
 # PRESIDENTS vs. THE UNDEAD
 
-## An eleven-stage chronological campaign
+## A twelve-stage chronological campaign
 
 A horde-survival game where you play one of twelve US Presidents retaking
 Colonial Williamsburg from nine reanimated armies of American military history.
@@ -86,7 +86,7 @@ rather than shipping a control that does nothing.
 
 ## The campaign
 
-Eleven stages, 1781 to 2026, defined entirely as data in
+Twelve stages, 1781 to Mount Rushmore, defined entirely as data in
 `js/data/stages.js`. Three layers keep them cheap:
 
 - **PALETTES** — an era's ground and material colours. Every procedural draw
@@ -101,7 +101,7 @@ A new stage is about 40 lines of data. `World.loadStage()` repoints the world
 globals, so the spawner, minimap and collision were untouched by the change.
 
 Each stage's sprites are warmed on entry and the previous stage's are evicted,
-so memory stays flat rather than accumulating across eleven eras.
+so memory stays flat rather than accumulating across twelve eras.
 
 ## Stage one
 
@@ -264,7 +264,7 @@ js/
   particles.js      damage numbers and VFX, pooled
   world.js          the Williamsburg map: buildings, collision, strongpoints
   entities.js       player, enemy AI, 13 shot behaviors, pickups
-  companions.js     the hired assistant
+  companions.js     the hired assistant, and the Rushmore allied presidents
   shop.js           the upgrade catalogue, gating, and purchase logic
   spawner.js        the stage director
   ui.js             menus, HUD, character select, the War Room

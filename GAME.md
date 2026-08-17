@@ -7,8 +7,8 @@
 ## The one-paragraph version
 
 **PRESIDENTS vs. THE UNDEAD** is a horde-survival action game. You pick one of
-twelve US Presidents and fight through an eleven-stage chronological campaign,
-from Colonial Williamsburg in 1781 to a port on the Strait of Hormuz in 2026.
+twelve US Presidents and fight through a twelve-stage chronological campaign,
+from Colonial Williamsburg in 1781 to the top of Mount Rushmore.
 Every stage is occupied by reanimated armies that are still holding ground. You never
 press an attack button — your weapons fire automatically on their own timers,
 so the entire skill expression is *positioning* and *what you spend your
@@ -46,8 +46,8 @@ crowd is how you die.
 ## How you win
 
 **Defeat all nine strongpoint bosses** to clear a stage. Clearing a stage
-unlocks the next one and pays **prestige points**. Clear all eleven to finish
-the campaign.
+unlocks the next one and pays **prestige points**. Clear all twelve to finish
+the campaign — the twelfth is the ending.
 
 Every stage is a SELF-CONTAINED RUN: you start at level 1 with only your
 primary weapon, every time. Stages differ in layout, era, enemies and look —
@@ -69,15 +69,45 @@ Prestige is the only thing that carries.
 | 9 | The Korengal | 2010 | Afghanistan | Obama |
 | 10 | Wuhan | 2020 | Pandemic | Biden |
 | 11 | The Strait | 2026 | Iran | Trump |
+| 12 | **Mount Rushmore** | 1941 | **The finale** | Washington |
 
 The "associated" president is the default pick and is highlighted on the
 campaign map — but **any president can play any stage**. Forcing the pairing
 would throw away the eleven other builds the arsenal system exists to create.
 
+### Stage 12 — the finale
+
+The last stage is the mountain itself, and it is the only one built
+differently:
+
+- **The last four strongpoints are the four faces.** Washington, Jefferson,
+  Roosevelt and Lincoln are tiers 4–7 on the usual nine-rung ladder; the
+  approach (the sculptor's studio, the Avenue of Flags, the talus slope, the
+  hoist house) is tiers 0–3.
+- **The ninth is the Hall of Records.** Borglum really did cut eighteen feet
+  into the canyon wall behind Lincoln in 1938, meaning to fill it with the
+  founding documents and an account of who these four were. He died in 1941
+  and it stood open and empty until 1998. The final enemy, **THE UNFINISHED**,
+  is what a monument becomes when nobody finishes writing down what it was for.
+- **The other carved presidents fight beside you.** `stage.allies` puts
+  Washington, Lincoln and Roosevelt on the field alongside whoever you brought
+  (skipping a duplicate of your own pick). They are real weapon owners, not
+  reskinned assistants — Lincoln's beam is Lincoln's beam.
+- **The nine are held by the commanders of the first eight stages**, in the
+  order you met them, then the last one. The whole war, on one hillside.
+- **Clearing it ends the campaign** and shows the only ending screen in the
+  game. Before this existed, finishing dropped you back on the map with a line
+  of text.
+
+The Black Hills are Lakota land, guaranteed by the 1868 Treaty of Fort Laramie
+and taken in 1877. The Supreme Court held the taking unlawful in 1980 and the
+compensation has never been accepted. The stage says so plainly in its `note`
+field and then leaves it alone — it is not a plot, and it is not a joke.
+
 ### Prestige
 
 Clearing a stage pays `3 + stage index`, plus 5 the first time. A full
-campaign yields about 143 points; the entire prestige tree costs 132.
+campaign yields about 162 points; the entire prestige tree costs 132.
 
 Three upgrades, all of which change a **rule** rather than a number — and all
 bought with a **separate currency**, so they cannot shift the XP cost curve

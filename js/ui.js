@@ -655,13 +655,39 @@ const UI = {
   showOver(g, won) {
     const head = $('#over-head');
     const st = g.stage;
-    head.textContent = won ? (st.name + ' IS CLEAR') : 'TERM ENDED';
+
+    // Clearing the LAST stage is the end of the campaign, not just another
+    // results screen. Until this existed, finishing the game dropped you
+    // back on the map with a line of text and no acknowledgement at all.
+    const finale = won && g.stageIndex === STAGES.length - 1;
+
+    head.textContent = finale ? 'THE RECORD IS CLOSED'
+      : (won ? (st.name + ' IS CLEAR') : 'TERM ENDED');
     head.classList.toggle('win', !!won);
 
     let sub = won
       ? 'All nine strongpoints retaken. The flags are back up. ' + st.name + ' is, technically, still standing.'
       : '"' + g.player.pres.quip + '"';
+    if (finale) sub = 'Twelve stages. Nine armies apiece. One room at the back of the mountain that nobody had got round to filling in.';
     $('#over-sub').textContent = sub;
+
+    const ending = $('#over-ending');
+    ending.classList.toggle('hidden', !finale);
+    if (finale) {
+      const done = Prestige.progress();
+      ending.innerHTML =
+        '<h3>THE HALL OF RECORDS</h3>' +
+        '<p>Borglum cut eighteen feet into the canyon wall behind Lincoln and meant to ' +
+        'fill it with the Declaration, the Constitution, and an account of who these four ' +
+        'were and why anyone had gone to the trouble. He died in 1941 and it stayed a hole ' +
+        'in a rock for fifty-seven years.</p>' +
+        '<p>You have just carried the last of it up the mountain yourself, past every army ' +
+        'that ever occupied this country’s memory, with ' + shortName(g.player.pres.name) +
+        ' doing most of the shouting. The chamber is sealed. Whoever comes next will know ' +
+        'exactly who was on the mountain, and what it cost to keep them there.</p>' +
+        '<p class="sign">' + done + ' of ' + STAGES.length + ' stages cleared &nbsp;·&nbsp; ' +
+        Prestige.points + ' prestige earned across the campaign</p>';
+    }
 
     // Prestige payout, shown above the stats so it reads as the reward.
     const award = $('#over-award');
