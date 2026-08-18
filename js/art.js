@@ -480,9 +480,13 @@ const Art = {
     const c = document.createElement('canvas');
     c.width = 32; c.height = 14;
     const x = c.getContext('2d');
+    /* All penumbra and no contact point reads as fog, not as a shadow.
+       The dense core is what makes a figure look planted, and it is the
+       part that survives on dark ground. */
     const g = x.createRadialGradient(16, 7, 1, 16, 7, 15);
-    g.addColorStop(0, 'rgba(0,0,0,.5)');
-    g.addColorStop(0.6, 'rgba(0,0,0,.22)');
+    g.addColorStop(0, 'rgba(0,0,0,.62)');
+    g.addColorStop(0.42, 'rgba(0,0,0,.48)');
+    g.addColorStop(0.7, 'rgba(0,0,0,.16)');
     g.addColorStop(1, 'rgba(0,0,0,0)');
     x.fillStyle = g;
     x.beginPath(); x.ellipse(16, 7, 15, 6.5, 0, 0, TAU); x.fill();
@@ -494,6 +498,122 @@ const Art = {
    * The battlefield tile. Deterministic noise so it tiles seamlessly
    * and looks the same every run.
    */
+  /**
+   * Roads, greens and dirt were flat fillRects over the largest area of
+   * the screen, meeting the richly-noised turf on an exact axis-aligned
+   * edge that read as a rendering seam rather than as a road.
+   *
+   * These bake through the same machinery as makeGround, so a zone gets
+   * real material. A pattern fillRect costs exactly what a solid
+   * fillRect costs, so this is free per frame.
+   */
+  makeZone(paletteId, kind) {
+    paletteId = paletteId || 'colonial';
+    const key = 'zone:' + paletteId + ':' + kind;
+    const hit = this.cache.get(key);
+    if (hit) return hit;
+    const P = (typeof PALETTES !== 'undefined' && PALETTES[paletteId]) || null;
+    const S = 128;
+    const c = document.createElement('canvas');
+    c.width = S; c.height = S;
+    const x = c.getContext('2d');
+    const r = makeRng(kind === 'street' ? 4211 : (kind === 'green' ? 4212 : 4213));
+
+    const BASE = P ? (kind === 'street' ? P.street : (kind === 'green' ? P.green : P.dirt))
+                   : '#8a7550';
+    x.fillStyle = BASE; x.fillRect(0, 0, S, S);
+
+    // broad unevenness, same idea as the turf
+    for (let i = 0; i < 18; i++) {
+      const px = r() * S, py = r() * S, rr = 12 + r() * 26;
+      x.fillStyle = r() < 0.5 ? shade(BASE, 0.10) : shade(BASE, -0.13);
+      x.globalAlpha = 0.34;
+      x.beginPath(); x.ellipse(px, py, rr, rr * 0.62, r() * TAU, 0, TAU); x.fill();
+    }
+    x.globalAlpha = 1;
+
+    if (kind === 'street') {
+      // long low-contrast smears along the direction of travel, then grit
+      for (let i = 0; i < 26; i++) {
+        const py = (r() * S) | 0, w = 18 + r() * 70;
+        x.fillStyle = r() < 0.5 ? shade(BASE, -0.10) : shade(BASE, 0.08);
+        x.globalAlpha = 0.5;
+        x.fillRect((r() * S) | 0, py, w, 1 + ((r() * 2) | 0));
+      }
+      x.globalAlpha = 1;
+      for (let i = 0; i < 420; i++) {
+        const px = (r() * S) | 0, py = (r() * S) | 0;
+        x.fillStyle = r() < 0.5 ? shade(BASE, -0.22) : shade(BASE, 0.16);
+        x.fillRect(px, py, 1, 1);
+      }
+      for (let i = 0; i < 16; i++) {          // loose gravel, with a lit top
+        const px = (r() * S) | 0, py = (r() * S) | 0;
+        x.fillStyle = shade(BASE, -0.30); x.fillRect(px, py + 1, 2, 1);
+        x.fillStyle = shade(BASE, 0.26); x.fillRect(px, py, 2, 1);
+      }
+    } else if (kind === 'green') {
+      // mown bands — the thing that says "kept lawn" rather than "field"
+      for (let by = 0; by < S; by += 16) {
+        x.fillStyle = ((by / 16) & 1) ? shade(BASE, 0.05) : shade(BASE, -0.05);
+        x.fillRect(0, by, S, 16);
+      }
+      for (let i = 0; i < 900; i++) {
+        const px = (r() * S) | 0, py = (r() * S) | 0;
+        x.fillStyle = r() < 0.5 ? shade(BASE, 0.16) : shade(BASE, -0.16);
+        x.fillRect(px, py, 1, 1);
+      }
+      for (let i = 0; i < 46; i++) {          // tufts
+        const px = (r() * S) | 0, py = (r() * S) | 0;
+        x.fillStyle = shade(BASE, -0.24); x.fillRect(px, py + 1, 1, 3);
+        x.fillStyle = shade(BASE, 0.34); x.fillRect(px, py, 1, 3);
+      }
+    } else {
+      // clods and stones
+      for (let i = 0; i < 620; i++) {
+        const px = (r() * S) | 0, py = (r() * S) | 0;
+        x.fillStyle = r() < 0.5 ? shade(BASE, -0.20) : shade(BASE, 0.14);
+        x.fillRect(px, py, 1, 1);
+      }
+      for (let i = 0; i < 34; i++) {
+        const px = (r() * S) | 0, py = (r() * S) | 0;
+        const w = 2 + ((r() * 3) | 0);
+        x.fillStyle = shade(BASE, -0.28); x.fillRect(px, py + 1, w, 2);
+        x.fillStyle = shade(BASE, 0.22); x.fillRect(px, py, w, 1);
+      }
+    }
+    this.cache.set(key, c);
+    return c;
+  },
+
+  /**
+   * A dithered scatter of the zone's own colour on transparent, tiled over
+   * the zone's boundary so the edge breaks up instead of being a razor
+   * line where noise meets flat. One extra pattern fillRect per zone.
+   */
+  makeZoneEdge(paletteId, kind) {
+    paletteId = paletteId || 'colonial';
+    const key = 'zoneedge:' + paletteId + ':' + kind;
+    const hit = this.cache.get(key);
+    if (hit) return hit;
+    const P = (typeof PALETTES !== 'undefined' && PALETTES[paletteId]) || null;
+    const S = 64;
+    const c = document.createElement('canvas');
+    c.width = S; c.height = S;
+    const x = c.getContext('2d');
+    const r = makeRng(7717);
+    const BASE = P ? (kind === 'street' ? P.street : (kind === 'green' ? P.green : P.dirt))
+                   : '#8a7550';
+    for (let i = 0; i < 300; i++) {
+      const px = (r() * S) | 0, py = (r() * S) | 0;
+      x.fillStyle = r() < 0.5 ? BASE : shade(BASE, -0.10);
+      x.globalAlpha = 0.35 + r() * 0.45;
+      x.fillRect(px, py, 1 + ((r() * 2) | 0), 1 + ((r() * 2) | 0));
+    }
+    x.globalAlpha = 1;
+    this.cache.set(key, c);
+    return c;
+  },
+
   makeGround(paletteId) {
     paletteId = paletteId || 'colonial';
     const key = 'ground:' + paletteId;
@@ -520,7 +640,11 @@ const Art = {
     }
     x.globalAlpha = 1;
     const GRASS = TALT;
-    for (let i = 0; i < 2600; i++) {
+    // 16% coverage is right on bright turf and far too busy on dark turf,
+    // where the specks are the highest-contrast thing on screen.
+    const lum = lumOf(TURF);
+    const speckle = lum < 0.30 ? 1400 : 2600;
+    for (let i = 0; i < speckle; i++) {
       const px = (r() * S) | 0, py = (r() * S) | 0;
       x.fillStyle = GRASS[(r() * GRASS.length) | 0];
       x.fillRect(px, py, 1, 1);
@@ -540,12 +664,16 @@ const Art = {
         x.fillStyle = shade(TURF, 0.32); x.fillRect(px, py, 1, 3);
         x.fillStyle = shade(TURF, 0.46); x.fillRect(px + 2, py + 1, 1, 2);
       } else if (t < 0.88) {
-        x.fillStyle = '#4a4a44'; x.fillRect(px, py + 1, 4, 2);
-        x.fillStyle = '#7a7a70'; x.fillRect(px, py, 3, 2);
-        x.fillStyle = '#9a9a90'; x.fillRect(px, py, 2, 1);
+        // Derived from the palette, not hardcoded. Fixed grey stones on a
+        // dark palette are brighter than anything else on the ground and
+        // read as static on the lens rather than as terrain.
+        x.fillStyle = shade(TURF, -0.30); x.fillRect(px, py + 1, 4, 2);
+        x.fillStyle = shade(TURF, 0.34); x.fillRect(px, py, 3, 2);
+        x.fillStyle = shade(TURF, 0.52); x.fillRect(px, py, 2, 1);
       } else {
-        x.fillStyle = '#2a4520'; x.fillRect(px, py + 1, 1, 2);
-        x.fillStyle = r() < 0.5 ? '#d8d05a' : '#d88ab0'; x.fillRect(px, py, 1, 1);
+        x.fillStyle = shade(TURF, -0.36); x.fillRect(px, py + 1, 1, 2);
+        x.fillStyle = r() < 0.5 ? shade(TURF, 0.75) : shade(TURF, 0.60);
+        x.fillRect(px, py, 1, 1);
       }
     }
     this.cache.set(key, c);
@@ -1493,6 +1621,13 @@ const Art = {
     }
 
     /* ---- windows ---- */
+    /* Stable per building: same id, same lit windows, every frame and
+       every run. A ruin or a bunker keeps its lights off. */
+    let seed = 0;
+    for (let i = 0; i < String(b.id || '').length; i++) seed = (seed * 31 + String(b.id).charCodeAt(i)) & 0xffff;
+    const habitable = !(b.rubble || b.barred || b.concrete);
+    const lit = (n) => habitable && (((seed >> (n % 13)) ^ (seed * (n + 3))) & 3) === 0;
+
     const wallH = wallBot - wallTop;
     const rows = wallH > 54 ? 2 : 1;
     const cols = Math.max(2, Math.floor(W / 46));
@@ -1502,10 +1637,27 @@ const Art = {
         const wx = Math.round(i * gapX - 7);
         const wy = wallTop + 12 + r * Math.round((wallH - 26) / rows);
         x.fillStyle = trim; x.fillRect(wx - 2, wy - 2, 18, 22);
-        x.fillStyle = '#2b3340'; x.fillRect(wx, wy, 14, 18);
-        x.fillStyle = '#6f8199';
-        x.fillRect(wx + 1, wy + 1, 5, 7); x.fillRect(wx + 8, wy + 1, 5, 7);
-        x.fillRect(wx + 1, wy + 10, 5, 7); x.fillRect(wx + 8, wy + 10, 5, 7);
+        /* Every window on every building on every stage used to be the
+           same cold dead glass. Lighting a deterministic subset — seeded
+           off the building id so it is stable across frames and runs —
+           is the cheapest way to make a town look inhabited, and on the
+           dark palettes it is the only real value contrast a building
+           has. */
+        if (lit((r * 7 + i * 3) % 11)) {
+          x.fillStyle = '#3a2e1c'; x.fillRect(wx, wy, 14, 18);
+          x.fillStyle = '#e8b45a';
+          x.fillRect(wx + 1, wy + 1, 5, 7); x.fillRect(wx + 8, wy + 1, 5, 7);
+          x.fillRect(wx + 1, wy + 10, 5, 7); x.fillRect(wx + 8, wy + 10, 5, 7);
+          x.fillStyle = 'rgba(232,180,90,.22)';   // warm bleed onto the sill
+          x.fillRect(wx - 3, wy + 20, 20, 3);
+          x.fillStyle = 'rgba(232,180,90,.12)';
+          x.fillRect(wx - 5, wy + 23, 24, 3);
+        } else {
+          x.fillStyle = '#2b3340'; x.fillRect(wx, wy, 14, 18);
+          x.fillStyle = '#6f8199';
+          x.fillRect(wx + 1, wy + 1, 5, 7); x.fillRect(wx + 8, wy + 1, 5, 7);
+          x.fillRect(wx + 1, wy + 10, 5, 7); x.fillRect(wx + 8, wy + 10, 5, 7);
+        }
         if (b.barred) {   // the Gaol
           x.fillStyle = '#22252c';
           x.fillRect(wx + 3, wy, 2, 18); x.fillRect(wx + 9, wy, 2, 18);
@@ -1527,7 +1679,17 @@ const Art = {
     x.lineTo(W * 0.5, 0);
     x.lineTo(W + 2, wallTop + 2);
     x.closePath(); x.fill();
+    /* Lit slope on the LEFT. Everything else in the game agrees the key
+       light is upper-left — px() lights the top and left of every block,
+       wallL sits on top and wallD on the right edge, the ground shadow
+       is offset right, and the carved heads light from the left. The
+       roof was the one surface disagreeing, and at 46% of the elevation
+       it is the loudest surface on screen. */
     x.fillStyle = roofL;
+    x.beginPath();
+    x.moveTo(W * 0.5, 0); x.lineTo(-2, wallTop + 2); x.lineTo(W * 0.5, wallTop + 2);
+    x.closePath(); x.fill();
+    x.fillStyle = shade(roof, -0.12);
     x.beginPath();
     x.moveTo(W * 0.5, 0); x.lineTo(W + 2, wallTop + 2); x.lineTo(W * 0.5, wallTop + 2);
     x.closePath(); x.fill();
@@ -1635,6 +1797,23 @@ const Art = {
 /* ------------------------------------------------------------
    Color helper: lighten (amt > 0) or darken (amt < 0) a #rrggbb.
    ------------------------------------------------------------ */
+/**
+ * Perceived brightness of a hex colour, 0..1.
+ *
+ * Used to decide how much ground noise a palette can carry: the same
+ * speck density that reads as texture on Williamsburg turf reads as
+ * static on the near-black palettes, where the specks end up being the
+ * highest-contrast thing on the screen.
+ */
+function lumOf(hex) {
+  let h = String(hex).replace('#', '');
+  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  const r = parseInt(h.slice(0, 2), 16) / 255,
+        g = parseInt(h.slice(2, 4), 16) / 255,
+        b = parseInt(h.slice(4, 6), 16) / 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
 function shade(hex, amt) {
   let h = hex.replace('#', '');
   if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];

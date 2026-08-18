@@ -459,7 +459,7 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Claim-jumpers, rustlers, and one very persistent posse.',
     units: [
       { id: 'rustler', name: 'Rustler', hp: 60, speed: 52, dmg: 15, r: 8, xp: 4, ai: 'charger', weight: 3,
-        sprite: { key: 'e_rustler', undead: 1, coat: '#6a5232', coatAlt: '#4a3a22', pants: '#5a4628', shirt: '#9a8a66', hair: '#3a2c1a', hairStyle: 'crop', stache: true, facialCol: '#3a2c1a', hat: 'campaign', hatCol: '#5a4632', hold: 'saber', eye: '#c8ff4a', scale: 0.8 } },
+        sprite: { key: 'e_rustler', undead: 1, coat: '#6a5232', coatAlt: '#b7ac9d', pants: '#5a4628', shirt: '#9a8a66', hair: '#3a2c1a', hairStyle: 'crop', stache: true, facialCol: '#3a2c1a', hat: 'campaign', hatCol: '#5a4632', hold: 'saber', eye: '#c8ff4a', scale: 0.8 } },
       { id: 'prospector', name: 'Sotted Prospector', hp: 96, speed: 27, dmg: 19, r: 10, xp: 5, ai: 'drunk', weight: 1, knockRes: 0.35,
         sprite: { key: 'e_prosp', undead: 1, coat: '#7a6a4a', coatAlt: '#5a4c32', pants: '#6a5c3e', shirt: '#a89a76', hair: '#8a8272', hairStyle: 'thin', face: 'fullbeard', facialCol: '#8a8272', hat: 'fedora', hatCol: '#5a4a30', hold: 'bottle', eye: '#c8ff4a', scale: 0.92 } }
     ]
@@ -470,10 +470,10 @@ const CAMPAIGN_FACTIONS = [
     sub: 'They were never supposed to be on this continent.',
     units: [
       { id: 'spetsnaz', name: 'Spetsnaz', hp: 210, speed: 58, dmg: 26, r: 8, xp: 12, ai: 'charger', weight: 3,
-        sprite: { key: 'e_spets', undead: 1, coat: '#3a4438', coatAlt: '#2a3228', pants: '#333c30', shirt: '#48523f', hair: '#2e2418', hairStyle: 'crop', face: 'gasmask', hat: 'brodie', hatCol: '#333a30', hold: 'rifle', eye: '#ff6a4a', scale: 0.83 } },
+        sprite: { key: 'e_spets', undead: 1, coat: '#3a4438', coatAlt: '#a0a59f', pants: '#333c30', shirt: '#48523f', hair: '#2e2418', hairStyle: 'crop', face: 'gasmask', hat: 'brodie', hatCol: '#333a30', hold: 'rifle', eye: '#ff6a4a', scale: 0.83 } },
       { id: 'rocketman', name: 'Rocket Crew', hp: 260, speed: 24, dmg: 30, r: 11, xp: 16, ai: 'shooter', weight: 1,
         shootRange: 260, shootRate: 2.1, shotDmg: 30, shotSpeed: 155,
-        sprite: { key: 'e_rocket', undead: 1, coat: '#4a5060', coatAlt: '#d8324a', pants: '#3e4452', shirt: '#5a6070', hair: '#2e2418', hairStyle: 'part', hat: 'ushanka', hatCol: '#3a4048', eye: '#ff6a4a', scale: 1.02 } }
+        sprite: { key: 'e_rocket', undead: 1, coat: '#4a5060', coatAlt: '#ef8f9c', pants: '#3e4452', shirt: '#5a6070', hair: '#2e2418', hairStyle: 'part', hat: 'ushanka', hatCol: '#3a4048', eye: '#ff6a4a', scale: 1.02 } }
     ]
   },
   {
@@ -484,7 +484,7 @@ const CAMPAIGN_FACTIONS = [
       { id: 'nvaregular', name: 'NVA Regular', hp: 300, speed: 50, dmg: 30, r: 8, xp: 16, ai: 'march', weight: 3,
         sprite: { key: 'e_nva', undead: 1, coat: '#5a6a4a', coatAlt: '#44523a', pants: '#4e5c40', shirt: '#68785a', hair: '#1a1410', hairStyle: 'crop', hat: 'brodie', hatCol: '#4a5840', hold: 'rifle', eye: '#8cff4a', scale: 0.82 } },
       { id: 'sapper', name: 'Sapper', hp: 240, speed: 72, dmg: 36, r: 8, xp: 20, ai: 'swarm', weight: 2,
-        sprite: { key: 'e_sapper', undead: 1, coat: '#3a4a34', coatAlt: '#2a3626', pants: '#33422d', shirt: '#48583e', hair: '#1a1410', hairStyle: 'crop', hat: 'none', hold: 'saber', eye: '#8cff4a', scale: 0.8 } }
+        sprite: { key: 'e_sapper', undead: 1, coat: '#3a4a34', coatAlt: '#a0a89e', pants: '#33422d', shirt: '#48583e', hair: '#1a1410', hairStyle: 'crop', hat: 'none', hold: 'saber', eye: '#8cff4a', scale: 0.8 } }
     ]
   },
   {
@@ -493,7 +493,7 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Whatever the defoliant did, it did not do this.',
     units: [
       { id: 'creeper', name: 'Creeping Growth', hp: 420, speed: 34, dmg: 34, r: 12, xp: 22, ai: 'tank', weight: 2, knockRes: 0.7,
-        sprite: { key: 'e_creep', undead: 1, skin: '#5a7a3a', coat: '#3a5228', coatAlt: '#2a3c1c', pants: '#33481f', shirt: '#4a6630', hair: '#2a4018', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2a4018', eye: '#c8ff4a', scale: 1.08 } }
+        sprite: { key: 'e_creep', undead: 1, skin: '#5a7a3a', coat: '#3a5228', coatAlt: '#a0ac98', pants: '#33481f', shirt: '#4a6630', hair: '#2a4018', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2a4018', eye: '#c8ff4a', scale: 1.08 } }
     ]
   },
   {
@@ -502,7 +502,7 @@ const CAMPAIGN_FACTIONS = [
     sub: 'One informant for every 6.5 citizens. All of them reported in.',
     units: [
       { id: 'informant', name: 'Informant', hp: 380, speed: 46, dmg: 32, r: 8, xp: 20, ai: 'march', weight: 3,
-        sprite: { key: 'e_inform', undead: 1, coat: '#4a4a52', coatAlt: '#3a3a42', pants: '#42424a', shirt: '#e8e4d8', tie: '#5a5a62', hair: '#4a4438', hairStyle: 'part', hat: 'fedora', hatCol: '#3a3a42', eye: '#c8ccd6', scale: 0.82 } },
+        sprite: { key: 'e_inform', undead: 1, coat: '#4a4a52', coatAlt: '#a8a8ac', pants: '#42424a', shirt: '#e8e4d8', tie: '#5a5a62', hair: '#4a4438', hairStyle: 'part', hat: 'fedora', hatCol: '#3a3a42', eye: '#c8ccd6', scale: 0.82 } },
       { id: 'grenztruppen', name: 'Border Troop', hp: 560, speed: 38, dmg: 40, r: 10, xp: 26, ai: 'shooter', weight: 2,
         shootRange: 280, shootRate: 1.9, shotDmg: 34, shotSpeed: 170,
         sprite: { key: 'e_grenz', undead: 1, coat: '#5a6250', coatAlt: '#3a4034', pants: '#4e5646', shirt: '#68705e', hair: '#3a3428', hairStyle: 'crop', hat: 'peaked', hatCol: '#48503e', hatAccent: '#c9a24a', hold: 'rifle', eye: '#ff6a4a', scale: 0.9 } }
@@ -534,7 +534,7 @@ const CAMPAIGN_FACTIONS = [
     sub: 'It keeps changing. The alphabet is running out.',
     units: [
       { id: 'spike', name: 'Spike Carrier', hp: 780, speed: 58, dmg: 44, r: 9, xp: 34, ai: 'swarm', weight: 3,
-        sprite: { key: 'e_spike', undead: 1, skin: '#c86a9a', coat: '#a03a6a', coatAlt: '#7a2a50', pants: '#8a3258', shirt: '#c05a86', hair: '#6a1a3a', hairStyle: 'crop', eye: '#ff4aa0', scale: 0.85 } },
+        sprite: { key: 'e_spike', undead: 1, skin: '#c86a9a', coat: '#a03a6a', coatAlt: '#c98aa8', pants: '#8a3258', shirt: '#c05a86', hair: '#6a1a3a', hairStyle: 'crop', eye: '#ff4aa0', scale: 0.85 } },
       { id: 'aerosol', name: 'Aerosol Cloud', hp: 640, speed: 44, dmg: 40, r: 11, xp: 36, ai: 'drunk', weight: 2,
         sprite: { key: 'e_aero', undead: 1, skin: '#8ad0c8', coat: '#4a8a86', coatAlt: '#356a66', pants: '#3f7a76', shirt: '#5aa09a', hair: '#2a5a56', hairStyle: 'none', face: 'gasmask', eye: '#5affe0', scale: 0.9 } },
       { id: 'longhauler', name: 'Long Hauler', hp: 1400, speed: 24, dmg: 54, r: 13, xp: 48, ai: 'tank', weight: 1, knockRes: 0.75,
@@ -788,11 +788,11 @@ const PERIOD_FACTIONS = [
     sub: 'Waffen-SS and Wehrmacht, dug in and refusing the order to withdraw.',
     units: [
       { id: 'landser2', name: 'Landser', hp: 155, speed: 36, dmg: 16, r: 8, xp: 8, ai: 'march', weight: 4,
-        sprite: { key: 'p_landser', coat: '#4a5240', coatAlt: '#2e3428', pants: '#3a4034', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#333a32', hold: 'rifle', scale: 0.83 } },
+        sprite: { key: 'p_landser', coat: '#4a5240', coatAlt: '#a8aca3', pants: '#3a4034', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#333a32', hold: 'rifle', scale: 0.83 } },
       { id: 'sspanzer', name: 'SS Panzergrenadier', hp: 290, speed: 34, dmg: 22, r: 11, xp: 12, ai: 'tank', weight: 2, knockRes: 0.6,
         sprite: { key: 'p_sspz', coat: '#22252a', coatAlt: '#c8ccd6', pants: '#1c1f24', shirt: '#3a4034', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#1e2126', hatAccent: '#c8ccd6', scale: 1.0 } },
       { id: 'fallschirm2', name: 'Fallschirmjäger', hp: 130, speed: 56, dmg: 18, r: 8, xp: 10, ai: 'charger', weight: 1,
-        sprite: { key: 'p_fall2', coat: '#565c44', coatAlt: '#3a4032', pants: '#464c38', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'brodie', hatCol: '#3e443a', hold: 'rifle', scale: 0.83 } }
+        sprite: { key: 'p_fall2', coat: '#565c44', coatAlt: '#aeb1a5', pants: '#464c38', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'brodie', hatCol: '#3e443a', hold: 'rifle', scale: 0.83 } }
     ]
   }
 ];

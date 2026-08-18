@@ -65,6 +65,8 @@ const World = {
    * every strongpoint, and warms exactly the sprites this stage needs.
    */
   loadStage(index) {
+    // palette changes with the stage, so the cached patterns must go
+    this._pats = null; this._epats = null;
     const st = STAGES[clamp(index, 0, STAGES.length - 1)];
     this.stage = st;
     this.palette = PALETTES[st.palette] || PALETTES.colonial;
@@ -262,6 +264,30 @@ const World = {
   /* ------------------------------------------------------------
      Rendering — every colour comes from the active palette
      ------------------------------------------------------------ */
+  /* CanvasPattern objects are tied to the palette, so they are cached
+     per loaded stage and dropped when the stage changes. */
+  _zonePat(kind) {
+    const pal = this.stage ? this.stage.palette : 'colonial';
+    this._pats = this._pats || {};
+    const k = pal + ':' + kind;
+    if (this._pats[k] === undefined) {
+      const img = Art.makeZone(pal, kind);
+      this._pats[k] = img ? Game.ctx.createPattern(img, 'repeat') : null;
+    }
+    return this._pats[k];
+  },
+
+  _zoneEdgePat(kind) {
+    const pal = this.stage ? this.stage.palette : 'colonial';
+    this._epats = this._epats || {};
+    const k = pal + ':' + kind;
+    if (this._epats[k] === undefined) {
+      const img = Art.makeZoneEdge(pal, kind);
+      this._epats[k] = img ? Game.ctx.createPattern(img, 'repeat') : null;
+    }
+    return this._epats[k];
+  },
+
   drawGround(ctx, cx, cy, pattern) {
     const P = this.palette;
 
@@ -278,26 +304,42 @@ const World = {
       const x = z.x - cx, y = z.y - cy;
       if (x > VW || y > VH || x + z.w < 0 || y + z.h < 0) continue;
 
-      if (z.kind === 'street') {
-        ctx.fillStyle = P.street;
+      /* Zones carry material now instead of being flat colour over the
+         largest area of the screen. The tile is baked once per palette
+         per kind, and a pattern fillRect costs what a solid fillRect
+         costs — so this is free per frame. The scatter pass across the
+         boundary is what stops the edge reading as a rendering seam
+         where noise meets flat. */
+      const pat = this._zonePat(z.kind);
+      if (pat) {
+        ctx.save();
+        ctx.translate(-cx, -cy);
+        ctx.fillStyle = pat;
+        ctx.fillRect(z.x, z.y, z.w, z.h);
+        const edge = this._zoneEdgePat(z.kind);
+        if (edge) {
+          ctx.fillStyle = edge;
+          const m = 7;
+          ctx.fillRect(z.x - m, z.y - m, z.w + m * 2, m * 2);
+          ctx.fillRect(z.x - m, z.y + z.h - m, z.w + m * 2, m * 2);
+          ctx.fillRect(z.x - m, z.y - m, m * 2, z.h + m * 2);
+          ctx.fillRect(z.x + z.w - m, z.y - m, m * 2, z.h + m * 2);
+        }
+        ctx.restore();
+      } else {
+        ctx.fillStyle = z.kind === 'street' ? P.street : (z.kind === 'green' ? P.green : P.dirt);
         ctx.fillRect(x, y, z.w, z.h);
-        ctx.fillStyle = 'rgba(0,0,0,.10)';
-        ctx.fillRect(x, y, z.w, 5);
-        ctx.fillRect(x, y + z.h - 5, z.w, 5);
+      }
+
+      // Ruts stay on top of the texture: they say "road" better than
+      // material does, and they are the cue for the direction of travel.
+      if (z.kind === 'street') {
         ctx.fillStyle = P.rut;
         ctx.fillRect(x, y + z.h * 0.34, z.w, 5);
         ctx.fillRect(x, y + z.h * 0.62, z.w, 5);
       } else if (z.kind === 'green') {
-        ctx.fillStyle = P.green;
-        ctx.fillRect(x, y, z.w, z.h);
-        ctx.fillStyle = 'rgba(255,255,255,.05)';
+        ctx.fillStyle = 'rgba(255,255,255,.045)';
         ctx.fillRect(x, y, z.w, 4);
-        ctx.fillStyle = shade(P.green, -0.28);
-        ctx.fillRect(x, y, 10, z.h);
-        ctx.fillRect(x + z.w - 10, y, 10, z.h);
-      } else {
-        ctx.fillStyle = P.dirt;
-        ctx.fillRect(x, y, z.w, z.h);
       }
     }
 
@@ -321,8 +363,18 @@ const World = {
     const x = Math.round(b.x - cx);
     const y = Math.round(b.y + b.h - cy - (b.h + b.elev) - pad);
 
-    ctx.fillStyle = 'rgba(0,0,0,.28)';
-    ctx.fillRect(x + 4, Math.round(b.y + b.h - cy) - 8, b.w, 12);
+    /* The sprite is anchored at b.y + b.h and covers everything above
+       it, so a 12px bar starting 8px higher had two thirds of itself
+       painted over and the surviving sliver read as a plinth. Start it
+       at the base line and step the alpha down so the lower edge is
+       soft instead of a hard bar. */
+    const by = Math.round(b.y + b.h - cy);
+    ctx.fillStyle = 'rgba(0,0,0,.30)';
+    ctx.fillRect(x + 6, by, b.w, 5);
+    ctx.fillStyle = 'rgba(0,0,0,.18)';
+    ctx.fillRect(x + 9, by + 5, b.w - 4, 4);
+    ctx.fillStyle = 'rgba(0,0,0,.09)';
+    ctx.fillRect(x + 13, by + 9, b.w - 12, 3);
 
     ctx.drawImage(spr, x, y);
 

@@ -567,7 +567,7 @@ const Game = {
   drawPlayer(ctx, p, cx, cy) {
     const spr = Art.person(p.pres.sprite, p.moving ? p.frame : 0);
     const x = Math.round(p.x - cx), y = Math.round(p.y - cy);
-    this.shadow(ctx, x, y, spr.width * 0.9);
+    this.shadow(ctx, x, y, spr.width * 0.9, null, y + spr.height * (1 - ANCHOR));
 
     // Blink while invulnerable so the state is readable.
     const blink = p.invuln > 0 && ((p.invuln * 22) | 0) % 2 === 0;
@@ -594,8 +594,8 @@ const Game = {
     const w = spr.width * sc;
     const h = spr.height * sc;
 
-    if (!e.flying) this.shadow(ctx, x, y, w * 0.85);
-    else this.shadow(ctx, x, y + 20, w * 0.6, 0.4);
+    if (!e.flying) this.shadow(ctx, x, y, w * 0.85, null, y + h * (1 - ANCHOR));
+    else this.shadow(ctx, x, y + 20, w * 0.6, 0.4, y + 20);
 
     if (e.spawnT > 0) ctx.globalAlpha = 1 - e.spawnT / 0.22;
 
@@ -877,12 +877,29 @@ const Game = {
     ctx.restore();
   },
 
-  shadow(ctx, x, y, w, alpha) {
+  /**
+   * Ground shadow, at the FEET.
+   *
+   * This used to be centred near `y`, but sprites are drawn at
+   * `y - h*ANCHOR`, so the boots land at `y + (1-ANCHOR)*h` — about
+   * eleven pixels lower. The shadow was sitting behind the figure's
+   * shins where the sprite painted straight over it, and nothing in the
+   * game looked like it was standing on anything. The elite, boss and
+   * runner rings already used the correct foot line; this now agrees
+   * with them.
+   *
+   * `footY` is that line. Callers that know their sprite height pass it;
+   * anything that doesn't falls back to the old behaviour of `y`.
+   */
+  shadow(ctx, x, y, w, alpha, footY) {
     const sh = Art.getShadow();
-    const sw = Math.max(10, w);
+    // Narrower than the sprite: it should match the width of the boots,
+    // not the width of the shoulders.
+    const sw = Math.max(8, w * 0.62);
     const shh = sw * (14 / 32);
+    const fy = footY == null ? y : footY;
     ctx.globalAlpha = alpha == null ? 0.75 : alpha;
-    ctx.drawImage(sh, Math.round(x - sw / 2), Math.round(y - shh * 0.3), sw, shh);
+    ctx.drawImage(sh, Math.round(x - sw / 2), Math.round(fy - shh * 0.55), sw, shh);
     ctx.globalAlpha = 1;
   },
 

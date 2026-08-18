@@ -292,10 +292,12 @@ function drawCompanion(ctx, a, cx, cy) {
   if (!spr) return;
   const x = Math.round(a.x - cx), y = Math.round(a.y - cy);
 
+  // At the feet, and boot-width — same correction as Game.shadow().
   const sh = Art.getShadow();
-  const sw = spr.width * 0.8, shh = sw * (14 / 32);
+  const sw = spr.width * 0.52, shh = sw * (14 / 32);
+  const footY = y + spr.height * (1 - ANCHOR);
   ctx.globalAlpha = 0.7;
-  ctx.drawImage(sh, Math.round(x - sw / 2), Math.round(y - shh * 0.3), sw, shh);
+  ctx.drawImage(sh, Math.round(x - sw / 2), Math.round(footY - shh * 0.55), sw, shh);
   ctx.globalAlpha = 1;
 
   const dx = Math.round(x - spr.width / 2), dy = Math.round(y - spr.height * ANCHOR);
