@@ -304,14 +304,5 @@
 <script src="js/game.js"></script>
 <script src="js/main.js"></script>
 
-<script>
-setTimeout(function(){
-  localStorage.removeItem('pvu.prestige.v1'); Prestige.load();
-  if(location.search.indexOf('unlocked')>=0) Prestige.found.jefferson=true;
-  UI.maybeRebuildRoster();
-  if(location.search.indexOf('unlocked')>=0) UI.selectPres('jefferson');
-  UI.show('select'); Game.state='select';
-},900);
-</script>
 </body>
 </html>

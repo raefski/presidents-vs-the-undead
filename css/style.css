@@ -874,6 +874,22 @@ body.touch .pres{width:78px;height:92px}
 body.touch #roster{grid-template-columns:repeat(4,78px)}
 body.touch .stagecard{padding:11px 10px}
 
+/* ---------- the president you just tapped ----------
+   This panel is the densest reading in the game — three weapons, their
+   attack types, and eight stat pips — and it was set at desktop sizes
+   (10-12px) that are unreadable held at arm's length on a phone. */
+body.touch #d-name{font-size:19px;letter-spacing:1.5px}
+body.touch #d-term{font-size:13px;opacity:.7;line-height:1.6}
+body.touch .wep{font-size:14px;line-height:1.65;margin-bottom:9px}
+body.touch .wep .ico{margin-right:7px;font-size:16px}
+body.touch .atype{font-size:11px;padding:1px 6px;letter-spacing:.5px}
+body.touch .ptcost{font-size:11.5px;padding:1px 7px}
+body.touch .pip{font-size:13px;padding:4px 10px}
+body.touch #d-stats{gap:7px;margin-top:12px}
+body.touch #detail{padding:16px;gap:14px}
+/* the portrait can afford to give a little back for the text */
+body.touch.portrait #portrait{width:76px;height:96px}
+
 /* the dev workbench is a mouse-and-keyboard tool; hide the door to it */
 body.touch [data-act="dev-open"]{display:none}
 

@@ -36,9 +36,13 @@ Live dev tweaks live in browser localStorage under `pvu.balance.v1` and are a
 working copy only — they are not in the repo.
 
 **Attribute points** (`POINT_UNITS` in `presidents.js`) give every stat a
-common currency so the roster can be compared. `p.points` is the total. As of
-this writing the roster runs 2.1 (Clinton) to 14.0 (Teddy), average 9.5 — a
-gap the developer is tuning by hand. Do not silently flatten it.
+common currency so the roster can be compared. `p.points` is the total. As
+measured on 2026-08-17 across all 16 presidents, the roster runs 4.2 (Lincoln)
+to 25.1 (Teddy), average 11.6 — a gap the developer is tuning by hand. Do not
+silently flatten it.
+
+These numbers drift every time the overrides are touched, so treat them as a
+snapshot and re-measure rather than trusting them.
 
 ## Testing
 

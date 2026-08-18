@@ -224,7 +224,7 @@ balance workbench. It works from anywhere, including mid-run.
 - Edit every attribute of every president, with the **attribute point cost** of
   each change shown live
 - The roster sorts by total points so outliers are obvious at a glance —
-  currently 2.1 (Clinton) to 14.0 (Teddy), average 9.5
+  measured 2026-08-17: 4.2 (Lincoln) to 25.1 (Teddy), average 11.6 across 16
 - Each president's full kit is listed with its **attack type**
 - Changes apply immediately, even to a run already in progress
 
@@ -261,7 +261,7 @@ js/
   art.js            every sprite drawn procedurally, cached offscreen
   data/
     balance-overrides.js  YOUR hand-tuned stats — see CLAUDE.md
-    presidents.js   the 12 characters, their assistants, attribute points
+    presidents.js   the 16 characters (4 hidden), assistants, attribute points
     enemies.js      9 armies, 9 strongpoint bosses, 9 mini-bosses
     upgrades.js     the passive catalogue + stat recomputation
   weapons.js        all 36 attacks (12 primary, 12 secondary, 12 fusion)
