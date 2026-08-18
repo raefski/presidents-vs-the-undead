@@ -72,7 +72,7 @@ const PRESIDENTS = [
     sprite: {
       key: 'fdr', coat: '#2e3a4e', shirt: '#efe8d4', tie: '#4a5a7a',
       hair: '#6a6258', hairStyle: 'thin', face: 'glasses',
-      hat: 'fedora', hatCol: '#2a2a34', chair: true, chairCol: '#5a5f6e'
+      hat: 'fedora', hatCol: '#2a2a34', chair: true, chairCol: '#9aa2b4'
     }
   },
   {
@@ -97,7 +97,7 @@ const PRESIDENTS = [
     quip: 'I am not a crook. I am, however, deceased.',
     base: { hp: 100, speed: 55, area: 1.1, luck: 1.35, growth: 1.15 },
     sprite: {
-      key: 'nixon', skin: '#d8a888', coat: '#3a3a46', shirt: '#efe8d4',
+      key: 'nixon', arms: 'up', skin: '#d8a888', coat: '#3a3a46', shirt: '#efe8d4',
       tie: '#3a5a9a', hair: '#2a2018', hairStyle: 'part', stache: false, pin: true
     }
   },
@@ -110,7 +110,7 @@ const PRESIDENTS = [
     quip: 'Well... there you go again.',
     base: { hp: 98, speed: 63, might: 0.9, amount: 1, cooldown: 0.95 },
     sprite: {
-      key: 'reagan', coat: '#4a2f2a', coatAlt: '#5c3c34', shirt: '#efe8d4',
+      key: 'reagan', hat: 'stetson', hatCol: '#8a6a42', hatAccent: '#4a3420', coat: '#4a2f2a', coatAlt: '#5c3c34', shirt: '#efe8d4',
       tie: '#a83a3a', hair: '#3a2a1c', hairStyle: 'poof', pin: true
     }
   },
@@ -123,7 +123,7 @@ const PRESIDENTS = [
     quip: 'I feel your pain. Genuinely, this time.',
     base: { hp: 105, speed: 64, might: 0.95, area: 1.0, magnet: 55 },
     sprite: {
-      key: 'clinton', coat: '#1f2a44', shirt: '#efe8d4', tie: '#c02a3a',
+      key: 'clinton', hold: 'sax', coat: '#1f2a44', shirt: '#efe8d4', tie: '#c02a3a',
       hair: '#b8b0a4', hairStyle: 'poof', pin: true
     }
   },
@@ -136,7 +136,7 @@ const PRESIDENTS = [
     quip: 'Fool me once... shame on... you can\'t get fooled again.',
     base: { hp: 112, speed: 66, might: 1.05, area: 1.15, armor: 1 },
     sprite: {
-      key: 'bush43', coat: '#2a3040', shirt: '#efe8d4', tie: '#3a6a9a',
+      key: 'bush43', coat: '#8a7550', coatAlt: '#a89263', shirt: '#efe8d4', tie: '#3a6a9a',
       hair: '#4a3a2a', hairStyle: 'crop', pin: true
     }
   },
@@ -149,7 +149,7 @@ const PRESIDENTS = [
     quip: 'Let me be clear: that was not ideal.',
     base: { hp: 100, speed: 66, area: 1.25, cooldown: 0.9, growth: 1.1 },
     sprite: {
-      key: 'obama', skin: '#8a5f3f', coat: '#232a3c', shirt: '#efe8d4',
+      key: 'obama', arms: 'rolled', skin: '#8a5f3f', coat: '#dfe3ea', coatAlt: '#c2c8d4', shirt: '#efe8d4',
       tie: '#4a6ab0', hair: '#1a1614', hairStyle: 'crop', pin: true
     }
   },

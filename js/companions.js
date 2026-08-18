@@ -49,7 +49,10 @@ function hireAssistant(g) {
     r: 7, timer: rand(0.2, 0.6),
     frame: 0, frameT: 0, moving: 0, flash: 0,
     sprA: Art.person(def.sprite, 0),
-    sprB: Art.person(def.sprite, 1)
+    sprB: Art.person(def.sprite, 1),
+    sprAF: Art.person(def.sprite, 0, 1),
+    sprBF: Art.person(def.sprite, 1, 1),
+    faceL: 0
   };
   p.assistantRank = 1;
 
@@ -95,6 +98,7 @@ function updateCompanion(g, dt) {
     const sp = Math.min(p.stats.speed * 1.55, 70 + d * 2.4);
     a.x += (dx / d) * sp * dt;
     a.y += (dy / d) * sp * dt;
+    if (dx < -6) a.faceL = 1; else if (dx > 6) a.faceL = 0;
     a.moving = 1;
     a.frameT += dt * 5.5;
     if (a.frameT >= 1) { a.frameT = 0; a.frame ^= 1; }
@@ -225,6 +229,9 @@ function spawnAllies(g) {
     a.flash = 0;
     a.sprA = Art.person(pres.sprite, 0);
     a.sprB = Art.person(pres.sprite, 1);
+    a.sprAF = Art.person(pres.sprite, 0, 1);
+    a.sprBF = Art.person(pres.sprite, 1, 1);
+    a.faceL = 0;
     g.allies.push(a);
   }
 }
@@ -252,6 +259,7 @@ function updateAllies(g, dt) {
       const sp = Math.min(p.stats.speed * 1.6, 80 + d * 2.2);
       a.x += (dx / d) * sp * dt;
       a.y += (dy / d) * sp * dt;
+      if (dx < -6) a.faceL = 1; else if (dx > 6) a.faceL = 0;
       a.moving = 1;
       a.frameT += dt * 5.5;
       if (a.frameT >= 1) { a.frameT = 0; a.frame ^= 1; }
@@ -288,7 +296,9 @@ function updateAllies(g, dt) {
 
 /** Drawn in the depth-sorted pass, same as any other actor. */
 function drawCompanion(ctx, a, cx, cy) {
-  const spr = a.moving && a.frame ? a.sprB : a.sprA;
+  const spr = a.faceL
+    ? (a.moving && a.frame ? a.sprBF : a.sprAF)
+    : (a.moving && a.frame ? a.sprB : a.sprA);
   if (!spr) return;
   const x = Math.round(a.x - cx), y = Math.round(a.y - cy);
 

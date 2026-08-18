@@ -56,10 +56,38 @@ const Art = {
    *   undead, boss, scale, chair
    * }
    */
-  person(spec, frame) {
-    const key = 'p:' + spec.key + ':' + frame;
+  /**
+   * A figure, cached.
+   *
+   * `flip` bakes a mirrored copy rather than flipping at draw time.
+   * Nothing in the game used to face its direction of travel, so a horde
+   * converging on you did not visibly converge — which is most of the
+   * genre's fantasy. The mirrored variants are baked because the
+   * alternative, ctx.save/scale(-1,1)/restore per entity, is a real cost
+   * at six hundred bodies; this way the hot loop still does exactly one
+   * drawImage.
+   *
+   * The cache stays bounded: keys are per UNIT, not per stage, so the
+   * same soldier appearing on four stages is one entry. Facing doubles a
+   * fixed set, it does not multiply per stage.
+   */
+  person(spec, frame, flip) {
+    const key = 'p:' + spec.key + ':' + frame + (flip ? ':f' : '');
     const hit = this.cache.get(key);
     if (hit) return hit;
+
+    if (flip) {
+      const src = this.person(spec, frame, 0);
+      const m = document.createElement('canvas');
+      m.width = src.width; m.height = src.height;
+      const mx = m.getContext('2d');
+      mx.imageSmoothingEnabled = false;
+      mx.translate(src.width, 0);
+      mx.scale(-1, 1);
+      mx.drawImage(src, 0, 0);
+      this.cache.set(key, m);
+      return m;
+    }
 
     const s = spec.scale || 0.9;
     const base = document.createElement('canvas');
@@ -176,18 +204,36 @@ const Art = {
 
     /* ---- FDR rides in; the chair is drawn behind everything ---- */
     if (s.chair) {
+      /* A wheelchair's silhouette is "circle, circle, tall back", and none
+         of those three used to clear the body outline — the wheels sat
+         behind and below the seated lap block, so from the front they
+         were two small discs at ankle height. FDR's chair is his entire
+         identity and it did not read. The wheels now run wider than the
+         body on both sides and the back rest rises past the shoulders. */
       const ch = s.chairCol || '#5a5f6e';
       const chD = shade(ch, -0.35);
+      const chL = shade(ch, 0.22);
+
+      px(1, B + 5, 2, 11, ch);                   // back rest, up past the shoulders
+      px(1, B + 5, 2, 1, chL);
+      px(2, B + 4, 3, 1, chD);                   // push handle
       px(2, B + 14, 12, 2, chD);                 // seat frame
-      px(1, B + 10, 2, 6, ch);                   // back rest
-      // two wheels, spokes rotated by frame for a sense of rolling
-      for (const wx of [3, 11]) {
-        px(wx - 2, B + 16, 5, 5, chD);
-        px(wx - 1, B + 17, 3, 3, '#20242e');
-        if (frame === 0) { px(wx, B + 16, 1, 5, ch); px(wx - 2, B + 18, 5, 1, ch); }
-        else { px(wx - 1, B + 17, 1, 1, ch); px(wx + 1, B + 19, 1, 1, ch); px(wx + 1, B + 17, 1, 1, ch); px(wx - 1, B + 19, 1, 1, ch); }
+
+      // Wheels wider than the torso, so the rims break the outline.
+      for (const wx of [1, 10]) {
+        px(wx, B + 12, 6, 8, chD);               // tyre
+        px(wx, B + 12, 6, 1, chL);
+        px(wx + 1, B + 13, 4, 6, '#20242e');     // the open middle
+        px(wx + 2, B + 15, 2, 2, ch);            // hub
+        if (frame === 0) {
+          px(wx + 2, B + 12, 1, 8, ch);          // spokes: upright
+          px(wx, B + 15, 6, 1, ch);
+        } else {
+          px(wx + 1, B + 13, 1, 1, ch); px(wx + 4, B + 18, 1, 1, ch);
+          px(wx + 4, B + 13, 1, 1, ch); px(wx + 1, B + 18, 1, 1, ch);
+        }
       }
-      px(0, B + 12, 1, 3, '#8a8f9e');            // push rim glint
+      px(0, B + 10, 1, 4, '#8a8f9e');            // push rim glint
     }
 
     /* ---- legs & shoes ---- */
@@ -209,11 +255,34 @@ const Art = {
     }
 
     /* ---- arms (behind the torso silhouette) ---- */
+    /* Arms swing on frame 1. They used to be pinned in both frames, so a
+       walking crowd read as a conveyor belt: legs moving, everything
+       above the waist rigid. One pixel of counter-swing is enough, and
+       it is baked into the two frames that were already cached, so it
+       costs nothing per frame. */
     const armY = B + 9;
-    px(2, armY, 2, 5, coatD);
-    px(12, armY, 2, 5, coatD);
-    px(2, armY + 5, 2, 1, skin);                 // hands
-    px(12, armY + 5, 2, 1, skin);
+    const swingL = frame ? -1 : 0;
+    const swingR = frame ? 1 : 0;
+    if (s.arms === 'up') {
+      // Both arms raised. Nobody else in the roster breaks the torso
+      // outline upwards, so it is unmistakable at any size.
+      px(2, armY - 5 + swingL, 2, 6, coatD);
+      px(12, armY - 5 + swingR, 2, 6, coatD);
+      px(2, armY - 6 + swingL, 2, 1, skin);
+      px(12, armY - 6 + swingR, 2, 1, skin);
+    } else if (s.arms === 'rolled') {
+      // Sleeves rolled: forearms in skin, which lifts the whole torso's
+      // value among a roster of dark suits.
+      px(2, armY + swingL, 2, 2, coatD);
+      px(12, armY + swingR, 2, 2, coatD);
+      px(2, armY + 2 + swingL, 2, 4, skin);
+      px(12, armY + 2 + swingR, 2, 4, skin);
+    } else {
+      px(2, armY + swingL, 2, 5, coatD);
+      px(12, armY + swingR, 2, 5, coatD);
+      px(2, armY + 5 + swingL, 2, 1, skin);      // hands
+      px(12, armY + 5 + swingR, 2, 1, skin);
+    }
 
     /* ---- torso ---- */
     px(4, B + 8, 8, 7, coat);
@@ -261,10 +330,14 @@ const Art = {
     fp(hx, hy + 3, 6 * D, 1, shade(skin, -0.14));            // brow ridge
     fp(hx + 5, hy + 5, 2, 4, shade(skin, 0.14));             // bridge of nose
     fp(hx + 7, hy + 7, 1, 2, shade(skin, -0.24));            // nose shadow
-    fp(hx + 1, hy + 6, 1, 3, shade(skin, -0.16));            // temple hollow
-    fp(hx + 10, hy + 6, 1, 3, shade(skin, -0.20));
-    fp(hx + 2, hy + 9, 8, 1, shade(skin, -0.10));            // cheek line
     fp(hx, hy + 5 * D - 2, 6 * D, 2, skinD);                 // jaw shadow
+    /* The temple hollows and the cheek line used to live here and have
+       been deliberately removed. On a head twelve device pixels wide the
+       temples sat on the head's outermost columns, darkening the very
+       contour that has to stay crisp against the background, and the
+       cheek line sat one pixel above the jaw shadow and merged with it
+       into a mushy band. The forehead light, brow ridge, nose and jaw
+       are the four that earn their place. Fewer passes, crisper heads. */
 
     /* ---- eyes ---- */
     if (s.face === 'gasmask') {
@@ -385,6 +458,15 @@ const Art = {
         px(4, B, 8, 1, acc);
         px(7, B - 1, 2, 1, hD);          // pinch
         break;
+      case 'stetson':                    // wide brim, creased crown
+        px(1, B + 3, 14, 1, h);                       // brim, wider than the head
+        px(2, B + 2, 12, 1, hL);
+        px(4, B - 1, 8, 3, h);                        // crown
+        px(4, B - 1, 8, 1, hL);
+        px(7, B - 1, 2, 3, hD);                       // crease
+        px(4, B + 1, 8, 1, acc);                      // band
+        break;
+
       case 'fedora':
         px(3, B + 1, 10, 1, h);
         px(4, B - 1, 8, 2, h);
@@ -464,6 +546,18 @@ const Art = {
       case 'flag':   px(13, B + 2, 1, 12, col); px(14, B + 2, 2, 4, s.flagCol || '#d8324a'); break;
       case 'club':   px(13, B + 6, 1, 8, col); px(12, B + 13, 3, 2, '#c8ccd6'); break;
       case 'lantern':px(12, B + 11, 2, 3, '#f2c14e'); break;
+      case 'sax': {
+        /* Diagonal, and the only non-vertical held item in the game —
+           which is exactly why it reads from anywhere. */
+        const br = '#e0a63a', brL = '#f6d488', brD = '#9a6f1e';
+        px(12, B + 6, 2, 2, br); px(12, B + 6, 2, 1, brL);   // crook
+        px(13, B + 8, 2, 2, br);
+        px(14, B + 10, 2, 3, br); px(14, B + 10, 1, 3, brL); // body
+        px(13, B + 13, 3, 2, br);                            // bell
+        px(12, B + 14, 4, 1, brL);
+        px(13, B + 9, 1, 1, brD); px(14, B + 12, 1, 1, brD); // keys
+        break;
+      }
       case 'quill':  px(13, B + 3, 1, 6, '#f4efe2'); px(13, B + 2, 1, 2, shade(col, 0.3));
                      px(12, B + 9, 2, 1, '#2a2a34'); break;
       default: break;
@@ -1672,11 +1766,21 @@ const Art = {
     x.fillStyle = '#c9a24a'; x.fillRect(dx + 17, wallBot - 16, 3, 3);
     x.fillStyle = wallL; x.fillRect(dx - 5, wallBot - 38, 32, 4);   // pediment
 
-    /* ---- roof ---- */
+    /* ---- roof ----
+       A full-width triangle apexing at the centre is a gable seen END ON.
+       But the wall below shows a long facade with four or five windows,
+       i.e. you are looking at the SIDE, where you would see a horizontal
+       ridge and an eave. On a 300px-wide warehouse the triangle read as
+       a circus tent. Wide buildings now get a trapezoid; narrow ones keep
+       the gable, which is correct for them. */
+    const wide = W > 1.6 * b.elev;
+    const ridgeL = wide ? W * 0.22 : W * 0.5;
+    const ridgeR = wide ? W * 0.78 : W * 0.5;
     x.fillStyle = roof;
     x.beginPath();
     x.moveTo(-2, wallTop + 2);
-    x.lineTo(W * 0.5, 0);
+    x.lineTo(ridgeL, 0);
+    x.lineTo(ridgeR, 0);
     x.lineTo(W + 2, wallTop + 2);
     x.closePath(); x.fill();
     /* Lit slope on the LEFT. Everything else in the game agrees the key
@@ -1687,12 +1791,16 @@ const Art = {
        it is the loudest surface on screen. */
     x.fillStyle = roofL;
     x.beginPath();
-    x.moveTo(W * 0.5, 0); x.lineTo(-2, wallTop + 2); x.lineTo(W * 0.5, wallTop + 2);
+    x.moveTo(ridgeL, 0); x.lineTo(-2, wallTop + 2); x.lineTo(ridgeL, wallTop + 2);
     x.closePath(); x.fill();
     x.fillStyle = shade(roof, -0.12);
     x.beginPath();
-    x.moveTo(W * 0.5, 0); x.lineTo(W + 2, wallTop + 2); x.lineTo(W * 0.5, wallTop + 2);
+    x.moveTo(ridgeR, 0); x.lineTo(W + 2, wallTop + 2); x.lineTo(ridgeR, wallTop + 2);
     x.closePath(); x.fill();
+    if (wide) {                                  // the ridge itself catches light
+      x.fillStyle = shade(roof, 0.24);
+      x.fillRect(ridgeL, 0, ridgeR - ridgeL, 2);
+    }
     x.fillStyle = shade(roof, -0.25);
     x.fillRect(0, wallTop, W, 3);
 
@@ -1700,8 +1808,11 @@ const Art = {
     x.fillStyle = 'rgba(0,0,0,.13)';
     for (let yy = 4; yy < wallTop; yy += 4) {
       const t = yy / wallTop;
-      const half = (W * 0.5) * t + 2;
-      x.fillRect(W * 0.5 - half, yy, half * 2, 1);
+      // Follows the same trapezoid the roof was filled with, or the
+      // shingle courses run off the edge of a wide roof.
+      const l = ridgeL + (-2 - ridgeL) * t;
+      const r = ridgeR + (W + 2 - ridgeR) * t;
+      x.fillRect(l, yy, r - l, 1);
     }
 
     /* ---- dormers ---- */

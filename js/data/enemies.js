@@ -434,12 +434,12 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Pennsylvania, July 1863. They have not been told it ended.',
     units: [
       { id: 'reb', name: 'Infantryman', hp: 44, speed: 39, dmg: 12, r: 8, xp: 3, ai: 'march', weight: 3,
-        sprite: { key: 'e_reb', undead: 1, coat: '#7a7060', coatAlt: '#5e5648', pants: '#6a6252', shirt: '#8a8272', hair: '#3a2c1a', hairStyle: 'crop', hat: 'kepi', hatCol: '#5a5346', hold: 'musket', eye: '#c8ff4a', scale: 0.79 } },
+        sprite: { key: 'e_reb', undead: 1, coat: '#7a7060', coatAlt: '#5e5648', pants: '#6a6252', shirt: '#8a8272', hair: '#3a2c1a', hairStyle: 'crop', hat: 'kepi', hatCol: '#5a5346', hold: 'musket', eye: '#c8ff4a', scale: 0.83 } },
       { id: 'skirm', name: 'Skirmisher', hp: 38, speed: 56, dmg: 14, r: 8, xp: 4, ai: 'charger', weight: 2,
-        sprite: { key: 'e_skirm', undead: 1, coat: '#6a6252', coatAlt: '#4a4438', pants: '#5c5646', shirt: '#7a7264', hair: '#2e2418', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2e2418', hat: 'fedora', hatCol: '#4a4438', hold: 'rifle', eye: '#c8ff4a', scale: 0.79 } },
+        sprite: { key: 'e_skirm', undead: 1, coat: '#6a6252', coatAlt: '#4a4438', pants: '#5c5646', shirt: '#7a7264', hair: '#2e2418', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2e2418', hat: 'fedora', hatCol: '#4a4438', hold: 'rifle', eye: '#c8ff4a', scale: 0.774 } },
       { id: 'artillery_cw', name: 'Gun Crew', hp: 108, speed: 26, dmg: 20, r: 11, xp: 6, ai: 'shooter', weight: 1,
         shootRange: 250, shootRate: 2.4, shotDmg: 22, shotSpeed: 140,
-        sprite: { key: 'e_gun_cw', undead: 1, coat: '#5a5446', coatAlt: '#c9a24a', pants: '#4a4438', shirt: '#6a6252', hair: '#3a2c1a', hairStyle: 'part', stache: true, facialCol: '#3a2c1a', hat: 'kepi', hatCol: '#44403a', eye: '#c8ff4a', scale: 0.98 } }
+        sprite: { key: 'e_gun_cw', undead: 1, coat: '#5a5446', coatAlt: '#c9a24a', pants: '#4a4438', shirt: '#6a6252', hair: '#3a2c1a', hairStyle: 'part', stache: true, facialCol: '#3a2c1a', hat: 'kepi', hatCol: '#44403a', eye: '#c8ff4a', scale: 1.039 } }
     ]
   },
   {
@@ -448,9 +448,9 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Surrendered at Santiago, 1898. This detachment did not get the message.',
     units: [
       { id: 'rayadillo', name: 'Rayadillo Infantry', hp: 82, speed: 40, dmg: 17, r: 8, xp: 5, ai: 'march', weight: 3,
-        sprite: { key: 'e_rayad', undead: 1, coat: '#b8c4cc', coatAlt: '#8a96a0', pants: '#a8b4bc', shirt: '#c8d4dc', hair: '#1a1410', hairStyle: 'crop', hat: 'cap', hatCol: '#9aa6ae', hold: 'rifle', eye: '#c8ff4a', scale: 0.82 } },
+        sprite: { key: 'e_rayad', undead: 1, coat: '#b8c4cc', coatAlt: '#8a96a0', pants: '#a8b4bc', shirt: '#c8d4dc', hair: '#1a1410', hairStyle: 'crop', hat: 'cap', hatCol: '#9aa6ae', hold: 'rifle', eye: '#c8ff4a', scale: 0.828 } },
       { id: 'guardia', name: 'Guardia Civil', hp: 148, speed: 31, dmg: 23, r: 11, xp: 8, ai: 'tank', weight: 1, knockRes: 0.5,
-        sprite: { key: 'e_guardia', undead: 1, coat: '#2a3038', coatAlt: '#c9a24a', pants: '#232830', shirt: '#3a4048', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'tricorn', hatCol: '#14181c', hatAccent: '#c9a24a', eye: '#c8ff4a', scale: 1.0 } }
+        sprite: { key: 'e_guardia', undead: 1, coat: '#2a3038', coatAlt: '#c9a24a', pants: '#232830', shirt: '#3a4048', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'tricorn', hatCol: '#14181c', hatAccent: '#c9a24a', eye: '#c8ff4a', scale: 1.05 } }
     ]
   },
   {
@@ -459,9 +459,9 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Claim-jumpers, rustlers, and one very persistent posse.',
     units: [
       { id: 'rustler', name: 'Rustler', hp: 60, speed: 52, dmg: 15, r: 8, xp: 4, ai: 'charger', weight: 3,
-        sprite: { key: 'e_rustler', undead: 1, coat: '#6a5232', coatAlt: '#b7ac9d', pants: '#5a4628', shirt: '#9a8a66', hair: '#3a2c1a', hairStyle: 'crop', stache: true, facialCol: '#3a2c1a', hat: 'campaign', hatCol: '#5a4632', hold: 'saber', eye: '#c8ff4a', scale: 0.8 } },
+        sprite: { key: 'e_rustler', undead: 1, coat: '#6a5232', coatAlt: '#b7ac9d', pants: '#5a4628', shirt: '#9a8a66', hair: '#3a2c1a', hairStyle: 'crop', stache: true, facialCol: '#3a2c1a', hat: 'campaign', hatCol: '#5a4632', hold: 'saber', eye: '#c8ff4a', scale: 0.784 } },
       { id: 'prospector', name: 'Sotted Prospector', hp: 96, speed: 27, dmg: 19, r: 10, xp: 5, ai: 'drunk', weight: 1, knockRes: 0.35,
-        sprite: { key: 'e_prosp', undead: 1, coat: '#7a6a4a', coatAlt: '#5a4c32', pants: '#6a5c3e', shirt: '#a89a76', hair: '#8a8272', hairStyle: 'thin', face: 'fullbeard', facialCol: '#8a8272', hat: 'fedora', hatCol: '#5a4a30', hold: 'bottle', eye: '#c8ff4a', scale: 0.92 } }
+        sprite: { key: 'e_prosp', undead: 1, coat: '#7a6a4a', coatAlt: '#5a4c32', pants: '#6a5c3e', shirt: '#a89a76', hair: '#8a8272', hairStyle: 'thin', face: 'fullbeard', facialCol: '#8a8272', hat: 'fedora', hatCol: '#5a4a30', hold: 'bottle', eye: '#c8ff4a', scale: 0.856 } }
     ]
   },
   {
@@ -470,10 +470,10 @@ const CAMPAIGN_FACTIONS = [
     sub: 'They were never supposed to be on this continent.',
     units: [
       { id: 'spetsnaz', name: 'Spetsnaz', hp: 210, speed: 58, dmg: 26, r: 8, xp: 12, ai: 'charger', weight: 3,
-        sprite: { key: 'e_spets', undead: 1, coat: '#3a4438', coatAlt: '#a0a59f', pants: '#333c30', shirt: '#48523f', hair: '#2e2418', hairStyle: 'crop', face: 'gasmask', hat: 'brodie', hatCol: '#333a30', hold: 'rifle', eye: '#ff6a4a', scale: 0.83 } },
+        sprite: { key: 'e_spets', undead: 1, coat: '#3a4438', coatAlt: '#a0a59f', pants: '#333c30', shirt: '#48523f', hair: '#2e2418', hairStyle: 'crop', face: 'gasmask', hat: 'brodie', hatCol: '#333a30', hold: 'rifle', eye: '#ff6a4a', scale: 0.88 } },
       { id: 'rocketman', name: 'Rocket Crew', hp: 260, speed: 24, dmg: 30, r: 11, xp: 16, ai: 'shooter', weight: 1,
         shootRange: 260, shootRate: 2.1, shotDmg: 30, shotSpeed: 155,
-        sprite: { key: 'e_rocket', undead: 1, coat: '#4a5060', coatAlt: '#ef8f9c', pants: '#3e4452', shirt: '#5a6070', hair: '#2e2418', hairStyle: 'part', hat: 'ushanka', hatCol: '#3a4048', eye: '#ff6a4a', scale: 1.02 } }
+        sprite: { key: 'e_rocket', undead: 1, coat: '#4a5060', coatAlt: '#ef8f9c', pants: '#3e4452', shirt: '#5a6070', hair: '#2e2418', hairStyle: 'part', hat: 'ushanka', hatCol: '#3a4048', eye: '#ff6a4a', scale: 1.0 } }
     ]
   },
   {
@@ -482,9 +482,9 @@ const CAMPAIGN_FACTIONS = [
     sub: 'They have been in these tunnels since the French were here.',
     units: [
       { id: 'nvaregular', name: 'NVA Regular', hp: 300, speed: 50, dmg: 30, r: 8, xp: 16, ai: 'march', weight: 3,
-        sprite: { key: 'e_nva', undead: 1, coat: '#5a6a4a', coatAlt: '#44523a', pants: '#4e5c40', shirt: '#68785a', hair: '#1a1410', hairStyle: 'crop', hat: 'brodie', hatCol: '#4a5840', hold: 'rifle', eye: '#8cff4a', scale: 0.82 } },
+        sprite: { key: 'e_nva', undead: 1, coat: '#5a6a4a', coatAlt: '#44523a', pants: '#4e5c40', shirt: '#68785a', hair: '#1a1410', hairStyle: 'crop', hat: 'brodie', hatCol: '#4a5840', hold: 'rifle', eye: '#8cff4a', scale: 0.812 } },
       { id: 'sapper', name: 'Sapper', hp: 240, speed: 72, dmg: 36, r: 8, xp: 20, ai: 'swarm', weight: 2,
-        sprite: { key: 'e_sapper', undead: 1, coat: '#3a4a34', coatAlt: '#a0a89e', pants: '#33422d', shirt: '#48583e', hair: '#1a1410', hairStyle: 'crop', hat: 'none', hold: 'saber', eye: '#8cff4a', scale: 0.8 } }
+        sprite: { key: 'e_sapper', undead: 1, coat: '#3a4a34', coatAlt: '#a0a89e', pants: '#33422d', shirt: '#48583e', hair: '#1a1410', hairStyle: 'crop', hat: 'none', hold: 'saber', eye: '#8cff4a', scale: 0.824 } }
     ]
   },
   {
@@ -493,7 +493,7 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Whatever the defoliant did, it did not do this.',
     units: [
       { id: 'creeper', name: 'Creeping Growth', hp: 420, speed: 34, dmg: 34, r: 12, xp: 22, ai: 'tank', weight: 2, knockRes: 0.7,
-        sprite: { key: 'e_creep', undead: 1, skin: '#5a7a3a', coat: '#3a5228', coatAlt: '#a0ac98', pants: '#33481f', shirt: '#4a6630', hair: '#2a4018', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2a4018', eye: '#c8ff4a', scale: 1.08 } }
+        sprite: { key: 'e_creep', undead: 1, skin: '#5a7a3a', coat: '#3a5228', coatAlt: '#a0ac98', pants: '#33481f', shirt: '#4a6630', hair: '#2a4018', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2a4018', eye: '#c8ff4a', scale: 1.112 } }
     ]
   },
   {
@@ -502,10 +502,10 @@ const CAMPAIGN_FACTIONS = [
     sub: 'One informant for every 6.5 citizens. All of them reported in.',
     units: [
       { id: 'informant', name: 'Informant', hp: 380, speed: 46, dmg: 32, r: 8, xp: 20, ai: 'march', weight: 3,
-        sprite: { key: 'e_inform', undead: 1, coat: '#4a4a52', coatAlt: '#a8a8ac', pants: '#42424a', shirt: '#e8e4d8', tie: '#5a5a62', hair: '#4a4438', hairStyle: 'part', hat: 'fedora', hatCol: '#3a3a42', eye: '#c8ccd6', scale: 0.82 } },
+        sprite: { key: 'e_inform', undead: 1, coat: '#4a4a52', coatAlt: '#a8a8ac', pants: '#42424a', shirt: '#e8e4d8', tie: '#5a5a62', hair: '#4a4438', hairStyle: 'part', hat: 'fedora', hatCol: '#3a3a42', eye: '#c8ccd6', scale: 0.763 } },
       { id: 'grenztruppen', name: 'Border Troop', hp: 560, speed: 38, dmg: 40, r: 10, xp: 26, ai: 'shooter', weight: 2,
         shootRange: 280, shootRate: 1.9, shotDmg: 34, shotSpeed: 170,
-        sprite: { key: 'e_grenz', undead: 1, coat: '#5a6250', coatAlt: '#3a4034', pants: '#4e5646', shirt: '#68705e', hair: '#3a3428', hairStyle: 'crop', hat: 'peaked', hatCol: '#48503e', hatAccent: '#c9a24a', hold: 'rifle', eye: '#ff6a4a', scale: 0.9 } }
+        sprite: { key: 'e_grenz', undead: 1, coat: '#5a6250', coatAlt: '#3a4034', pants: '#4e5646', shirt: '#68705e', hair: '#3a3428', hairStyle: 'crop', hat: 'peaked', hatCol: '#48503e', hatAccent: '#c9a24a', hold: 'rifle', eye: '#ff6a4a', scale: 0.873 } }
     ]
   },
   {
@@ -514,10 +514,10 @@ const CAMPAIGN_FACTIONS = [
     sub: 'They fought the Soviets here too, with the same rifles.',
     units: [
       { id: 'ridgeman', name: 'Ridge Fighter', hp: 620, speed: 54, dmg: 42, r: 8, xp: 28, ai: 'charger', weight: 3,
-        sprite: { key: 'e_ridge', undead: 1, coat: '#7a7258', coatAlt: '#5a5440', pants: '#6a6450', shirt: '#8a8268', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'turban', hatCol: '#6a6450', hold: 'rifle', eye: '#c8ff4a', scale: 0.84 } },
+        sprite: { key: 'e_ridge', undead: 1, coat: '#7a7258', coatAlt: '#5a5440', pants: '#6a6450', shirt: '#8a8268', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'turban', hatCol: '#6a6450', hold: 'rifle', eye: '#c8ff4a', scale: 0.832 } },
       { id: 'mortarman', name: 'Mortar Team', hp: 700, speed: 22, dmg: 44, r: 11, xp: 34, ai: 'shooter', weight: 1,
         shootRange: 300, shootRate: 2.0, shotDmg: 44, shotSpeed: 130,
-        sprite: { key: 'e_mortar_af', undead: 1, coat: '#6a6450', coatAlt: '#4a4638', pants: '#5a5644', shirt: '#7a7460', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'turban', hatCol: '#5a5644', eye: '#c8ff4a', scale: 1.0 } }
+        sprite: { key: 'e_mortar_af', undead: 1, coat: '#6a6450', coatAlt: '#4a4638', pants: '#5a5644', shirt: '#7a7460', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'turban', hatCol: '#5a5644', eye: '#c8ff4a', scale: 1.05 } }
     ]
   },
   {
@@ -525,7 +525,7 @@ const CAMPAIGN_FACTIONS = [
     sub: 'Nine thousand feet, and everything up here has been dead a long time.',
     units: [
       { id: 'rockfall', name: 'Scree Walker', hp: 900, speed: 30, dmg: 50, r: 13, xp: 40, ai: 'tank', weight: 2, knockRes: 0.8,
-        sprite: { key: 'e_scree', undead: 1, skin: '#8a8276', coat: '#6a6458', coatAlt: '#4a4640', pants: '#5a564c', shirt: '#7a7468', hair: '#5a5648', hairStyle: 'crop', face: 'fullbeard', facialCol: '#5a5648', eye: '#c8ccd6', scale: 1.15 } }
+        sprite: { key: 'e_scree', undead: 1, skin: '#8a8276', coat: '#6a6458', coatAlt: '#4a4640', pants: '#5a564c', shirt: '#7a7468', hair: '#5a5648', hairStyle: 'crop', face: 'fullbeard', facialCol: '#5a5648', eye: '#c8ccd6', scale: 1.115 } }
     ]
   },
   {
@@ -536,9 +536,9 @@ const CAMPAIGN_FACTIONS = [
       { id: 'spike', name: 'Spike Carrier', hp: 780, speed: 58, dmg: 44, r: 9, xp: 34, ai: 'swarm', weight: 3,
         sprite: { key: 'e_spike', undead: 1, skin: '#c86a9a', coat: '#a03a6a', coatAlt: '#c98aa8', pants: '#8a3258', shirt: '#c05a86', hair: '#6a1a3a', hairStyle: 'crop', eye: '#ff4aa0', scale: 0.85 } },
       { id: 'aerosol', name: 'Aerosol Cloud', hp: 640, speed: 44, dmg: 40, r: 11, xp: 36, ai: 'drunk', weight: 2,
-        sprite: { key: 'e_aero', undead: 1, skin: '#8ad0c8', coat: '#4a8a86', coatAlt: '#356a66', pants: '#3f7a76', shirt: '#5aa09a', hair: '#2a5a56', hairStyle: 'none', face: 'gasmask', eye: '#5affe0', scale: 0.9 } },
+        sprite: { key: 'e_aero', undead: 1, skin: '#8ad0c8', coat: '#4a8a86', coatAlt: '#356a66', pants: '#3f7a76', shirt: '#5aa09a', hair: '#2a5a56', hairStyle: 'none', face: 'gasmask', eye: '#5affe0', scale: 0.891 } },
       { id: 'longhauler', name: 'Long Hauler', hp: 1400, speed: 24, dmg: 54, r: 13, xp: 48, ai: 'tank', weight: 1, knockRes: 0.75,
-        sprite: { key: 'e_long', undead: 1, skin: '#9aa0a8', coat: '#5a6068', coatAlt: '#3e444c', pants: '#4e545c', shirt: '#dfe6e8', hair: '#6a7078', hairStyle: 'thin', face: 'gasmask', eye: '#8ad0c8', scale: 1.12 } }
+        sprite: { key: 'e_long', undead: 1, skin: '#9aa0a8', coat: '#5a6068', coatAlt: '#3e444c', pants: '#4e545c', shirt: '#dfe6e8', hair: '#6a7078', hairStyle: 'thin', face: 'gasmask', eye: '#8ad0c8', scale: 1.042 } }
     ]
   }
 ];
@@ -724,13 +724,13 @@ const PERIOD_FACTIONS = [
     sub: 'The 33rd Regiment of Foot, and they have not been relieved.',
     units: [
       { id: 'foot33', name: 'Regular of Foot', hp: 30, speed: 37, dmg: 10, r: 8, xp: 2, ai: 'march', weight: 4,
-        sprite: { key: 'p_foot33', coat: '#b8242e', coatAlt: '#efe8d4', pants: '#d8d0b8', shirt: '#efe8d4', hair: '#e8e6dc', hairStyle: 'wig', hat: 'shako', hatCol: '#191922', hatAccent: '#c9a24a', hold: 'musket', scale: 0.78 } },
+        sprite: { key: 'p_foot33', coat: '#b8242e', coatAlt: '#efe8d4', pants: '#d8d0b8', shirt: '#efe8d4', hair: '#e8e6dc', hairStyle: 'wig', hat: 'shako', hatCol: '#191922', hatAccent: '#c9a24a', hold: 'musket', scale: 0.827 } },
       { id: 'grenadier2', name: 'Grenadier', hp: 56, speed: 32, dmg: 14, r: 10, xp: 3, ai: 'march', weight: 2, knockRes: 0.35,
-        sprite: { key: 'p_gren2', coat: '#c8323a', coatAlt: '#f2c14e', pants: '#d8d0b8', shirt: '#efe8d4', hair: '#e8e6dc', hairStyle: 'wig', hat: 'shako', hatCol: '#0f0f16', hatAccent: '#f2c14e', hold: 'musket', scale: 0.89 } },
+        sprite: { key: 'p_gren2', coat: '#c8323a', coatAlt: '#f2c14e', pants: '#d8d0b8', shirt: '#efe8d4', hair: '#e8e6dc', hairStyle: 'wig', hat: 'shako', hatCol: '#0f0f16', hatAccent: '#f2c14e', hold: 'musket', scale: 0.908 } },
       { id: 'hessian', name: 'Hessian Jäger', hp: 44, speed: 40, dmg: 12, r: 8, xp: 3, ai: 'march', weight: 2,
-        sprite: { key: 'p_hess', coat: '#2f4a30', coatAlt: '#c9a24a', pants: '#d8d0b8', shirt: '#efe8d4', hair: '#3a2c1a', hairStyle: 'wig', stache: true, facialCol: '#3a2c1a', hat: 'pickelhaube', hatCol: '#2a2418', hatAccent: '#c9a24a', hold: 'rifle', scale: 0.78 } },
+        sprite: { key: 'p_hess', coat: '#2f4a30', coatAlt: '#c9a24a', pants: '#d8d0b8', shirt: '#efe8d4', hair: '#3a2c1a', hairStyle: 'wig', stache: true, facialCol: '#3a2c1a', hat: 'pickelhaube', hatCol: '#2a2418', hatAccent: '#c9a24a', hold: 'rifle', scale: 0.725 } },
       { id: 'dragoon2', name: 'Light Dragoon', hp: 36, speed: 53, dmg: 13, r: 8, xp: 3, ai: 'charger', weight: 1,
-        sprite: { key: 'p_drag2', coat: '#9a1c26', coatAlt: '#c9a24a', pants: '#c9b07a', shirt: '#efe8d4', hair: '#c8c4b8', hairStyle: 'wig', hat: 'brodie', hatCol: '#3a3a44', hold: 'saber', scale: 0.78 } }
+        sprite: { key: 'p_drag2', coat: '#9a1c26', coatAlt: '#c9a24a', pants: '#c9b07a', shirt: '#efe8d4', hair: '#c8c4b8', hairStyle: 'wig', hat: 'brodie', hatCol: '#3a3a44', hold: 'saber', scale: 0.741 } }
     ]
   },
   {
@@ -739,14 +739,14 @@ const PERIOD_FACTIONS = [
     sub: 'Pennsylvania, July 1863. Seventy-five thousand of them came north.',
     units: [
       { id: 'csainf', name: 'Infantryman', hp: 44, speed: 39, dmg: 12, r: 8, xp: 3, ai: 'march', weight: 4,
-        sprite: { key: 'p_csainf', coat: '#8a8270', coatAlt: '#6a6252', pants: '#7a7262', shirt: '#9a9282', hair: '#3a2c1a', hairStyle: 'crop', face: 'fullbeard', facialCol: '#3a2c1a', hat: 'kepi', hatCol: '#5a6a52', hold: 'musket', scale: 0.79 } },
+        sprite: { key: 'p_csainf', coat: '#8a8270', coatAlt: '#6a6252', pants: '#7a7262', shirt: '#9a9282', hair: '#3a2c1a', hairStyle: 'crop', face: 'fullbeard', facialCol: '#3a2c1a', hat: 'kepi', hatCol: '#5a6a52', hold: 'musket', scale: 0.806 } },
       { id: 'csavet', name: 'Veteran of the Valley', hp: 60, speed: 36, dmg: 15, r: 9, xp: 4, ai: 'march', weight: 2,
-        sprite: { key: 'p_csavet', coat: '#6a7258', coatAlt: '#4a5240', pants: '#5a6248', shirt: '#8a8272', hair: '#8a8272', hairStyle: 'thin', face: 'fullbeard', facialCol: '#8a8272', hat: 'fedora', hatCol: '#4a4438', hold: 'rifle', scale: 0.85 } },
+        sprite: { key: 'p_csavet', coat: '#6a7258', coatAlt: '#4a5240', pants: '#5a6248', shirt: '#8a8272', hair: '#8a8272', hairStyle: 'thin', face: 'fullbeard', facialCol: '#8a8272', hat: 'fedora', hatCol: '#4a4438', hold: 'rifle', scale: 0.892 } },
       { id: 'csacav', name: "Stuart's Cavalry", hp: 38, speed: 56, dmg: 14, r: 8, xp: 4, ai: 'charger', weight: 1, mounted: 1,
         sprite: { key: 'p_csacav', mounted: 1, coat: '#6a6252', coatAlt: '#c9a24a', pants: '#5c5646', shirt: '#7a7264', hair: '#2e2418', hairStyle: 'crop', face: 'fullbeard', facialCol: '#2e2418', hat: 'campaign', hatCol: '#4a4438', hold: 'saber', scale: 0.8 } },
       { id: 'csagun', name: 'Napoleon Gun Crew', hp: 108, speed: 26, dmg: 20, r: 11, xp: 6, ai: 'shooter', weight: 1,
         shootRange: 250, shootRate: 2.4, shotDmg: 22, shotSpeed: 140,
-        sprite: { key: 'p_csagun', coat: '#5a5446', coatAlt: '#c9a24a', pants: '#4a4438', shirt: '#6a6252', hair: '#3a2c1a', hairStyle: 'part', stache: true, facialCol: '#3a2c1a', hat: 'kepi', hatCol: '#44403a', scale: 0.98 } }
+        sprite: { key: 'p_csagun', coat: '#5a5446', coatAlt: '#c9a24a', pants: '#4a4438', shirt: '#6a6252', hair: '#3a2c1a', hairStyle: 'part', stache: true, facialCol: '#3a2c1a', hat: 'kepi', hatCol: '#44403a', scale: 0.99 } }
     ]
   },
   {
@@ -755,11 +755,11 @@ const PERIOD_FACTIONS = [
     sub: 'Rayadillo blues, Mauser rifles, and orders from a Madrid that has stopped writing.',
     units: [
       { id: 'rayad2', name: 'Rayadillo Infantry', hp: 82, speed: 40, dmg: 17, r: 8, xp: 5, ai: 'march', weight: 4,
-        sprite: { key: 'p_rayad2', skin: '#d8a878', coat: '#b8c4cc', coatAlt: '#8a96a0', pants: '#a8b4bc', shirt: '#c8d4dc', hair: '#1a1410', hairStyle: 'crop', stache: true, facialCol: '#1a1410', hat: 'cap', hatCol: '#9aa6ae', hold: 'rifle', scale: 0.82 } },
+        sprite: { key: 'p_rayad2', skin: '#d8a878', coat: '#b8c4cc', coatAlt: '#8a96a0', pants: '#a8b4bc', shirt: '#c8d4dc', hair: '#1a1410', hairStyle: 'crop', stache: true, facialCol: '#1a1410', hat: 'cap', hatCol: '#9aa6ae', hold: 'rifle', scale: 0.853 } },
       { id: 'guardia2', name: 'Guardia Civil', hp: 148, speed: 31, dmg: 23, r: 11, xp: 8, ai: 'tank', weight: 2, knockRes: 0.5,
-        sprite: { key: 'p_guardia2', skin: '#d8a878', coat: '#2a3038', coatAlt: '#c9a24a', pants: '#232830', shirt: '#3a4048', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'tricorn', hatCol: '#14181c', hatAccent: '#c9a24a', scale: 1.0 } },
+        sprite: { key: 'p_guardia2', skin: '#d8a878', coat: '#2a3038', coatAlt: '#c9a24a', pants: '#232830', shirt: '#3a4048', hair: '#1a1410', hairStyle: 'crop', face: 'fullbeard', facialCol: '#1a1410', hat: 'tricorn', hatCol: '#14181c', hatAccent: '#c9a24a', scale: 0.93 } },
       { id: 'soldadera', name: 'Mexican Irregular', hp: 70, speed: 44, dmg: 18, r: 8, xp: 5, ai: 'march', weight: 2,
-        sprite: { key: 'p_soldad', skin: '#c8945e', coat: '#8a7450', coatAlt: '#c02a3a', pants: '#7a6644', shirt: '#c8bc9a', hair: '#1a1410', hairStyle: 'crop', stache: true, facialCol: '#1a1410', hat: 'sombrero', hatCol: '#6a5636', hatAccent: '#c9a24a', hold: 'rifle', scale: 0.82 } }
+        sprite: { key: 'p_soldad', skin: '#c8945e', coat: '#8a7450', coatAlt: '#c02a3a', pants: '#7a6644', shirt: '#c8bc9a', hair: '#1a1410', hairStyle: 'crop', stache: true, facialCol: '#1a1410', hat: 'sombrero', hatCol: '#6a5636', hatAccent: '#c9a24a', hold: 'rifle', scale: 0.771 } }
     ]
   },
   {
@@ -773,9 +773,9 @@ const PERIOD_FACTIONS = [
     sub: 'The finest light cavalry on the continent, and they know this ground.',
     units: [
       { id: 'horseman', name: 'Mounted Warrior', hp: 66, speed: 74, dmg: 20, r: 9, xp: 7, ai: 'charger', weight: 1, mounted: 1,
-        sprite: { key: 'p_horse', mounted: 1, skin: '#b8804e', coat: '#8a5a38', coatAlt: '#c9a24a', pants: '#7a4f30', shirt: '#a8703f', hair: '#1a1410', hairStyle: 'tall', hat: 'none', hold: 'saber', scale: 0.84 } },
+        sprite: { key: 'p_horse', mounted: 1, skin: '#b8804e', coat: '#8a5a38', coatAlt: '#c9a24a', pants: '#7a4f30', shirt: '#a8703f', hair: '#1a1410', hairStyle: 'tall', hat: 'none', hold: 'saber', scale: 0.874 } },
       { id: 'scout', name: 'Scout', hp: 54, speed: 82, dmg: 17, r: 8, xp: 7, ai: 'swarm', weight: 1, mounted: 1,
-        sprite: { key: 'p_scout', mounted: 1, skin: '#b8804e', coat: '#6a4a30', coatAlt: '#8a6a3a', pants: '#5c3f26', shirt: '#8a6040', hair: '#1a1410', hairStyle: 'tall', hat: 'none', hold: 'rifle', scale: 0.82 } }
+        sprite: { key: 'p_scout', mounted: 1, skin: '#b8804e', coat: '#6a4a30', coatAlt: '#8a6a3a', pants: '#5c3f26', shirt: '#8a6040', hair: '#1a1410', hairStyle: 'tall', hat: 'none', hold: 'rifle', scale: 0.771 } }
     ]
   },
   {
@@ -788,11 +788,11 @@ const PERIOD_FACTIONS = [
     sub: 'Waffen-SS and Wehrmacht, dug in and refusing the order to withdraw.',
     units: [
       { id: 'landser2', name: 'Landser', hp: 155, speed: 36, dmg: 16, r: 8, xp: 8, ai: 'march', weight: 4,
-        sprite: { key: 'p_landser', coat: '#4a5240', coatAlt: '#a8aca3', pants: '#3a4034', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#333a32', hold: 'rifle', scale: 0.83 } },
+        sprite: { key: 'p_landser', coat: '#4a5240', coatAlt: '#a8aca3', pants: '#3a4034', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#333a32', hold: 'rifle', scale: 0.871 } },
       { id: 'sspanzer', name: 'SS Panzergrenadier', hp: 290, speed: 34, dmg: 22, r: 11, xp: 12, ai: 'tank', weight: 2, knockRes: 0.6,
-        sprite: { key: 'p_sspz', coat: '#22252a', coatAlt: '#c8ccd6', pants: '#1c1f24', shirt: '#3a4034', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#1e2126', hatAccent: '#c8ccd6', scale: 1.0 } },
+        sprite: { key: 'p_sspz', coat: '#22252a', coatAlt: '#c8ccd6', pants: '#1c1f24', shirt: '#3a4034', hair: '#c8b884', hairStyle: 'crop', hat: 'stahlhelm', hatCol: '#1e2126', hatAccent: '#c8ccd6', scale: 1.07 } },
       { id: 'fallschirm2', name: 'Fallschirmjäger', hp: 130, speed: 56, dmg: 18, r: 8, xp: 10, ai: 'charger', weight: 1,
-        sprite: { key: 'p_fall2', coat: '#565c44', coatAlt: '#aeb1a5', pants: '#464c38', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'brodie', hatCol: '#3e443a', hold: 'rifle', scale: 0.83 } }
+        sprite: { key: 'p_fall2', coat: '#565c44', coatAlt: '#aeb1a5', pants: '#464c38', shirt: '#5a6248', hair: '#c8b884', hairStyle: 'crop', hat: 'brodie', hatCol: '#3e443a', hold: 'rifle', scale: 0.805 } }
     ]
   }
 ];

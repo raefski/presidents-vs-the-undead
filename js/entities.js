@@ -162,13 +162,15 @@ function newEnemy() {
     frame: 0, frameT: 0, aiT: 0, state: 0, stateT: 0, shootT: 0,
     art: null, artScale: 1, drawScale: 1, sprite: null,
     sprA: null, sprB: null,       // pre-resolved walk frames
+    sprAF: null, sprBF: null,     // the same two, mirrored
+    faceL: 0,                     // 1 = currently facing left
     abil: null, abilT: null, phase: 0
   };
 }
 
 function resetEnemy(e) {
   e.dead = 1; e.def = null; e.art = null; e.post = null; e.leash = 0;
-  e.sprA = e.sprB = e.sprite = null;
+  e.sprA = e.sprB = e.sprAF = e.sprBF = e.sprite = null;
   e.abil = null; e.abilT = null;
 }
 
@@ -226,12 +228,15 @@ function spawnEnemy(g, def, faction, x, y, hpMul, elite) {
   if (def.fxArt) {
     e.art = Art.fx(def.fxArt, def.fxTint);
     e.artScale = (def.fxScale || 2) / 2;   // fx sprites are pre-rendered at 2x
-    e.sprite = null; e.sprA = e.sprB = null;
+    e.sprite = null; e.sprA = e.sprB = e.sprAF = e.sprBF = null;
   } else {
     e.art = null;
     e.sprite = def.sprite;
     e.sprA = Art.person(def.sprite, 0);
     e.sprB = Art.person(def.sprite, 1);
+    e.sprAF = Art.person(def.sprite, 0, 1);
+    e.sprBF = Art.person(def.sprite, 1, 1);
+    e.faceL = 0;
   }
 
   if (def.abilities) {
@@ -445,6 +450,12 @@ function updateEnemies(g, dt) {
 
     e.x += e.vx * dt;
     e.y += e.vy * dt;
+
+    /* Face the way you are going. The deadband matters: switching on the
+       raw sign of vx makes anything moving nearly straight up or down
+       flicker between the two mirrored sprites every frame. */
+    if (e.vx < -6) e.faceL = 1;
+    else if (e.vx > 6) e.faceL = 0;
 
     // Flyers pass over the rooftops; everyone else respects the town.
     if (!e.flying) World.collide(e, e.r);

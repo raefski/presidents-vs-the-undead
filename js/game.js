@@ -565,7 +565,9 @@ const Game = {
   /* ---- actors ---- */
 
   drawPlayer(ctx, p, cx, cy) {
-    const spr = Art.person(p.pres.sprite, p.moving ? p.frame : 0);
+    // The player faces their travel direction too — face.x is already
+    // maintained by updatePlayer and persists when they stop.
+    const spr = Art.person(p.pres.sprite, p.moving ? p.frame : 0, p.face.x < -0.15 ? 1 : 0);
     const x = Math.round(p.x - cx), y = Math.round(p.y - cy);
     this.shadow(ctx, x, y, spr.width * 0.9, null, y + spr.height * (1 - ANCHOR));
 
@@ -587,7 +589,9 @@ const Game = {
   drawEnemy(ctx, e, cx, cy) {
     const x = Math.round(e.x - cx), y = Math.round(e.y - cy);
 
-    const spr = e.art ? e.art : (e.frame ? e.sprB : e.sprA);
+    const spr = e.art ? e.art
+      : (e.faceL ? (e.frame ? e.sprBF : e.sprAF)
+                 : (e.frame ? e.sprB : e.sprA));
     if (!spr) return;
 
     const sc = (e.art ? e.artScale : 1) * e.drawScale;
