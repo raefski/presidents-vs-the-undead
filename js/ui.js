@@ -120,7 +120,7 @@ const UI = {
     const el = $('#scr-' + name);
     if (el) el.classList.remove('hidden');
     this.overlay.classList.remove('hidden');
-    this.overlay.classList.toggle('transparent', name === 'shop' || name === 'pause');
+    this.overlay.classList.toggle('transparent', name === 'shop' || name === 'pause' || name === 'unlock');
   },
 
   hideOverlay() { this.overlay.classList.add('hidden'); },
@@ -164,6 +164,7 @@ const UI = {
     // The era card says "press any key". A phone hasn't got any, so a
     // tap anywhere on the card counts — and it costs a mouse nothing.
     $('#scr-era').addEventListener('click', () => Game.dismissEra());
+    $('#scr-unlock').addEventListener('click', () => Game.dismissUnlock());
   },
 
   /* ------------------------------------------------------------
@@ -308,6 +309,45 @@ const UI = {
       $('#era-presname').innerHTML = pres.name + '<br><span style="opacity:.55;font-size:9px">' + pres.term + '</span>';
     }
     this.show('era');
+  },
+
+  /**
+   * A hidden president has just been found. This freezes the run and puts
+   * him on screen properly — the sprite you will actually be playing, and
+   * a reason he is worth having — because the previous version was a
+   * two-second banner over a live fight, which is exactly when nobody is
+   * reading anything.
+   */
+  showUnlock(pres, sec) {
+    $('#unlock-name').textContent = pres.name;
+    $('#unlock-term').textContent = pres.term;
+    $('#unlock-fact').textContent = pres.fact || '';
+    $('#unlock-found').textContent = sec && sec.sub ? sec.sub : '';
+
+    const pc = $('#unlock-portrait');
+    const cx = pc.getContext('2d');
+    cx.imageSmoothingEnabled = false;
+    cx.clearRect(0, 0, pc.width, pc.height);
+    cx.fillStyle = '#0b1026'; cx.fillRect(0, 0, pc.width, pc.height);
+    cx.fillStyle = '#141c3d'; cx.fillRect(0, pc.height - 16, pc.width, 16);
+    // The same sprite that walks around the stage, just larger.
+    const spr = Art.person(
+      Object.assign({}, pres.sprite, { key: pres.sprite.key + '_unlock', scale: 3.1 }), 0);
+    cx.drawImage(spr, Math.round((pc.width - spr.width) / 2), pc.height - spr.height - 8);
+
+    const kit = $('#unlock-kit');
+    kit.innerHTML = '';
+    [[pres.weapon, 'PRIMARY'], [pres.weapon2, 'SECONDARY'], [pres.fusion, 'FUSION']]
+      .forEach(([id, tag]) => {
+        const w = WEAPONS[id];
+        if (!w) return;
+        const row = el('div', 'ukit');
+        row.innerHTML = '<span class="ico">' + w.icon + '</span>' +
+          '<b>' + w.name + '</b><span class="tag">' + tag + '</span>';
+        kit.appendChild(row);
+      });
+
+    this.show('unlock');
   },
 
   /* ------------------------------------------------------------

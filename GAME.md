@@ -102,6 +102,17 @@ Each is deliberately a **position check rather than a pickup entity** — a
 pickup would be dragged to you by your collection radius from halfway down the
 street, which would hand it over without you ever going looking.
 
+Finding one **stops the game** and puts him on screen properly: the sprite you
+will actually be playing, drawn large; his three weapons; and a fact about why
+he matters — Jefferson leaving the presidency off his own epitaph, Grant
+breaking the first Klan, Eisenhower sending the 101st into Little Rock, Truman
+desegregating the army in an election year. This used to be a two-second banner
+over a live fight, which is exactly the moment nobody is reading anything.
+
+The card is held for 650ms before any input can dismiss it, because you walked
+into the thing — you are holding a direction or a thumb, and without the floor
+it closes on the same input that opened it.
+
 Finding them is permanent, stored in `Prestige.found` alongside cleared stages.
 
 ## Stage 12 — the finale

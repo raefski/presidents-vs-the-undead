@@ -189,6 +189,7 @@ const PRESIDENTS = [
     weapon: 'declaration', weapon2: 'purchase',
     fusion: 'fusion_jefferson',
     quip: 'The tree of liberty has, on reflection, been rather over-watered.',
+    fact: 'He wrote his own epitaph and left the presidency off it. Three things made the stone: the Declaration of Independence, the Virginia Statute for Religious Freedom, and the University of Virginia. The Louisiana Purchase, which doubled the size of the country, did not make the list either.',
     hidden: 1,
     base: { hp: 92, speed: 61, area: 1.2, luck: 1.25, growth: 1.1 },
     sprite: {
@@ -204,6 +205,7 @@ const PRESIDENTS = [
     weapon: 'cigar', weapon2: 'surrender',
     fusion: 'fusion_grant',
     quip: 'I propose to fight it out on this line. Not, it turns out, today.',
+    fact: 'As President he broke the first Ku Klux Klan. The Enforcement Acts and a brand-new Department of Justice brought thousands of prosecutions, and Klan violence collapsed across the South for a generation. He is better remembered for Appomattox, but this was the harder thing.',
     hidden: 1,
     base: { hp: 122, speed: 55, might: 1.05, armor: 2, growth: 1.05 },
     sprite: {
@@ -220,6 +222,7 @@ const PRESIDENTS = [
     weapon: 'beachhead', weapon2: 'interstate',
     fusion: 'fusion_eisenhower',
     quip: 'Plans are worthless. Planning is everything. Neither helped there.',
+    fact: 'In 1957 he sent the 101st Airborne into Little Rock to walk nine children into a high school, and federalised the Arkansas National Guard so its own governor could not use it against them. Four years later he left office warning the country about the military-industrial complex.',
     hidden: 1,
     base: { hp: 104, speed: 58, area: 1.15, cooldown: 0.95, amount: 1 },
     sprite: {
@@ -236,6 +239,7 @@ const PRESIDENTS = [
     weapon: 'givehell', weapon2: 'dewey',
     fusion: 'fusion_truman',
     quip: 'The buck stopped somewhere back there, I think.',
+    fact: 'Executive Order 9981 desegregated the armed forces in 1948 — six years before the Supreme Court reached the schools. He signed it in an election year, against his own party\'s Southern wing, which split and ran against him. He won anyway.',
     hidden: 1,
     base: { hp: 96, speed: 63, growth: 1.15, luck: 1.15, magnet: 50 },
     sprite: {

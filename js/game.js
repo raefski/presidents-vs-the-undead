@@ -181,10 +181,33 @@ const Game = {
     FX.ring(sec.x, sec.y, 8, 110, 1.2, 'rgba(255,255,255,.8)', 3);
     FX.burst(sec.x, sec.y, 26, '#f2c14e', 150, 0.8, 3, 'square', 200);
     FX.say(p.x, p.y - 40, 'UNSEALED', '#f2c14e', 18);
-    this.announce(name + ' JOINS THE ROSTER',
-      sec.sub + ' He is selectable from the character screen from now on.');
     this.flash(0.4, '242,193,78');
     Sound.win();
+
+    /* Freeze the run for it. This used to be a banner over a live fight,
+       which is precisely the moment nobody is reading anything — you are
+       being chased. Finding one of these is rare enough to be worth
+       stopping the game for. */
+    if (pres) {
+      this.state = 'unlock';
+      this._unlockAt = performance.now();
+      UI.showUnlock(pres, sec);
+    } else {
+      this.announce(name + ' JOINS THE ROSTER', sec.sub || '');
+    }
+  },
+
+  /** Leave the unlock card. Held for a beat, like the era card. */
+  dismissUnlock() {
+    if (this.state !== 'unlock') return;
+    // The player walked into this, so they were holding a direction or a
+    // thumb. Without a floor it dismisses on the same input that opened it.
+    if (performance.now() - this._unlockAt < 650) return;
+    this.state = 'playing';
+    this._last = performance.now();
+    this._acc = 0;
+    UI.hideOverlay();
+    Sound.ui();
   },
 
   onWin() {
@@ -262,7 +285,7 @@ const Game = {
     } else {
       this._acc = 0;
       // Effects keep animating on the pause/shop screens; it looks alive.
-      if (this.state === 'shop' || this.state === 'over') FX.update(Math.min(raw, 0.05));
+      if (this.state === 'shop' || this.state === 'over' || this.state === 'unlock') FX.update(Math.min(raw, 0.05));
       // The era card times out on its own if nobody presses anything.
       if (this.state === 'era' && now - this._eraStart > 5200) this.dismissEra();
     }

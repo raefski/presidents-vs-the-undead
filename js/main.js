@@ -67,6 +67,10 @@
         if (Input.hit('enter') || Input.hit(' ') || Input.hit('escape')) Game.dismissEra();
         break;
 
+      case 'unlock':
+        if (Input.hit('enter') || Input.hit(' ') || Input.hit('escape')) Game.dismissUnlock();
+        break;
+
       case 'help':
         if (Input.hit('escape') || Input.hit('enter')) { Sound.ui(); UI.show('title'); Game.state = 'title'; }
         break;
